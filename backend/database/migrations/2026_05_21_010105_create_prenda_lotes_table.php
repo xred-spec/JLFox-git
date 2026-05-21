@@ -1,0 +1,33 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('prendas_lote', function (Blueprint $table) {
+            $table->id();
+            $table->integer('cantidad_prevista');
+            $table->integer('cantidad_proceso')->nullable();
+            $table->integer('proceso_actual')->nullable();
+            $table->integer('sub_proceso_actual')->nullable();
+            $table->foreignId('lote_id')->constrained('lotes');
+            $table->foreignId('prenda_sub_proceso_id')->constrained('prenda_sub_procesos');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('prendas_lote');
+    }
+};

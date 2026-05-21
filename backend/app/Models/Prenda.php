@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\TipoPrenda;
 use App\Models\PrendaProceso;
+use App\Models\InventarioPrenda;
 
 class Prenda extends Model
 {
@@ -28,5 +29,9 @@ class Prenda extends Model
 
     public function prendasProcesos(): HasMany {
         return $this->hasMany(PrendaProceso::class);
+    }
+
+    public function inventarioPrenda(): BelongsTo{
+        return $this->belongsTo(InventarioPrenda::class);
     }
 }
