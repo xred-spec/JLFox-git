@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Http\Requests\UsuarioRequest;
+use App\Http\Requests\UpdateUsuarioRequest;
 use App\Http\Resources\UsuarioResource;
 
 class UsuarioController extends Controller
@@ -29,7 +30,15 @@ class UsuarioController extends Controller
      */
     public function store(UsuarioRequest $request)
     {
-        //$usuario = $request->validated();
+        $usuario = $request->validated();
+        Usuario::create($usuario);
+        $resource = new UsuarioResource($usuario);
+
+        return $this->successResponse(
+            $resource,
+            'Usuario creado correctamente',
+            201
+        );
     }
 
     /**
@@ -37,15 +46,30 @@ class UsuarioController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $resource = new UsuarioResource($usuario);
+
+        return $this->successResponse(
+            $usuario,
+            'Usuario encontrado',
+            200
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUsuarioRequest $request, string $id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $usuario->update($request->validated());
+
+        $resource = new UsuarioResource($usuario);
+        return $this->successResponse(
+            $resource,
+            'Usuario actualizado',
+            200
+        );
     }
 
     /**
@@ -53,6 +77,13 @@ class UsuarioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $usuario = Usuario::findOrFail($id);
+        $usuario->delete();
+
+        return $this->successResponse(
+            null,
+            'Usuario eliminado',
+            204
+        );
     }
 }
