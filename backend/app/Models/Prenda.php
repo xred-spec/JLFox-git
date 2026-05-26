@@ -16,11 +16,13 @@ class Prenda extends Model
     protected $fillable = [
         'tipo',
         'talla',
+        'tiene_cartera',
+        'cartera_tiene_bordado',
         'tipo_prenda_id',
         'color_id',
         'bordado_id',
         'forro_id',
-        'cartera_id',
+        //'cartera_id',
     ];
 
     public function tipoPrenda(): BelongsTo{
