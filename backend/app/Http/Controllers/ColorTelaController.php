@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\ColorTela;
+use App\Http\Requests\ColorTelaRequest;
+use App\Http\Resources\ColorTelaResource;
+
+class ColorTelaController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $coloresTela = ColorTela->paginate(15);
+        $resuorce = ColorTelaResource::collection($coloresTela);
+
+        return $this->succesResponse(
+            $resuorce,
+            'Colores de tela obtenidos correctamente',
+            200
+        );
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ColorTelaRequest $request)
+    {
+        $colorTela = $request->validated();
+        ColorTela::create($colorTela);
+        $resource = new ColorTelaResource($colorTela);
+
+        return $this->succesResponse(
+            $resource,
+            'Color de tela creado correctamente',
+            200
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $colorTela = ColorTela::findOrFail($id);
+        $resource = new ColorTelaResource($tela);
+
+        return $this->successResponse(
+            $resource,
+            'Color de tela encontrado',
+            200
+        );
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(ColorTelaRequest $request, string $id)
+    {
+        $colorTela = ColorTela::findOrFail($id);
+        $colorTela->update($request->validated());
+
+        $resource = new ColorTelaResource($colorTela);
+        return $this->successResponse(
+            $resource,
+            'Color de tela actualizada',
+            200
+        );
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $colorTela = ColorTela::findOrFail($id);
+        $colorTela->delete();
+
+        return $this->successResponse(
+            null,
+            'Color de tela eliminado',
+            204
+        );
+    }
+}
