@@ -14,10 +14,10 @@ class TelaController extends Controller
      */
     public function index()
     {
-        $telas = Tela->paginate(15);
+        $telas = Tela::paginate(15);
         $resuorce = TelaResource::collection($telas);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resuorce,
             'Telas obtenidos correctamente',
             200
@@ -29,14 +29,13 @@ class TelaController extends Controller
      */
     public function store(TelaRequest $request)
     {
-        $tela = $request->validated();
-        Tela::create($tela);
+        $tela = Tela::create($request->validated());
         $resource = new TelaResource($tela);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resource,
             'Tela creado correctamente',
-            200
+            201
         );
     }
 
@@ -82,7 +81,7 @@ class TelaController extends Controller
         return $this->successResponse(
             null,
             'Tela eliminada',
-            204
+            200
         );
     }
 }
