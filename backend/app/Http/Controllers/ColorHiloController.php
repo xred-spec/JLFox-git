@@ -14,10 +14,10 @@ class ColorHiloController extends Controller
      */
     public function index()
     {
-        $coloresHilo = ColorHilo->paginate(15);
+        $coloresHilo = ColorHilo::paginate(15);
         $resuorce = ColorHiloResource::collection($coloresHilo);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resuorce,
             'Colores de hilo obtenidos correctamente',
             200
@@ -29,14 +29,13 @@ class ColorHiloController extends Controller
      */
     public function store(ColorHiloRequest $request)
     {
-        $colorHilo = $request->validated();
-        ColorHilo::create($colorHilo);
+        $colorHilo = ColorHilo::create($request->validated());
         $resource = new ColorHiloResource($colorHilo);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resource,
             'Color de hilo creado correctamente',
-            200
+            201
         );
     }
 
@@ -82,7 +81,7 @@ class ColorHiloController extends Controller
         return $this->successResponse(
             null,
             'Color de hilo eliminado',
-            204
+            200
         );
     }
 }

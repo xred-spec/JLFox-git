@@ -23,7 +23,7 @@ class ColorHiloRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'color' => 'required|string|max:50|unique:color_hilos,color'
+            'color' => 'required|string|max:50|unique:colores_hilo,color'
         ];
     }
 
