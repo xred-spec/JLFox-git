@@ -23,7 +23,7 @@ class ColorTelaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|unique:colores_tela,nombre',
+            'color' => 'required|string|unique:colores_tela,nombre',
             'tela_id' => 'required|integer|exists:telas,id'
         ];
     }

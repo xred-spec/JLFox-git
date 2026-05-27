@@ -14,10 +14,10 @@ class BordadoController extends Controller
      */
     public function index()
     {
-        $bordados = Bordado->paginate(15);
+        $bordados = Bordado::paginate(15);
         $resuorce = BordadoResource::collection($bordados);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resuorce,
             'Bordados obtenidos correctamente',
             200
@@ -29,14 +29,13 @@ class BordadoController extends Controller
      */
     public function store(BordadoRequest $request)
     {
-        $bordado = $request->validated();
-        Bordado::create($bordado);
+        $bordado = Bordado::create($request->validated());
         $resource = new BordadoResource($bordado);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resource,
             'Bordado creado correctamente',
-            200
+            201
         );
     }
 
@@ -82,7 +81,7 @@ class BordadoController extends Controller
         return $this->successResponse(
             null,
             'Bordado eliminado',
-            204
+            200
         );
     }
 }
