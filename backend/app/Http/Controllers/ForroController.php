@@ -14,10 +14,10 @@ class ForroController extends Controller
      */
     public function index()
     {
-        $forros = Forro->paginate(15);
-        $resuorce = BordadoResource::collection($forros);
+        $forros = Forro::paginate(15);
+        $resuorce = ForroResource::collection($forros);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resuorce,
             'Forros obtenidos correctamente',
             200
@@ -30,14 +30,13 @@ class ForroController extends Controller
      */
     public function store(ForroRequest $request)
     {
-        $forro = $request->validated();
-        Forro::create($bordado);
+        $forro = Forro::create($request->validated());
         $resource = new ForroResource($forro);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resource,
             'Forro creado correctamente',
-            200
+            201
         );
     }
 
@@ -83,7 +82,7 @@ class ForroController extends Controller
         return $this->successResponse(
             null,
             'Forro eliminado',
-            204
+            200
         );
     }
 }
