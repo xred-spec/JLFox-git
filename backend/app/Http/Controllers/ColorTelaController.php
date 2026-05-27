@@ -14,10 +14,10 @@ class ColorTelaController extends Controller
      */
     public function index()
     {
-        $coloresTela = ColorTela->paginate(15);
+        $coloresTela = ColorTela::paginate(15);
         $resuorce = ColorTelaResource::collection($coloresTela);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resuorce,
             'Colores de tela obtenidos correctamente',
             200
@@ -29,14 +29,13 @@ class ColorTelaController extends Controller
      */
     public function store(ColorTelaRequest $request)
     {
-        $colorTela = $request->validated();
-        ColorTela::create($colorTela);
+        $colorTela = ColorTela::create($request->validated());
         $resource = new ColorTelaResource($colorTela);
 
-        return $this->succesResponse(
+        return $this->successResponse(
             $resource,
             'Color de tela creado correctamente',
-            200
+            201
         );
     }
 
@@ -46,7 +45,7 @@ class ColorTelaController extends Controller
     public function show(string $id)
     {
         $colorTela = ColorTela::findOrFail($id);
-        $resource = new ColorTelaResource($tela);
+        $resource = new ColorTelaResource($colorTela);
 
         return $this->successResponse(
             $resource,
@@ -82,7 +81,7 @@ class ColorTelaController extends Controller
         return $this->successResponse(
             null,
             'Color de tela eliminado',
-            204
+            200
         );
     }
 }
