@@ -15,11 +15,11 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 async function handleLogin() {
-    if(!username.value) {
-        emptyUsername.value = true
-    } 
-    if(!password.value) {
-        emptyPassword.value = true
+    if(!username.value || !password.value) {
+        if(!username.value) emptyUsername.value = true
+        if(!password.value) emptyPassword.value = true
+
+        return
     }
 
     errorMessage.value = ''
@@ -29,17 +29,16 @@ async function handleLogin() {
         password: password.value
     }).json()
 
-    if(error.value) {
-        console.log('El login NO logeó')    
+    if(error.value) { 
         errorMessage.value = 'Credenciales incorrectas o error en el servidor'
+        console.log('NO leggó a logear')
         return
     }
 
     if(data.value) {
-        authStore.setSession(data.value.token, data.value.user)
+        authStore.setSession(data.value.data.token, data.value.data.user)
+        router.push('/dashboard')
     }
-
-    console.log('El login si logeó')
 }
 </script>
 

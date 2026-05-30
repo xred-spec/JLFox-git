@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import LoginView from '../views/LoginView.vue'
-//import TelasView from '../views/TelasView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,12 +11,21 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login ',
-      component: LoginView,
+      component: import('../views/LoginView.vue'),
       beforeEnter: (to, from, next) => {
         const authStore = useAuthStore();
-        if(authStore.isAuthenticated) next()
+        if(authStore.isAuthenticated) next('dashboard')
         else next()
       }
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: import('../views/DashboardView.vue'),
+      meta: { requiresAuth: true },
+      children: [
+        
+      ]
     },
   ],
 })
