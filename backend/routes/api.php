@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\ColorHiloController;
 use App\Http\Controllers\BordadoController;
@@ -15,20 +16,26 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 */
 
-//Rutas Usuario
-Route::apiResource('usuarios', UsuarioController::class);
+//Rutas Auth
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 
-//Rutas ColorHilo
-Route::apiResource('colores-hilo', ColorHiloController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    //Rutas Usuario
+    Route::apiResource('usuarios', UsuarioController::class);
 
-//Rutas Bordado
-Route::apiResource('bordados', BordadoController::class);
+    //Rutas ColorHilo
+    Route::apiResource('colores-hilo', ColorHiloController::class);
 
-//Rutas Forro
-Route::apiResource('forros', ForroController::class);
+    //Rutas Bordado
+    Route::apiResource('bordados', BordadoController::class);
 
-//Rutas Tela
-Route::apiResource('telas', TelaController::class);
+    //Rutas Forro
+    Route::apiResource('forros', ForroController::class);
 
-//Rutas ColorTela
-Route::apiResource('colores-tela', ColorTelaController::class);
+    //Rutas Tela
+    Route::apiResource('telas', TelaController::class);
+
+    //Rutas ColorTela
+    Route::apiResource('colores-tela', ColorTelaController::class);
+});
