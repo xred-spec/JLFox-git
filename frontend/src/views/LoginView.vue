@@ -47,7 +47,7 @@ async function handleLogin() {
     <div class="min-h-screen min-w-screen flex items-center justify-center bg-[#FFFFFF]/50">
         <div class="grid grid-cols-2 gap-0 min-h-[80vh] min-w-[75vw] shadow-2xl rounded-[15px]">
 
-            <div class="flex flex-col justify-center items-center bg-[#f0dfc9] rounded-[15px] rounded-r-none py-10 px-14">
+            <div class="flex flex-col justify-center items-center bg-[#f8eee1] rounded-[15px] rounded-r-none py-10 px-14">
                 <h1 class="mb-2 text-4xl w-full text-center font-bold text-[#311f07]">
                     Iniciar sesión
                 </h1>

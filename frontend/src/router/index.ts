@@ -24,7 +24,24 @@ const router = createRouter({
       component: import('../views/DashboardView.vue'),
       meta: { requiresAuth: true },
       children: [
-        
+        {
+          path: '/bordados',
+          name: 'bordados',
+          component: import('../views/BordadosView.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/forros',
+          name: 'forros',
+          component: import('../views/ForrosView.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/telas',
+          name: 'telas',
+          component: import('../views/TelasView.vue'),
+          meta: { requiresAuth: true }
+        }
       ]
     },
   ],
