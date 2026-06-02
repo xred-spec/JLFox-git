@@ -17,7 +17,7 @@ const routeTo = (routeName: string) => {
 </script>
 
 <template>
-    <div class="flex flex-col h-screen justify-start border-r-2 border-[#ac7b3a] w-70 bg-[#f8eee1]">
+    <div class="flex flex-col h-screen justify-start border-r-2 border-[#ac7b3a] w-70 bg-[#ffffff]">
         <div class="flex items-center justify-center h-14 bg-[#000000] border-b-2 border-[#ac7b3a]">
         </div>
 

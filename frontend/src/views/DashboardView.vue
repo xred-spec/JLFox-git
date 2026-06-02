@@ -6,7 +6,7 @@ import Sidebar from '@/components/Sidebar.vue';
     <div class="flex min-w-screen min-h-screen">
         <Sidebar />
 
-        <div class="flex flex-col flex-1 bg-[#f8eee1]">
+        <div class="flex flex-col flex-1 bg-[#ffffff]">
             <div class="header flex items-center justify-between min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
 
                 <p class="font-bold text-[#d1a66f]">JLFox Tracking System</p>
@@ -18,7 +18,7 @@ import Sidebar from '@/components/Sidebar.vue';
                 </button>
             </div>
 
-            <div class="flex px-5 py-2 items-center justify-center">
+            <div class="flex px-5 py-2 items-start justify-center size-full">
                 <RouterView />
             </div>
         </div>

@@ -28,7 +28,21 @@ const router = createRouter({
           path: '/bordados',
           name: 'bordados',
           component: import('../views/BordadosView.vue'),
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/colores-hilo',
+            name: 'colores-hilo',
+            component: import('../views/ForrosView.vue'), //CAMBIAR
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/sub-bordados',
+              name: 'sub-bordados',
+              component: import('../views/ForrosView.vue'), // CAMBIAR
+              meta: { requiresAuth: true }
+            },
+          ]
         },
         {
           path: '/forros',
@@ -40,7 +54,21 @@ const router = createRouter({
           path: '/telas',
           name: 'telas',
           component: import('../views/TelasView.vue'),
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/tipos-tela',
+            name: 'tipos-tela',
+            component: import('../views/ForrosView.vue'), //CAMBIAR
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/colores-tela',
+              name: 'colores-tela',
+              component: import('../views/ForrosView.vue'), // CAMBIAR
+              meta: { requiresAuth: true }
+            },
+          ]
         }
       ]
     },
