@@ -9,7 +9,7 @@ import Sidebar from '@/components/Sidebar.vue';
         <div class="flex flex-col flex-1 bg-[#f8eee1]">
             <div class="header flex items-center justify-between min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
 
-                <p class="font-bold text-[#ac7b3a]">JLFox Tracking System</p>
+                <p class="font-bold text-[#d1a66f]">JLFox Tracking System</p>
 
                 <button class="font-bold flex items-center border-2 py-1 px-2 rounded-[5px] text-[#ffffff] border-[#c41a1a] cursor-pointer hover:bg-[#c41a1a]">
                     Cerrar sesión
