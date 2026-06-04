@@ -23,7 +23,7 @@ class ForroRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'color' => 'required|string|unique:forros, color'
+            'color' => 'required|string|unique:forros,color'
         ];
     } 
 

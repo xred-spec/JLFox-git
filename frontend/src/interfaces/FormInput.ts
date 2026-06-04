@@ -3,7 +3,8 @@ export interface Input {
     modelKey: string,
     type: 'text' | 'number' | 'select' | 'email' | 'password' | 'date' | 'textarea' | 'tel',
     options?: {
-        value: number | string
+        value: number | string,
+        label: string | null
     }[],
     placeholder?: string,
     required: boolean, 

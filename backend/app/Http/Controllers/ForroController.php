@@ -30,6 +30,7 @@ class ForroController extends Controller
      */
     public function store(ForroRequest $request)
     {
+    
         $forro = Forro::create($request->validated());
         $resource = new ForroResource($forro);
 
@@ -38,6 +39,8 @@ class ForroController extends Controller
             'Forro creado correctamente',
             201
         );
+        
+        //return response('nigga wtf')->json();
     }
 
     /**

@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login ',
-      component: import('../views/LoginView.vue'),
+      component: () =>  import('../views/LoginView.vue'),
       beforeEnter: (to, from, next) => {
         const authStore = useAuthStore();
         if(authStore.isAuthenticated) next('dashboard')
@@ -21,25 +21,25 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: import('../views/DashboardView.vue'),
+      component: () => import('../views/DashboardView.vue'),
       meta: { requiresAuth: true },
       children: [
         {
           path: '/bordados',
           name: 'bordados',
-          component: import('../views/BordadosView.vue'),
+          component: () => import('../views/BordadosView.vue'),
           meta: { requiresAuth: true },
           children: [
             {
             path: '/colores-hilo',
             name: 'colores-hilo',
-            component: import('../views/ForrosView.vue'), //CAMBIAR
+            component: () => import('../views/ForrosView.vue'), //CAMBIAR
             meta: { requiresAuth: true }
             },
             {
               path: '/sub-bordados',
               name: 'sub-bordados',
-              component: import('../views/ForrosView.vue'), // CAMBIAR
+              component: () => import('../views/ForrosView.vue'), // CAMBIAR
               meta: { requiresAuth: true }
             },
           ]
@@ -47,25 +47,25 @@ const router = createRouter({
         {
           path: '/forros',
           name: 'forros',
-          component: import('../views/ForrosView.vue'),
+          component: () => import('../views/ForrosView.vue'),
           meta: { requiresAuth: true }
         },
         {
           path: '/telas',
           name: 'telas',
-          component: import('../views/TelasView.vue'),
+          component: () => import('../views/TelasView.vue'),
           meta: { requiresAuth: true },
           children: [
             {
             path: '/tipos-tela',
             name: 'tipos-tela',
-            component: import('../views/ForrosView.vue'), //CAMBIAR
+            component: () => import('../views/ForrosView.vue'), //CAMBIAR
             meta: { requiresAuth: true }
             },
             {
               path: '/colores-tela',
               name: 'colores-tela',
-              component: import('../views/ForrosView.vue'), // CAMBIAR
+              component: () => import('../views/ForrosView.vue'), // CAMBIAR
               meta: { requiresAuth: true }
             },
           ]
@@ -75,13 +75,13 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const authStore = useAuthStore()
   
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login' })
+    return '/login'
   } else {
-    next()
+    return true
   }
 })
 
