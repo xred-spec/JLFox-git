@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineProps({
     name: String,
-    add: String
 })
 
 const emits = defineEmits([
@@ -11,11 +10,11 @@ const emits = defineEmits([
 
 <template>
     <div class="w-full flex items-center justify-between pt-1">
-        <h1 class="text-[#000000] text-xl font-bold shadow-2xl">
+        <h1 class="flex-1 text-[#ffffff] py-2 px-5 rounded-[5px] bg-[#000000] font-bold shadow-2xl mr-1">
             {{ name }}
         </h1>
 
-        <button class="font-bold flex items-center border-2 py-1 px-2 rounded-[5px] text-[#000000] border-[#2630bb] cursor-pointer hover:bg-[#2630bb] hover:text-[#ffffff]"
+        <button class="font-bold flex items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102 ml-1"
         @click="emits('store')">
             Crear nuevo
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
