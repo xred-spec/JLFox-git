@@ -33,13 +33,13 @@ const router = createRouter({
             {
             path: '/colores-hilo',
             name: 'colores-hilo',
-            component: () => import('../views/ForrosView.vue'), //CAMBIAR
+            component: () => import('../views/ColoresHiloView.vue'),
             meta: { requiresAuth: true }
             },
             {
               path: '/sub-bordados',
               name: 'sub-bordados',
-              component: () => import('../views/ForrosView.vue'), // CAMBIAR
+              component: () => import('../views/SubBordadosView.vue'), 
               meta: { requiresAuth: true }
             },
           ]

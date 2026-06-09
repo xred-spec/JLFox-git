@@ -54,7 +54,7 @@ const validateInputs = () => {
 <template>
     <div v-if="show" class="modal-fondo fixed inset-0 bg-black/40 backdrop-blur-sm transition-all duration-300 px-4 z-50
     flex items-center justify-center" 
-    @click="cleanInputs()">
+    @click="cleanInputs(), emits('close')">
         <div 
         @click.stop
         class="flex flex-col justify-center w-full max-w-[40vw] bg-[#ffffff] rounded-[15px] p-5">
@@ -76,7 +76,7 @@ const validateInputs = () => {
                 <template v-if="i.type === 'select'">
                     <select v-model="formData[i.modelKey]"
                     :required="i.required"
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[10px] font-bold text-[#000000] border-b-2 border-[#63492a]">
+                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
                         <option v-for="o in i.options">
                             {{ o.label }}
                         </option>
@@ -86,7 +86,7 @@ const validateInputs = () => {
                 <template v-else-if="i.type === 'textarea'">
                     <textarea v-model="formData[i.modelKey]" 
                     :required="i.required" :placeholder="i.placeholder" :rows=3
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[10px] font-bold text-[#000000] border-b-2 border-[#63492a] placeholder:text-[#000000]/50"
+                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                     >
                     </textarea>
                 </template>
@@ -95,18 +95,18 @@ const validateInputs = () => {
                     <input v-model="formData[i.modelKey]"
                     :type="i.type" :placeholder="i.placeholder" :required="i.required"
                     :min="i.min" :max="i.max" :maxlength="i.max"
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[10px] font-bold text-[#000000] border-2 border-[#63492a] placeholder:text-[#000000]/50"
+                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                     >
                 </template>
             </div>
 
             <div class="mt-2 flex items-center justify-between">
-                <button class="w-full mr-1 rounded-[15px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
+                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
                 @click="cleanInputs(), emits('close')">
                     Cerrar
                 </button>
 
-                <button class="w-full ml-1 rounded-[15px] font-bold text-lg text-[#ffffff] py-3 bg-[#2630bb] cursor-pointer hover:scale-102"
+                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102"
                 @click="validateInputs()">
                     Guardar
                 </button>

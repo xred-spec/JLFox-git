@@ -4,23 +4,23 @@ import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { forrosInputs } from '@/data/forrosInputs';
-import { forrosColumns } from '@/data/forrosColumns';
+import { coloresHiloInputs } from '@/data/coloresHiloInputs';
+import { coloresHiloColumns } from '@/data/coloresHiloColumns';
 import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 
-const forros = ref()
-const selectedForro = ref(null)
+const coloresHilo = ref()
+const selectedColorHilo = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getForros = async() => { 
-    const {isFetching, error, data} = await useApi('forros').json()
+const getColoresHilo = async() => { 
+    const {isFetching, error, data} = await useApi('colores-hilo').json()
 
     if(data.value) {
-        forros.value = data.value
+        coloresHilo.value = data.value
         return
     }
 
@@ -31,19 +31,19 @@ const getForros = async() => {
     }
 }
 
-const storeForro = async(formData: any) => {
+const storeColorHilo = async(formData: any) => {
     isModalOpened.value = false
-    selectedForro.value = null
+    selectedColorHilo.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`forros/${formData.id}`).put(
+        const {data, error} = await useApi(`colores-hilo/${formData.id}`).put(
             {
                 color: formData.color
             }
         ).json()
 
         if(data.value) {
-            await getForros()
+            await getColoresHilo()
             return
         }
 
@@ -53,14 +53,14 @@ const storeForro = async(formData: any) => {
             return
         }
     } else {
-        const {data, error} = await useApi('forros').post(
+        const {data, error} = await useApi('colores-hilo').post(
             {
                 color: formData.color
             }
         ).json()
 
         if(data.value) {
-            await getForros()
+            await getColoresHilo()
             return
         }
 
@@ -73,10 +73,10 @@ const storeForro = async(formData: any) => {
 }
 
 const deleteForro = async(id: number) => {
-    const {data, error} = await useApi(`forros/${id}`).delete().json()
+    const {data, error} = await useApi(`colores-hilo/${id}`).delete().json()
 
     if(data.value) {
-        await getForros()
+        await getColoresHilo()
         return
     }
 
@@ -88,12 +88,12 @@ const deleteForro = async(id: number) => {
 }
 
 onMounted (async() => {
-    await getForros()
+    await getColoresHilo()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedForro.value = selected
-    else selectedForro.value = null
+    if(selected) selectedColorHilo.value = selected
+    else selectedColorHilo.value = null
     isModalOpened.value = true
 }
 </script>
@@ -101,23 +101,23 @@ const openModal = (selected?: any) => {
 <template>
     <GenericModal 
     v-if="isModalOpened"
-    :header="selectedForro ? 'Editar forro' : 'Agregar forro'" 
-    :inputs="forrosInputs" 
+    :header="selectedColorHilo ? 'Editar color de hilo' : 'Agregar color de hilo'" 
+    :inputs="coloresHiloInputs" 
     :show="isModalOpened" 
-    :model-value="selectedForro"
+    :model-value="selectedColorHilo"
     @close="isModalOpened = false"
-    @accept="(formData) => storeForro(formData)"
+    @accept="(formData) => storeColorHilo(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Forros"
+                name="Colores de hilo"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!forros || !forros.data || forros.data.length === 0" 
+            <div v-if="!coloresHilo || !coloresHilo.data || coloresHilo.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -126,10 +126,10 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in forros.data"
+                    <ItemCard v-for="f in coloresHilo.data"
                     :item="f"
                     :index=itemsIndex + 1
-                    :columns="forrosColumns"
+                    :columns="coloresHiloColumns"
                     :show="true"
                     @update="openModal(f)"
                     @delete="deleteForro(f.id)"

@@ -9,8 +9,8 @@ const emits = defineEmits([
 </script>
 
 <template>
-    <div class="w-full flex items-center justify-between pt-1">
-        <h1 class="flex-1 text-[#ffffff] py-2 px-5 rounded-[5px] bg-[#000000] font-bold shadow-2xl mr-1">
+    <div class="w-full flex items-center justify-between">
+        <h1 class="flex-1 text-[#ffffff] py-2 px-5 rounded-[5px] bg-[#000000] font-bold shadow-2xs mr-1">
             {{ name }}
         </h1>
 
