@@ -1,29 +1,26 @@
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { bordadosInputs } from '@/data/bordadosInputs';
-import { bordadosColumns } from '@/data/bordadosColumns';
+import { tiposTelasInputs } from '@/data/tiposTelasInputs';
+import { tiposTelasColumns } from '@/data/tiposTelasColumns';
 import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 
-const formInputs = ref([...bordadosInputs]) 
-
-const bordados = ref()
-const coloresHilo = ref()
-const selectedBordado = ref(null)
+const tiposTela = ref()
+const selectedTipoTela = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getBordados = async() => {
-    const {isFetching, error, data} = await useApi('bordados').json()
+const getTiposTela = async() => { 
+    const {isFetching, error, data} = await useApi('tipos-tela').json()
 
     if(data.value) {
-        bordados.value = data.value
+        tiposTela.value = data.value
         return
     }
 
@@ -34,32 +31,20 @@ const getBordados = async() => {
     }
 }
 
-const fetchSelects = async() => {
-    const coloresHilo = await useApi('colores-hilo').json()
-    const inputColoresHilo = formInputs.value.find(i => i.modelKey === 'color_hilo_id')
-
-    if(inputColoresHilo && coloresHilo.data.value) {
-        inputColoresHilo.options = coloresHilo.data.value.data.map((colorHilo: any) => ({
-            label: colorHilo.color,
-            value: colorHilo.id
-        }))
-    }
-}
-
-const storeBordado = async(formData: any) => {
+const storeTipoTela = async(formData: any) => {
+    console.log('store?')
     isModalOpened.value = false
-    selectedBordado.value = null
+    selectedTipoTela.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`bordados/${formData.id}`).put(
+        const {data, error} = await useApi(`tipos-tela/${formData.id}`).put(
             {
-                forma: formData.forma,
-                color_hilo_id: formData.color_hilo_id
+                nombre: formData.nombre
             }
         ).json()
 
         if(data.value) {
-            await getBordados()
+            await getTiposTela()
             return
         }
 
@@ -69,15 +54,15 @@ const storeBordado = async(formData: any) => {
             return
         }
     } else {
-        const {data, error} = await useApi('bordados').post(
+        console.log('llegpo hasta acá')
+        const {data, error} = await useApi('tipos-tela').post(
             {
-                forma: formData.forma,
-                color_hilo_id: formData.color_hilo_id
+                nombre: formData.nombre
             }
         ).json()
 
         if(data.value) {
-            await getBordados()
+            await getTiposTela()
             return
         }
 
@@ -89,11 +74,11 @@ const storeBordado = async(formData: any) => {
     } 
 }
 
-const deleteBordado = async(id: number) => {
-    const {data, error} = await useApi(`bordados/${id}`).delete().json()
+const deleteTipoTela = async(id: number) => {
+    const {data, error} = await useApi(`tipos-tela/${id}`).delete().json()
 
     if(data.value) {
-        await getBordados()
+        await getTiposTela()
         return
     }
 
@@ -105,13 +90,12 @@ const deleteBordado = async(id: number) => {
 }
 
 onMounted (async() => {
-    await fetchSelects()
-    await getBordados()
+    await getTiposTela()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedBordado.value = selected
-    else selectedBordado.value = null
+    if(selected) selectedTipoTela.value = selected
+    else selectedTipoTela.value = null
     isModalOpened.value = true
 }
 </script>
@@ -119,23 +103,23 @@ const openModal = (selected?: any) => {
 <template>
     <GenericModal 
     v-if="isModalOpened"
-    :header="selectedBordado ? 'Editar bordado' : 'Agregar bordado'" 
-    :inputs="formInputs" 
+    :header="selectedTipoTela ? 'Editar forro' : 'Agregar forro'" 
+    :inputs="tiposTelasInputs" 
     :show="isModalOpened" 
-    :model-value="selectedBordado"
+    :model-value="selectedTipoTela"
     @close="isModalOpened = false"
-    @accept="(formData) => storeBordado(formData)"
+    @accept="(formData) => storeTipoTela(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Bordados"
+                name="Forros"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!bordados || !bordados.data || bordados.data.length === 0" 
+            <div v-if="!tiposTela || !tiposTela.data || tiposTela.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -144,13 +128,13 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="b in bordados.data"
-                    :item="b"
+                    <ItemCard v-for="f in tiposTela.data"
+                    :item="f"
                     :index=itemsIndex + 1
-                    :columns="bordadosColumns"
+                    :columns="tiposTelasColumns"
                     :show="true"
-                    @update="openModal(b)"
-                    @delete="deleteBordado(b.id)"
+                    @update="openModal(f)"
+                    @delete="deleteTipoTela(f.id)"
                     />
             </div>
         </template>

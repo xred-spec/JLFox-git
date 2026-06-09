@@ -19,7 +19,7 @@ class TelaController extends Controller
 
         return $this->successResponse(
             $resuorce,
-            'Telas obtenidos correctamente',
+            'Telas obtenidas correctamente',
             200
         );
     }
@@ -34,7 +34,7 @@ class TelaController extends Controller
 
         return $this->successResponse(
             $resource,
-            'Tela creado correctamente',
+            'Tela creada correctamente',
             201
         );
     }

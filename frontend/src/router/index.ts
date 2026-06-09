@@ -59,13 +59,13 @@ const router = createRouter({
             {
             path: '/tipos-tela',
             name: 'tipos-tela',
-            component: () => import('../views/ForrosView.vue'), //CAMBIAR
+            component: () => import('../views/TiposTelasView.vue'), 
             meta: { requiresAuth: true }
             },
             {
               path: '/colores-tela',
               name: 'colores-tela',
-              component: () => import('../views/ForrosView.vue'), // CAMBIAR
+              component: () => import('../views/ColoresTelasView.vue'), 
               meta: { requiresAuth: true }
             },
           ]

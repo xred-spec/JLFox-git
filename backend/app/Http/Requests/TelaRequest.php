@@ -23,7 +23,7 @@ class TelaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|unique:telas, nombre'
+            'nombre' => 'required|string|unique:telas,nombre'
         ];
     }
 
