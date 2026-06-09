@@ -72,7 +72,7 @@ const storeColorHilo = async(formData: any) => {
     } 
 }
 
-const deleteForro = async(id: number) => {
+const deleteColorHilo = async(id: number) => {
     const {data, error} = await useApi(`colores-hilo/${id}`).delete().json()
 
     if(data.value) {
@@ -126,13 +126,13 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in coloresHilo.data"
-                    :item="f"
+                    <ItemCard v-for="c in coloresHilo.data"
+                    :item="c"
                     :index=itemsIndex + 1
                     :columns="coloresHiloColumns"
                     :show="true"
-                    @update="openModal(f)"
-                    @delete="deleteForro(f.id)"
+                    @update="openModal(c)"
+                    @delete="deleteColorHilo(c.id)"
                     />
             </div>
         </template>

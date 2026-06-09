@@ -9,17 +9,19 @@ const props = defineProps <{
     show: boolean
 }>()
 
+/*
 const getValues = () => {
     let values = Object.values(props.item)
     return values
 }
+*/
 
 const emits = defineEmits<{
     (e: 'update', id: number): void,
     (e: 'delete', id: number): void
 }>()
 
-const itemValues = getValues()
+//const itemValues = getValues()
 </script>
 
 <template>

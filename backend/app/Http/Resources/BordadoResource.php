@@ -15,6 +15,7 @@ class BordadoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'forma' => $this->forma,
             'color_hilo_id' => $this->color_hilo_id
         ];
