@@ -18,7 +18,7 @@ class Bordado extends Model
         'color_hilo_id'
     ];
 
-    public function colorHilo(): BelongsTo {
+    public function color_hilo(): BelongsTo {
         return $this->belongsTo(ColorHilo::class);
     }
 }

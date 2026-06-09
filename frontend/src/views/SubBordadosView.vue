@@ -53,7 +53,8 @@ const storeBordado = async(formData: any) => {
     if(formData.id) {
         const {data, error} = await useApi(`bordados/${formData.id}`).put(
             {
-                color: formData.color
+                forma: formData.forma,
+                color_hilo_id: formData.color_hilo_id
             }
         ).json()
 
@@ -70,7 +71,8 @@ const storeBordado = async(formData: any) => {
     } else {
         const {data, error} = await useApi('bordados').post(
             {
-                color: formData.color
+                forma: formData.forma,
+                color_hilo_id: formData.color_hilo_id
             }
         ).json()
 
@@ -105,6 +107,7 @@ const deleteBordado = async(id: number) => {
 onMounted (async() => {
     await fetchSelects()
     await getBordados()
+    console.log(bordados.value)
 })
 
 const openModal = (selected?: any) => {
@@ -112,10 +115,6 @@ const openModal = (selected?: any) => {
     else selectedBordado.value = null
     isModalOpened.value = true
 }
-
-watch(coloresHilo, () => {
-
-})
 </script>
 
 <template>

@@ -17,7 +17,7 @@ class BordadoResource extends JsonResource
         return [
             'id' => $this->id,
             'forma' => $this->forma,
-            'color_hilo_id' => $this->color_hilo_id
+            'color_hilo' => $this->whenLoaded('color_hilo'),
         ];
     }
 }

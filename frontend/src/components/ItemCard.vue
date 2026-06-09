@@ -1,5 +1,5 @@
 <script setup lang="ts">    
-import { ref } from 'vue';
+//import { ref } from 'vue';
 import type { Column } from '@/interfaces/DataColumn';
 
 const props = defineProps <{
@@ -9,12 +9,17 @@ const props = defineProps <{
     show: boolean
 }>()
 
-/*
-const getValues = () => {
-    let values = Object.values(props.item)
-    return values
+
+const getForeignValues = (object: any, rute: string) => {
+    if(!rute.includes('.')) {
+        return object[rute]
+    }
+    
+    return rute.split('.').reduce((acumulator, part) => {
+        return acumulator ? acumulator[part]: null
+    }, object)
 }
-*/
+
 
 const emits = defineEmits<{
     (e: 'update', id: number): void,
@@ -47,7 +52,7 @@ const emits = defineEmits<{
                 {{ index }}
             </p>
             <p v-else class="text-[#000000] font-bold">
-                {{ props.item[c.key] }}
+                {{ getForeignValues(props.item, c.key) }}
             </p>
         </div>
     </div>
