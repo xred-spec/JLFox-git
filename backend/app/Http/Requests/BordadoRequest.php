@@ -23,14 +23,14 @@ class BordadoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'forma' => 'required|string|between:5,50|unique:bordados,forma',
+            'forma' => 'required|string|between:2,50|unique:bordados,forma',
             'color_hilo_id' => 'required|integer|exists:colores_hilo,id'
         ];
     }
 
     public function messages(): array {
         return [
-            'forma.between' => 'La forma debe tener de 5 a 50 caracteres',
+            'forma.between' => 'La forma debe tener de 2 a 50 caracteres',
             'forma.unique' => 'La forma ya está registrada, pruebe con otra',
             'color_hilo_id.exists' => 'No existe el color de hilo especificado'
         ];

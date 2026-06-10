@@ -15,8 +15,9 @@ class ColorTelaResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'nombre' => $this->nombre,
-            'tela_id' => $this->tela_id
+            'id' => $this->id,
+            'color' => $this->color,
+            'tela' => $this->tela
         ];
     }
 }

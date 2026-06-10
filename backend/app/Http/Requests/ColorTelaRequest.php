@@ -23,14 +23,14 @@ class ColorTelaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'color' => 'required|string|unique:colores_tela,nombre',
+            'color' => 'required|string|unique:colores_tela,color',
             'tela_id' => 'required|integer|exists:telas,id'
         ];
     }
 
     public function messages(): array {
         return [
-            'nombre.unique' => 'El color de tela ya existe, intente con otro',
+            'color.unique' => 'El color de tela ya existe, intente con otro',
             'tela_id.exists' => 'No existe la tela especificada'
         ];
     }

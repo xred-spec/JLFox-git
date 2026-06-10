@@ -15,6 +15,7 @@ class ColorHiloResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'color' => $this->color,
         ];
 

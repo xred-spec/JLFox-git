@@ -17,7 +17,7 @@ class Tela extends Model
         'nombre'
     ];
 
-    public function coloresTela(): HasMany {
+    public function colores_tela(): HasMany {
         return $this->hasMany(ColorTela::class);
     }
 }

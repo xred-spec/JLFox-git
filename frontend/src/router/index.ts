@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import LoginView from '../views/LoginView.vue'
-//import TelasView from '../views/TelasView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,23 +11,77 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login ',
-      component: LoginView,
+      component: () =>  import('../views/LoginView.vue'),
       beforeEnter: (to, from, next) => {
         const authStore = useAuthStore();
-        if(authStore.isAuthenticated) next()
+        if(authStore.isAuthenticated) next('dashboard')
         else next()
       }
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/DashboardView.vue'),
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: '/bordados',
+          name: 'bordados',
+          component: () => import('../views/BordadosView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/colores-hilo',
+            name: 'colores-hilo',
+            component: () => import('../views/ColoresHiloView.vue'),
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/sub-bordados',
+              name: 'sub-bordados',
+              component: () => import('../views/SubBordadosView.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
+        },
+        {
+          path: '/forros',
+          name: 'forros',
+          component: () => import('../views/ForrosView.vue'),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/telas',
+          name: 'telas',
+          component: () => import('../views/TelasView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/tipos-tela',
+            name: 'tipos-tela',
+            component: () => import('../views/TiposTelasView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/colores-tela',
+              name: 'colores-tela',
+              component: () => import('../views/ColoresTelasView.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
+        }
+      ]
     },
   ],
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const authStore = useAuthStore()
   
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'login' })
+    return '/login'
   } else {
-    next()
+    return true
   }
 })
 

@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('forros', ForroController::class);
 
     //Rutas Tela
-    Route::apiResource('telas', TelaController::class);
+    Route::apiResource('tipos-tela', TelaController::class);
 
     //Rutas ColorTela
     Route::apiResource('colores-tela', ColorTelaController::class);

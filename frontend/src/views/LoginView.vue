@@ -15,11 +15,11 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 async function handleLogin() {
-    if(!username.value) {
-        emptyUsername.value = true
-    } 
-    if(!password.value) {
-        emptyPassword.value = true
+    if(!username.value || !password.value) {
+        if(!username.value) emptyUsername.value = true
+        if(!password.value) emptyPassword.value = true
+
+        return
     }
 
     errorMessage.value = ''
@@ -29,17 +29,16 @@ async function handleLogin() {
         password: password.value
     }).json()
 
-    if(error.value) {
-        console.log('El login NO logeó')    
+    if(error.value) { 
         errorMessage.value = 'Credenciales incorrectas o error en el servidor'
+        console.log('NO leggó a logear')
         return
     }
 
     if(data.value) {
-        authStore.setSession(data.value.token, data.value.user)
+        authStore.setSession(data.value.data.token, data.value.data.user)
+        router.push('/dashboard')
     }
-
-    console.log('El login si logeó')
 }
 </script>
 
@@ -48,7 +47,7 @@ async function handleLogin() {
     <div class="min-h-screen min-w-screen flex items-center justify-center bg-[#FFFFFF]/50">
         <div class="grid grid-cols-2 gap-0 min-h-[80vh] min-w-[75vw] shadow-2xl rounded-[15px]">
 
-            <div class="flex flex-col justify-center items-center bg-[#f0dfc9] rounded-[15px] rounded-r-none py-10 px-14">
+            <div class="flex flex-col justify-center items-center bg-[#f8eee1] rounded-[15px] rounded-r-none py-10 px-14">
                 <h1 class="mb-2 text-4xl w-full text-center font-bold text-[#311f07]">
                     Iniciar sesión
                 </h1>

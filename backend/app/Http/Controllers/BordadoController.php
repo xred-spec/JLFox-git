@@ -14,7 +14,7 @@ class BordadoController extends Controller
      */
     public function index()
     {
-        $bordados = Bordado::paginate(15);
+        $bordados = Bordado::with('color_hilo')->paginate(15);
         $resuorce = BordadoResource::collection($bordados);
 
         return $this->successResponse(

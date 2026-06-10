@@ -14,7 +14,7 @@ class ColorTelaController extends Controller
      */
     public function index()
     {
-        $coloresTela = ColorTela::paginate(15);
+        $coloresTela = ColorTela::with('tela')->paginate(15);
         $resuorce = ColorTelaResource::collection($coloresTela);
 
         return $this->successResponse(
