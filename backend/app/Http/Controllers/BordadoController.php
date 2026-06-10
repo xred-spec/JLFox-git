@@ -44,7 +44,7 @@ class BordadoController extends Controller
      */
     public function show(string $id)
     {
-        $bordado = Bordado::findOrFail($id)->with('color_hilo');
+        $bordado = Bordado::findOrFail($id);
         $resource = new BordadoResource($bordado);
 
         return $this->successResponse(

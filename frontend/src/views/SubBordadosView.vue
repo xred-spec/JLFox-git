@@ -12,7 +12,6 @@ import ItemCard from '@/components/ItemCard.vue';
 const formInputs = ref([...bordadosInputs]) 
 
 const bordados = ref()
-const coloresHilo = ref()
 const selectedBordado = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)

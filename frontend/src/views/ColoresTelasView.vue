@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { tiposTelasInputs } from '@/data/tiposTelasInputs';
-import { tiposTelasColumns } from '@/data/tiposTelasColumns';
+import { coloresTelaInputs } from '@/data/coloresTelaInputs';
+import { coloresTelaColumns } from '@/data/coloresTelaColumns';
 import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 
-const tiposTela = ref()
-const selectedTipoTela = ref(null)
+const formInputs = ref([...coloresTelaInputs]) 
+
+const coloresTela = ref()
+const selectedColorTela = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getTiposTela = async() => { 
-    const {isFetching, error, data} = await useApi('tipos-tela').json()
+const getColoresTela = async() => {
+    const {isFetching, error, data} = await useApi('colores-tela').json()
 
     if(data.value) {
-        tiposTela.value = data.value
+        coloresTela.value = data.value
         return
     }
 
@@ -31,20 +33,32 @@ const getTiposTela = async() => {
     }
 }
 
-const storeTipoTela = async(formData: any) => {
-    console.log('store?')
+const fetchSelects = async() => {
+    const coloresTela = await useApi('tipos-tela').json()
+    const inputColoresTela = formInputs.value.find(i => i.modelKey === 'tela_id')
+
+    if(inputColoresTela && coloresTela.data.value) {
+        inputColoresTela.options = coloresTela.data.value.data.map((tipoTela: any) => ({
+            label: tipoTela.nombre,
+            value: tipoTela.id
+        }))
+    }
+}
+
+const storeColorTela = async(formData: any) => {
     isModalOpened.value = false
-    selectedTipoTela.value = null
+    selectedColorTela.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`tipos-tela/${formData.id}`).put(
+        const {data, error} = await useApi(`colores-tela/${formData.id}`).put(
             {
-                nombre: formData.nombre
+                color: formData.color,
+                tela_id: formData.tela_id
             }
         ).json()
 
         if(data.value) {
-            await getTiposTela()
+            await getColoresTela()
             return
         }
 
@@ -54,15 +68,15 @@ const storeTipoTela = async(formData: any) => {
             return
         }
     } else {
-        console.log('llegpo hasta acá')
-        const {data, error} = await useApi('tipos-tela').post(
+        const {data, error} = await useApi('colores-tela').post(
             {
-                nombre: formData.nombre
+                color: formData.color,
+                tela_id: formData.tela_id
             }
         ).json()
 
         if(data.value) {
-            await getTiposTela()
+            await getColoresTela()
             return
         }
 
@@ -74,11 +88,11 @@ const storeTipoTela = async(formData: any) => {
     } 
 }
 
-const deleteTipoTela = async(id: number) => {
-    const {data, error} = await useApi(`tipos-tela/${id}`).delete().json()
+const deleteColorTela = async(id: number) => {
+    const {data, error} = await useApi(`colores-tela/${id}`).delete().json()
 
     if(data.value) {
-        await getTiposTela()
+        await getColoresTela()
         return
     }
 
@@ -90,12 +104,13 @@ const deleteTipoTela = async(id: number) => {
 }
 
 onMounted (async() => {
-    await getTiposTela()
+    await fetchSelects()
+    await getColoresTela()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedTipoTela.value = selected
-    else selectedTipoTela.value = null
+    if(selected) selectedColorTela.value = selected
+    else selectedColorTela.value = null
     isModalOpened.value = true
 }
 </script>
@@ -103,23 +118,23 @@ const openModal = (selected?: any) => {
 <template>
     <GenericModal 
     v-if="isModalOpened"
-    :header="selectedTipoTela ? 'Editar forro' : 'Agregar forro'" 
-    :inputs="tiposTelasInputs" 
+    :header="selectedColorTela ? 'Editar color de tela' : 'Agregar color de tela'" 
+    :inputs="formInputs" 
     :show="isModalOpened" 
-    :model-value="selectedTipoTela"
+    :model-value="selectedColorTela"
     @close="isModalOpened = false"
-    @accept="(formData) => storeTipoTela(formData)"
+    @accept="(formData) => storeColorTela(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Forros"
+                name="Colores de tela"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!tiposTela || !tiposTela.data || tiposTela.data.length === 0" 
+            <div v-if="!coloresTela || !coloresTela.data || coloresTela.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -128,13 +143,13 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in tiposTela.data"
-                    :item="f"
+                    <ItemCard v-for="c in coloresTela.data"
+                    :item="c"
                     :index=itemsIndex + 1
-                    :columns="tiposTelasColumns"
+                    :columns="coloresTelaColumns"
                     :show="true"
-                    @update="openModal(f)"
-                    @delete="deleteTipoTela(f.id)"
+                    @update="openModal(c)"
+                    @delete="deleteColorTela(c.id)"
                     />
             </div>
         </template>

@@ -45,6 +45,9 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
+        //console.log('modelValue. ',props.modelValue)
+        //console.log('form. ',formData)
+        //console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
