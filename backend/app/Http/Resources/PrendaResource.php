@@ -16,7 +16,7 @@ class PrendaResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'tipo' => $this.tipo,
+            'tipo' => $this->tipo,
             'talla' => $this->talla,
             'tiene_cartera' => $this->tiene_cartera,
             'cartera_tiene_bordado' => $this->cartera_tiene_bordado,
