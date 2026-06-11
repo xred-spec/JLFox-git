@@ -26,7 +26,7 @@ class PrendaRequest extends FormRequest
     {
         return [
             'tipo' => ['required', Rule::enum(Prenda::class)],
-            'talla' => 'required|integer|between:4,40',
+            'talla' => 'required|integer|between:2,50',
             'tiene_cartera' => 'required|boolean',
             'cartera_tiene_bordado' => 'required|boolean',
             'tipo_prenda_id' => 'required|integer|exists:tipos_prenda,id',
@@ -38,7 +38,7 @@ class PrendaRequest extends FormRequest
 
     public function messages(): array {
         return [
-            'talla.between' => 'La talla debe de estar entre 4 y 40',
+            'talla.between' => 'La talla debe de estar entre 2 y 50',
         ];
     }
 }

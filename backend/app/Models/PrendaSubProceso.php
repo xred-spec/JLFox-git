@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use App\Models\PrendaLote;
 
 class PrendaSubProceso extends Model
 {
+    use HasFactory;
+
     protected $table = 'prenda_sub_procesos';
 
     protected $fillable = [
@@ -17,7 +20,7 @@ class PrendaSubProceso extends Model
         'prenda_proceso_id'
     ];
 
-    public function prenda_proceso(): BelongTo {
+    public function prenda_proceso(): BelongsTo {
         return $this->belongsTo(PrendaProceso::class);
     }
 

@@ -24,7 +24,7 @@ class PrendaSubProcesoRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|unique:prenda_sub_procesos,nombre',
-            'prenda_proceso_id' => 'required|integer|exists:prendas_procesos'
+            'prenda_proceso_id' => 'required|integer|exists:prendas_procesos,id'
         ];
     }
 
