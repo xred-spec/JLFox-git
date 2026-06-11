@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('prenda_sub_procesos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->unique();
+            $table->foreignId('prenda_proceso_id')->constrained('prendas_procesos');
             $table->timestamps();
         });
     }

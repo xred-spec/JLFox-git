@@ -15,11 +15,11 @@ class Proceso extends Model
         'nombre'
     ];
 
-    public function prendasProcesos(): HasMany {
+    public function prendas_procesos(): HasMany {
         return $this->hasMany(PrendaProceso::class);
     }
 
-    public function subProcesos(): HasMany {
+    public function sub_procesos(): HasMany {
         return $this->hasMany(PrendaSubProcesos::class);
     }
 }

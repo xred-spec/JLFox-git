@@ -9,6 +9,11 @@ use App\Http\Controllers\BordadoController;
 use App\Http\Controllers\ForroController;
 use App\Http\Controllers\TelaController;
 use App\Http\Controllers\ColorTelaController;
+use App\Http\Controllers\TipoPrendaController;
+use App\Http\Controllers\PrendaController;
+use App\Http\Controllers\ProcesoController;
+use App\Http\Controllers\PrendaProcesoController;
+use App\Http\Controllers\PrendaSubProcesoController;
 
 /*
 Route::get('/user', function (Request $request) {
@@ -38,4 +43,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Rutas ColorTela
     Route::apiResource('colores-tela', ColorTelaController::class);
+
+    //Rutas TipoPrenda
+    Route::apiResource('tipos-prenda', TipoPrendaController::class);
+
+    //Rutas Prenda
+    Route::apiResource('prendas', PrendaController::class);
+
+    //Rutas Proceso
+    Route::apiResource('procesos', ProcesoController::class);
+
+    //Rutas PrendaProceso
+    Route::apiResource('prendas-procesos', PrendaProcesoController::class);
+
+    //Rutas PrendaSubProceso
+    Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
 });
