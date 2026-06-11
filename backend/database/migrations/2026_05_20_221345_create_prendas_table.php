@@ -20,7 +20,6 @@ return new class extends Migration
 
             $table->foreignId('tipo_prenda_id')->constrained('tipos_prenda');
             $table->foreignId('color_tela_id')->constrained('colores_tela');
-
             $table->foreignId('bordado_id')->nullable()->constrained('bordados');
             $table->foreignId('forro_id')->nullable()->constrained('forros');
             //$table->foreignId('cartera_id')->nullable()->constrained('carteras');

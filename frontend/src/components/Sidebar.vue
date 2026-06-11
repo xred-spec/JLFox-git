@@ -22,13 +22,13 @@ const routeTo = (routeName: string) => {
         </div>
 
         <ItemSidebar name="Bordados" 
-        :selected="itemSelected === 'bordados'"
+        :selected="itemSelected === 'colores-hilo'"
         @select="routeTo('bordados')"/>
         <ItemSidebar name="Forros" 
         :selected="itemSelected === 'forros'"
         @select="routeTo('forros')"/>
         <ItemSidebar name="Telas" 
-        :selected="itemSelected === 'telas'"
+        :selected="itemSelected === 'tipos-tela'"
         @select="routeTo('telas')"/>
     </div>
 </template>

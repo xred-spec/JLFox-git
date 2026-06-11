@@ -25,15 +25,15 @@ class Prenda extends Model
         //'cartera_id',
     ];
 
-    public function tipoPrenda(): BelongsTo{
+    public function tipo_prenda(): BelongsTo{
         return $this->belongsTo(TipoPrenda::class);
     }
 
-    public function prendasProcesos(): HasMany {
+    public function prenda_procesos(): HasMany {
         return $this->hasMany(PrendaProceso::class);
     }
 
-    public function inventarioPrenda(): BelongsTo{
+    public function inventario_prenda(): BelongsTo{
         return $this->belongsTo(InventarioPrenda::class);
     }
 }

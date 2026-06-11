@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Proceso;
+use App\Models\PrendaProceso;
 use App\Models\PrendaLote;
 
 class PrendaSubProceso extends Model
@@ -17,11 +17,11 @@ class PrendaSubProceso extends Model
         'prenda_proceso_id'
     ];
 
-    public function prendaProceso(): BelongTo {
-        return $this->belongsTo(Proceso::class);
+    public function prenda_proceso(): BelongTo {
+        return $this->belongsTo(PrendaProceso::class);
     }
 
-    public function predasLotes(): hasMany {
+    public function predas_lotes(): hasMany {
         return $this->hasMany(PrendaLote::class);
     }
 }
