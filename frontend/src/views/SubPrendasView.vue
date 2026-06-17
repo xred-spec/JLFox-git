@@ -23,6 +23,7 @@ const getPrendas = async() => {
 
     if(data.value) {
         prendas.value = data.value
+        console.log(prendas.value)
         return
     }
 
@@ -60,7 +61,7 @@ const fetchSelects = async() => {
         }))
 
         inputBordados.options = bordados.data.value.data.map((bordado: any) => ({
-            label: `${bordado.nombre} - ${bordado.color_hilo.color}`,
+            label: `${bordado.forma} - ${bordado.color_hilo.color}`,
             value: bordado.id
         }))
 

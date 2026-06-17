@@ -18,9 +18,11 @@ class PrendaResource extends JsonResource
             'id' => $this->id,
             'tipo' => $this->tipo,
             'talla' => $this->talla,
-            'tiene_cartera' => $this->tiene_cartera,
-            'cartera_tiene_bordado' => $this->cartera_tiene_bordado,
             'tipo_prenda' => $this->tipo_prenda,
+            'color_tela' => $this->color_tela,
+            'bordado' => $this->bordado,
+            'forro' => $this->forro,
+            'tiene_cartera' => $this->tiene_cartera,
         ];
     }
 }

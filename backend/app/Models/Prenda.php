@@ -23,7 +23,6 @@ class Prenda extends Model
         'tipo',
         'talla',
         'tiene_cartera',
-        'cartera_tiene_bordado',
         'tipo_prenda_id',
         'color_tela_id',
         'bordado_id',

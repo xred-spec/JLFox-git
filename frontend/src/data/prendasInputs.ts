@@ -69,7 +69,8 @@ export const prendasInputs: Input[] = [
             },
             {
                 label: '¿Tiene forro?', 
-                modelKey: '' 
+                required: false,
+                modelKey: 'tiene_forro' 
             },
             {
                 label: '¿Tiene cartera?',

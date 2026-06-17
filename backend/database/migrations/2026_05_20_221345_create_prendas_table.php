@@ -16,7 +16,6 @@ return new class extends Migration
             $table->enum('tipo', ['adulto', 'niño'])->default('adulto');
             $table->integer('talla');
             $table->boolean('tiene_cartera')->default(false);
-            $table->boolean('cartera_tiene_bordado')->default(false);
 
             $table->foreignId('tipo_prenda_id')->constrained('tipos_prenda');
             $table->foreignId('color_tela_id')->constrained('colores_tela');

@@ -4,9 +4,10 @@ export const prendasColumns: Column[] = [
     {key: 'index', label: '#'},
     {key: 'tipo', label: 'Tipo'},
     {key: 'talla', label: 'Talla'},
-    {key: 'tipo_prenda', label: 'Tipo de prenda'},
-    {key: 'tipo_color_tela', label: 'Tipo y color de tela'},
-    {key: 'bordado_id', label: 'Forma y color de bordado'},
-    {key: 'forro_id', label: 'Color de forro'},
+    {key: 'tipo_prenda.nombre', label: 'Tipo de prenda'},
+    {key: 'color_tela.color', label: 'Tipo y color de tela'},
+    {key: 'bordado.forma', label: 'Forma y color de bordado'},
+    {key: 'forro.color', label: 'Color de forro'},
+    {key: 'tiene_cartera', label: 'Cartera'},
     {key: 'options', label: 'Opciones'}
 ]

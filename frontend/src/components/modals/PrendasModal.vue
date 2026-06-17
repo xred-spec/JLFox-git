@@ -58,6 +58,14 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
+
+        if (sendData['tiene_forro'] === false) {
+            sendData['forro_id'] = null; 
+        }
+        
+        if (sendData['tiene_bordado'] === false) {
+            sendData['bordado_id'] = null; 
+        }
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
         //console.log('send. ',sendData)
@@ -65,9 +73,6 @@ const validateInputs = () => {
         emits('accept', sendData)
     }
 } 
-
-const disabledForros = ref(false)
-const disabledBordados1 = ref(false)
 </script>
 
 <template>
@@ -96,9 +101,8 @@ const disabledBordados1 = ref(false)
                     <template v-if="i.type === 'select'">
                         <select v-model="formData[i.modelKey]"
                         :required="i.required"
-                        :disabled="i.modelKey === 'forro_id' && disabledForros ? true : false"
-                        class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"
-                        ;class="">
+                        :disabled="(i.modelKey === 'forro_id' && !formData['tiene_forro']) || (i.modelKey === 'bordado_id' && !formData['tiene_bordado'])"
+                        class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50">
                             <option v-for="o in i.options" :key="o.value" :value="o.value">
                                 {{ o.label }}
                             </option>
@@ -131,8 +135,7 @@ const disabledBordados1 = ref(false)
                                 {{ item.label }} <span v-if="item.required" class="text-[#c41a1a]">*</span>
                             </label>
 
-                            <input type="checkbox" v-model="formData[item.modelKey]" class="border border-[#63492a] ml-1 p-1"
-                            @change="(item.modelKey === '' ? !disabledForros : null) ">
+                            <input type="checkbox" v-model="formData[item.modelKey]" class="border border-[#63492a] ml-2 p-1">
                         </div>
                     </div>
                 </template>

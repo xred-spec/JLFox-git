@@ -32,7 +32,6 @@ class PrendaRequest extends FormRequest
             'bordado_id' => 'nullable|integer|exists:bordados,id',
             'forro_id' => 'nullable|integer|exists:forros,id',
             'tiene_cartera' => 'required|boolean',
-            'tiene_bordado' => 'required|boolean',
         ];
     }
 
