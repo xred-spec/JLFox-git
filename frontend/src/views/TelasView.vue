@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useLocalStorage } from '@vueuse/core';
 import SubPageToogle from '@/components/SubPageToogle.vue';
@@ -7,13 +7,17 @@ import SubPageButton from '@/components/SubPageButton.vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 
 const router = useRouter()
-const selectedSubPage = useLocalStorage<string | null>('current_sub_page_telas', null)
-selectedSubPage.value = 'tipos-tela'
+const subPageName = ref('tipos-tela')
+const selectedSubPage = useLocalStorage<string | null>('current_sub_page_telas', subPageName)
 
 const toogleSubPage = (subPage: string) => {
-    selectedSubPage.value = subPage
+    subPageName.value = subPage
     router.push({name: subPage})
 }
+
+onMounted(() => {
+    toogleSubPage(subPageName.value)
+}) 
 </script>
 
 <template>

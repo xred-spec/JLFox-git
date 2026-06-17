@@ -27,12 +27,12 @@ class PrendaRequest extends FormRequest
         return [
             'tipo' => ['required', Rule::enum(Prenda::class)],
             'talla' => 'required|integer|between:2,50',
-            'tiene_cartera' => 'required|boolean',
-            'cartera_tiene_bordado' => 'required|boolean',
             'tipo_prenda_id' => 'required|integer|exists:tipos_prenda,id',
             'color_tela_id' => 'required|integer|exists:colores_tela,id',
             'bordado_id' => 'nullable|integer|exists:bordados,id',
             'forro_id' => 'nullable|integer|exists:forros,id',
+            'tiene_cartera' => 'required|boolean',
+            'tiene_bordado' => 'required|boolean',
         ];
     }
 

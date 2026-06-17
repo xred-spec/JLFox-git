@@ -2,12 +2,14 @@
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { useLocalStorage } from '@vueuse/core';
-//import DeployItemSidebar from './DeployItemSidebar.vue';
+import DeployItemSidebar from './DeployItemSidebar.vue';
 import ItemSidebar from './ItemSidebar.vue';
 
 const router = useRouter()
 const storedSelected = useLocalStorage<string | null>('current_page', null)
 const itemSelected = ref(storedSelected.value)
+
+const selectedDeployable = ref(null)
 
 const routeTo = (routeName: string) => {
     itemSelected.value = routeName
@@ -21,14 +23,20 @@ const routeTo = (routeName: string) => {
         <div class="flex items-center justify-center h-14 bg-[#000000] border-b-2 border-[#ac7b3a]">
         </div>
 
+        <DeployItemSidebar />
         <ItemSidebar name="Bordados" 
-        :selected="itemSelected === 'colores-hilo'"
+        :selected="itemSelected === 'bordados'"
         @select="routeTo('bordados')"/>
         <ItemSidebar name="Forros" 
         :selected="itemSelected === 'forros'"
         @select="routeTo('forros')"/>
         <ItemSidebar name="Telas" 
-        :selected="itemSelected === 'tipos-tela'"
+        :selected="itemSelected === 'telas'"
         @select="routeTo('telas')"/>
+
+        <DeployItemSidebar />
+        <ItemSidebar name="Prendas" 
+        :selected="itemSelected === 'prendas'"
+        @select="routeTo('prendas')"/>
     </div>
 </template>

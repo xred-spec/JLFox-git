@@ -69,7 +69,27 @@ const router = createRouter({
               meta: { requiresAuth: true }
             },
           ]
-        }
+        },
+        {
+          path: '/prendas',
+          name: 'prendas',
+          component: () => import('../views/PrendasView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/tipos-prendas',
+            name: 'tipos-prenda',
+            component: () => import('../views/TiposPrendasView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/sub-prendas',
+              name: 'sub-prendas',
+              component: () => import('../views/SubPrendasView.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
+        },
       ]
     },
   ],
