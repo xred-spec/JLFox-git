@@ -9,8 +9,6 @@ const router = useRouter()
 const storedSelected = useLocalStorage<string | null>('current_page', null)
 const itemSelected = ref(storedSelected.value)
 
-const selectedDeployable = ref(null)
-
 const routeTo = (routeName: string) => {
     itemSelected.value = routeName
     storedSelected.value = itemSelected.value
@@ -38,5 +36,8 @@ const routeTo = (routeName: string) => {
         <ItemSidebar name="Prendas" 
         :selected="itemSelected === 'prendas'"
         @select="routeTo('prendas')"/>
+        <ItemSidebar name="Procesos" 
+        :selected="itemSelected === 'procesos'"
+        @select="routeTo('procesos')"/>
     </div>
 </template>

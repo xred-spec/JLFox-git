@@ -11,12 +11,18 @@ const props = defineProps <{
 
 
 const getForeignValues = (object: any, rute: string) => {
+    if(object[rute] === null) return '-'
+
+    if(rute.includes('tiene_') && object[rute] === 1) return '✓' 
+    else if(rute.includes('tiene_') && object[rute] === 0) return '-' 
+
     if(!rute.includes('.')) {
+        if(object[rute] === null) return '-'
         return object[rute]
     }
     
     return rute.split('.').reduce((acumulator, part) => {
-        return acumulator ? acumulator[part]: null
+        return acumulator ? acumulator[part] : '-' 
     }, object)
 }
 
@@ -25,8 +31,6 @@ const emits = defineEmits<{
     (e: 'update', id: number): void,
     (e: 'delete', id: number): void
 }>()
-
-//const itemValues = getValues()
 </script>
 
 <template>
@@ -48,10 +52,10 @@ const emits = defineEmits<{
                     class="lucide lucide-trash2-icon lucide-trash-2 size-4"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 </button>
             </div>
-            <p v-else-if="c.key === 'index'" class="font-bold text-[#c41a1a]">
+            <p v-else-if="c.key === 'index'" class="font-bold text-[#c41a1a] text-sm">
                 {{ index }}
             </p>
-            <p v-else class="text-[#000000] font-bold">
+            <p v-else class="text-[#000000] font-bold text-sm">
                 {{ getForeignValues(props.item, c.key) }}
             </p>
         </div>

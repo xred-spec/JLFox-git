@@ -23,8 +23,8 @@ const getPrendas = async() => {
 
     if(data.value) {
         prendas.value = data.value
-        console.log(prendas.value)
-        return
+        //console.log(prendas.value) 
+        return  
     }
 
     if(error.value) {
@@ -169,7 +169,7 @@ const openModal = (selected?: any) => {
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Bordados"
+                name="Prendas"
                 @store="openModal()"/>
             </SubPageToogle>
 

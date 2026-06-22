@@ -90,6 +90,32 @@ const router = createRouter({
             },
           ]
         },
+        {
+          path: '/procesos',
+          name: 'procesos',
+          component: () => import('../views/ProcesosView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/sub-procesos',
+            name: 'sub-procesos',
+            component: () => import('../views/SubProcesosView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/prendas-procesos',
+              name: 'prendas-procesos',
+              component: () => import('../views/PrendasProcesosView.vue'), 
+              meta: { requiresAuth: true }
+            },
+            {
+              path: '/prendas-sub-procesos',
+              name: 'prendas-sub-procesos',
+              component: () => import('../views/PrendasSubProcesos.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
+        }
       ]
     },
   ],

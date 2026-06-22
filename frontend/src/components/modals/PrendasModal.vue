@@ -81,7 +81,7 @@ const validateInputs = () => {
     @click="cleanInputs(), emits('close')">
         <div 
         @click.stop
-        class="flex flex-col justify-center w-full max-w-[70vw] bg-[#ffffff] rounded-[15px] p-5">
+        class="flex flex-col justify-center w-full max-w-[60vw] bg-[#ffffff] rounded-[15px] p-5">
             <h1 class="text-xl w-full text-center font-bold text-[#000000] pb-2 border-[#63492a] border-b-2">
                 {{header}}
             </h1>
@@ -102,7 +102,7 @@ const validateInputs = () => {
                         <select v-model="formData[i.modelKey]"
                         :required="i.required"
                         :disabled="(i.modelKey === 'forro_id' && !formData['tiene_forro']) || (i.modelKey === 'bordado_id' && !formData['tiene_bordado'])"
-                        class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50">
+                        class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
                             <option v-for="o in i.options" :key="o.value" :value="o.value">
                                 {{ o.label }}
                             </option>
