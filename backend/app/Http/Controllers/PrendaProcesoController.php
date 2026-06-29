@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PrendaProceso;
+use App\Models\Prenda;
 use App\Http\Requests\PrendaProcesoRequest;
 use App\Http\Resources\PrendaProcesoResource;
 
@@ -24,13 +25,43 @@ class PrendaProcesoController extends Controller
         );
     }
 
+    public function indexWithProcess() {
+        $prendasProcesos = Prenda::with('prenda_procesos.procesos')->get();
+        $resource = PrendaProcesoResource::collection($prendasProcesos);
+
+        return $this->successResponse(
+            $resource,
+            'Procesos de prendas obtenidos correctamente',
+            200
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(PrendaProcesoRequest $request)
     {
-        $prendaProceso = PrendaProceso::create($request->validated());
-        $resource = new PrendaProcesoResource($prendaProceso);
+        $prendaId = $request->prenda_id;
+        $procesosIds = $request->procesos;
+
+        PrendaProceso::where('prenda_id', $prendaId)->delete();
+
+        $insertData = [];
+        foreach($procesosIds as $process) {
+            $insertData[] = [
+                'prenda_id' => $prendaId,
+                'proceso_id' => $process,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        if(!empty($insertData)) {
+            PrendaProceso::insert($insertData);
+        }
+
+        $nuevosRegistros = PrendaProceso::where('prenda_id', $prendaId)->get();
+        $resource = PrendaProcesoResource::collection($nuevosRegistros);
 
         return $this->successResponse(
             $resource,

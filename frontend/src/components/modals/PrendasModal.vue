@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive, ref } from 'vue';
+import { reactive, watch } from 'vue';
 
 const props = defineProps<{
     header: string
@@ -15,26 +15,47 @@ const emits = defineEmits([
 ])
 
 const formData = reactive<Record<string, any>>({});
+const formErrors = reactive<Record<string, boolean>>({});
 
-for (const i of props.inputs) {
-    if (i.type === 'checkboxes' && i.checkboxItems) {
-        for (const item of i.checkboxItems) {
-            formData[item.modelKey] = false
+const initForm = () => {
+    Object.keys(formData).forEach(key => delete formData[key])
+
+    for (const i of props.inputs) {
+        if (i.type === 'checkboxes' && i.checkboxItems) {
+            for (const item of i.checkboxItems) {
+                formData[item.modelKey] = false
+            }
+        } else if (i.modelKey) {
+            formData[i.modelKey] = ''
         }
     }
 
-    else if (i.modelKey) {
-        formData[i.modelKey] = ''
+    if (props.modelValue) {
+        for (const p in props.modelValue) {
+            if (p.includes('tiene_')) {
+                formData[p] = !!props.modelValue[p]
+            } else {
+                formData[p] = props.modelValue[p]
+            }
+        }
+
+        if (props.modelValue.tipo_prenda) {
+            formData['tipo_prenda_id'] = props.modelValue.tipo_prenda.id;
+        }
+        
+        if (props.modelValue.color_tela) {
+            formData['color_tela_id'] = props.modelValue.color_tela.id;
+        }
+        
+        if (props.modelValue.forro) {
+            formData['forro_id'] = props.modelValue.forro.id;
+        }
+        
+        if (props.modelValue.bordado) {
+            formData['bordado_id'] = props.modelValue.bordado.id;
+        }
     }
 }
-
-if(props.modelValue) {
-    for(const p in props.modelValue ) {
-        formData[p] = props.modelValue[p]
-    }
-}
-
-const formErrors = reactive<Record<string, boolean>>({});
 
 const cleanInputs = () => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -44,6 +65,20 @@ const cleanInputs = () => {
 const validateInputs = () => {
     let valid = true
     Object.keys(formErrors).forEach(key => delete formErrors[key])
+
+    if(formData.talla && formData.tipo) {
+        const talla = Number(formData.talla)
+        let invalidTalla = false
+
+        if(formData.tipo === 'niño' && talla > 18) invalidTalla = true
+        else if (formData.tipo === 'adulto' && talla < 30) invalidTalla = true
+        else if ((talla > 18 && talla < 30) || talla % 2 != 0 || talla > 50 || talla < 2) invalidTalla = true
+
+        if(invalidTalla) {
+            formErrors['talla'] = true
+            valid = false
+        }
+    }
 
     for(const i of props.inputs) {
         if(i.required && i.modelKey != '') {
@@ -68,11 +103,17 @@ const validateInputs = () => {
         }
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
-        //console.log('send. ',sendData)
+        console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
 } 
+
+watch(() => props.modelValue, () => {
+    initForm();
+}, { immediate: true });
+
+console.log('data', formData)
 </script>
 
 <template>
@@ -93,8 +134,8 @@ const validateInputs = () => {
                             {{ i.label }} <span v-if="i.required" class="text-[#c41a1a]">*</span>
                         </label>
 
-                        <label v-if="formErrors[i.modelKey] && i.type != 'checkboxes'" class="text-[#c41a1a] font-bold text-lg mb-1">
-                            Campo faltante
+                        <label v-if="formErrors[i.modelKey] && i.type != 'checkboxes'" class="text-[#c41a1a] font-bold text-base mb-1">
+                            Campo inválido
                         </label>
                     </div>
 
@@ -120,7 +161,7 @@ const validateInputs = () => {
                     <template v-else-if="i.type != 'checkboxes'">
                         <input v-model="formData[i.modelKey]"
                         :type="i.type" :placeholder="i.placeholder" :required="i.required"
-                        :min="i.min" :max="i.max" :maxlength="i.max"
+                        :min="i.min" :max="i.max" :maxlength="i.max" :step="i.step"
                         class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                         >
                     </template>

@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\TelaResource;
 
 class ColorTelaResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class ColorTelaResource extends JsonResource
         return [
             'id' => $this->id,
             'color' => $this->color,
-            'tela' => $this->tela
+            'tela' => TelaResource::make($this->tela)
         ];
     }
 }

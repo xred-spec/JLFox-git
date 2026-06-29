@@ -9,4 +9,3 @@ export const forrosInputs: Input[] = [
         placeholder: 'Introduzca el color...'
     },
 ]
-

@@ -7,7 +7,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import { prendasInputs } from '@/data/prendasInputs'; 
 import { prendasColumns } from '@/data/prendasColumns';
 import PrendasModal from '@/components/modals/PrendasModal.vue';
-import ItemCard from '@/components/ItemCard.vue';
+import PrendasItemCard from '@/components/PrendasItemCard.vue';
 
 const formInputs = ref([...prendasInputs]) 
 
@@ -182,7 +182,7 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="p in prendas.data"
+                    <PrendasItemCard v-for="p in prendas.data"
                     :item="p"
                     :index=itemsIndex + 1
                     :columns="prendasColumns"

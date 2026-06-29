@@ -19,7 +19,8 @@ export const prendasInputs: Input[] = [
         required: true,
         placeholder: 'Tallas posibles: 2- 50',
         min: 2,
-        max: 50
+        max: 50,
+        step: 2
     },
     {
         label: 'Tipo de prenda',

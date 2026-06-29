@@ -4,6 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\TipoPrendaResource;
+use App\Http\Resources\ColorTelaResource;
+use App\Http\Resources\BordadoResource;
+use App\Http\Resources\ForroPrendaResource;
 
 class PrendaResource extends JsonResource
 {
@@ -18,10 +22,10 @@ class PrendaResource extends JsonResource
             'id' => $this->id,
             'tipo' => $this->tipo,
             'talla' => $this->talla,
-            'tipo_prenda' => $this->tipo_prenda,
-            'color_tela' => $this->color_tela,
-            'bordado' => $this->bordado,
-            'forro' => $this->forro,
+            'tipo_prenda' => TipoPrendaResource::make($this->tipo_prenda),
+            'color_tela' => ColorTelaResource::make($this->color_tela),
+            'bordado' => BordadoResource::make($this->bordado),
+            'forro' => ForroResource::make($this->forro),
             'tiene_cartera' => $this->tiene_cartera,
         ];
     }

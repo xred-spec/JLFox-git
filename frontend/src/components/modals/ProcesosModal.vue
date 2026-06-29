@@ -1,13 +1,32 @@
 <script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
+
+interface ProcesoLabel {
+    id: number;
+    nombre: string;
+    [key: string]: any; 
+}
 
 const props = defineProps<{
     header: string
     inputs: Input[]
+    labels: ProcesoLabel[]
     show: boolean
     modelValue?: Record<string, any> | null
 }>()
+
+const statedLabels = ref(
+    props.labels.map((label) => {
+        const alreadyAssigned = props.modelValue?.procesos?.includes(label.id)
+        
+        return {
+            ...label,
+        state: alreadyAssigned ? 'assigned' : 'unassigned'
+        }
+    }
+))
+//console.log(props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -45,10 +64,21 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
+
+        const procesosAsignados = statedLabels.value
+            .filter(label => label.state === 'assigned')
+            .map(label => label.id)
+
+        sendData.procesos = procesosAsignados
+        //console.log('modelValue. ',props.modelValue)
+        //console.log('form. ',formData)
+        //console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
 } 
+
+//console.log(props.labels)
 </script>
 
 <template>
@@ -57,7 +87,7 @@ const validateInputs = () => {
     @click="cleanInputs(), emits('close')">
         <div 
         @click.stop
-        class="flex flex-col justify-center w-full max-w-[40vw] bg-[#ffffff] rounded-[15px] p-5">
+        class="flex flex-col justify-center w-full max-w-[60vw] max-h-[60vh] bg-[#ffffff] rounded-[15px] p-5">
             <h1 class="text-xl w-full text-center font-bold text-[#000000] pb-2 border-[#63492a] border-b-2">
                 {{header}}
             </h1>
@@ -82,34 +112,40 @@ const validateInputs = () => {
                         </option>
                     </select>
                 </template>
+            </div>
 
-                <template v-else-if="i.type === 'textarea'">
-                    <textarea v-model="formData[i.modelKey]" 
-                    :required="i.required" :placeholder="i.placeholder" :rows=3
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
-                    >
-                    </textarea>
-                </template>
+            <div class="grid grid-cols-2 gap-x-2 pb-2">
+                <div class="flex flex-col">
+                    <label class="text-[#000000] font-bold text-lg mb-1">
+                        Procesos asignados
+                    </label>
 
-                <template v-else-if="i.type === 'checkboxes'">
-                    <div class="flex items-center justify-between">
-                        <div v-for="item in i.checkboxItems" class="flex items-center px-2">
-                            <label class="text-[#000000] font-bold text-lg">
-                                {{ item.label }} <span v-if="item.required" class="text-[#c41a1a]">*</span>
-                            </label>
-
-                            <input type="checkbox" v-model="formData[item.modelKey]" class="border border-[#63492a]">
-                        </div>
+                    <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
+                        <template v-for="label in statedLabels">
+                            <button v-if="label.state === 'assigned'"
+                            class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-2 px-5 m-1 cursor-pointer font-bold"
+                            @click="label.state = 'unassigned'">
+                                {{ label.nombre }}
+                            </button>
+                        </template>
                     </div>
-                </template>
+                </div>
 
-                <template v-else>
-                    <input v-model="formData[i.modelKey]"
-                    :type="i.type" :placeholder="i.placeholder" :required="i.required"
-                    :min="i.min" :max="i.max" :maxlength="i.max"
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
-                    >
-                </template>
+                <div class="flex flex-col">
+                    <label class="text-[#000000] font-bold text-lg mb-1">
+                        Procesos sin asignar
+                    </label>
+
+                    <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
+                        <template v-for="label in statedLabels">
+                            <button v-if="label.state === 'unassigned'"
+                            class="bg-[#f7bbbb] border border-[#c41a1a] rounded-[10px] py-2 px-5 m-1 cursor-pointer font-bold"
+                            @click="label.state = 'assigned'">
+                                {{ label.nombre }}
+                            </button>
+                        </template>
+                    </div>
+                </div>
             </div>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
@@ -126,4 +162,3 @@ const validateInputs = () => {
         </div>
     </div>
 </template>
-

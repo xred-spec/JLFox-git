@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('prenda_id')->constrained('prendas');
             $table->foreignId('proceso_id')->constrained('procesos');
             $table->timestamps();
+
+            $table->unique([
+                'prenda_id', 'proceso_id'
+            ], 'prenda_proceso_unique');
         });
     }
 

@@ -16,4 +16,5 @@ export interface Input {
     required: boolean, 
     min?: number,
     max?: number,
+    step?: number
 }

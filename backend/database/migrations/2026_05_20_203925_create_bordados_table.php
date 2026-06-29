@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('forma');
             $table->foreignId('color_hilo_id')->constrained('colores_hilo');
             $table->timestamps();
+
+            $table->unique([
+                'forma', 'color_hilo_id',
+            ], 'bordado_unico');
         });
     }
 

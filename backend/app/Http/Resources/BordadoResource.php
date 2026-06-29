@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ColorHiloResource;
 
 class BordadoResource extends JsonResource
 {
@@ -17,7 +18,7 @@ class BordadoResource extends JsonResource
         return [
             'id' => $this->id,
             'forma' => $this->forma,
-            'color_hilo' => $this->whenLoaded('color_hilo'),
+            'color_hilo' => ColorHiloResource::make($this->whenLoaded('color_hilo')),
         ];
     }
 }
