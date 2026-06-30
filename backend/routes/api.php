@@ -56,13 +56,11 @@ Route::middleware('auth:sanctum')->group(function () {
     //Rutas PrendaProceso
     Route::prefix('prendas-procesos')->group(function() {
         Route::get('/', [PrendaProcesoController::class, 'index']);
-        Route::get('/{id}', [PrendaProcesoController::class, 'show']);
         Route::get('/procesos', [PrendaProcesoController::class, 'indexWithProcess']);
+        Route::get('/{id}', [PrendaProcesoController::class, 'show']);
         Route::post('/', [PrendaProcesoController::class, 'store']);
         Route::delete('/{id}', [PrendaProcesoController::class, 'delete']);
-
     });
-    Route::apiResource('prendas-procesos', PrendaProcesoController::class);
 
     //Rutas PrendaSubProceso
     Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
+import { f } from 'vue-router/dist/useApi-D6ckOsFy.js';
 
 interface ProcesoLabel {
     id: number;
@@ -16,16 +17,40 @@ const props = defineProps<{
     modelValue?: Record<string, any> | null
 }>()
 
-const statedLabels = ref(
-    props.labels.map((label) => {
-        const alreadyAssigned = props.modelValue?.procesos?.includes(label.id)
+const emptyProcess = ref(false)
+const statedLabels = ref<ProcesoLabel[]>([])
+const formData = reactive<Record<string, any>>({});
+const formErrors = reactive<Record<string, boolean>>({});
+
+watch(() => props.modelValue, (newValue) => {
+    Object.keys(formData).forEach(key => delete formData[key])
+    Object.keys(formErrors).forEach(key => delete formErrors[key])
+    emptyProcess.value = false
+
+    if (newValue) {
+        for (const p in newValue) {
+            formData[p] = newValue[p]
+        }
+
+        if (newValue.id) {
+            formData['prenda_id'] = String(newValue.id); 
+        }
+
+    } else {
+        for (const i of props.inputs) {
+            if (i.modelKey) formData[i.modelKey] = ''
+        }
+    }
+
+    statedLabels.value = props.labels.map((label) => {
+        const alreadyAssigned = newValue?.procesos?.includes(label.id)
         
         return {
             ...label,
-        state: alreadyAssigned ? 'assigned' : 'unassigned'
+            state: alreadyAssigned ? 'assigned' : 'unassigned'
         }
-    }
-))
+    })
+}, { immediate: true })
 //console.log(props.modelValue)
 
 const emits = defineEmits([
@@ -33,14 +58,11 @@ const emits = defineEmits([
     'accept'
 ])
 
-const formData = reactive<Record<string, any>>({});
-
 if(props.modelValue) {
     for(const p in props.modelValue ) {
         formData[p] = props.modelValue[p]
     }
 }
-const formErrors = reactive<Record<string, boolean>>({});
 
 const cleanInputs = () => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -62,6 +84,12 @@ const validateInputs = () => {
         }
     }
 
+    const processAssigned = statedLabels.value.some(label => label.state === 'assigned')
+    if (!processAssigned) {
+        valid = false
+        emptyProcess.value = true
+    } else emptyProcess.value = false
+
     if(valid) {
         const sendData = {...formData}
 
@@ -77,8 +105,7 @@ const validateInputs = () => {
         emits('accept', sendData)
     }
 } 
-
-//console.log(props.labels)
+console.log('formData', formData)
 </script>
 
 <template>
@@ -106,7 +133,8 @@ const validateInputs = () => {
                 <template v-if="i.type === 'select'">
                     <select v-model="formData[i.modelKey]"
                     :required="i.required"
-                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
+                    :disabled="formData ? true : false"
+                    class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
                         <option v-for="o in i.options" :key="o.value" :value="o.value || ''">
                             {{ o.label }}
                         </option>
@@ -116,9 +144,15 @@ const validateInputs = () => {
 
             <div class="grid grid-cols-2 gap-x-2 pb-2">
                 <div class="flex flex-col">
-                    <label class="text-[#000000] font-bold text-lg mb-1">
-                        Procesos asignados
-                    </label>
+                    <div class="flex justify-between">
+                        <label class="text-[#000000] font-bold text-lg mb-1">
+                            Procesos asignados
+                        </label>
+
+                        <label v-if="emptyProcess" class="text-[#c41a1a] font-bold text-base mb-1">
+                            No puede quedar vacío
+                        </label>
+                    </div>    
 
                     <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
                         <template v-for="label in statedLabels">

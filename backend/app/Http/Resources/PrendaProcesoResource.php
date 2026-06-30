@@ -16,7 +16,6 @@ class PrendaProcesoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'prenda' => $this->prenda,
             'proceso' => $this->proceso, 
         ];
     }

@@ -7,6 +7,7 @@ use App\Models\PrendaProceso;
 use App\Models\Prenda;
 use App\Http\Requests\PrendaProcesoRequest;
 use App\Http\Resources\PrendaProcesoResource;
+use App\Http\Resources\PrendaResource;
 
 class PrendaProcesoController extends Controller
 {
@@ -26,8 +27,8 @@ class PrendaProcesoController extends Controller
     }
 
     public function indexWithProcess() {
-        $prendasProcesos = Prenda::with('prenda_procesos.procesos')->get();
-        $resource = PrendaProcesoResource::collection($prendasProcesos);
+        $prendasProcesos = Prenda::with('tipo_prenda', 'color_tela.tela', 'bordado.color_hilo', 'forro', 'prenda_procesos')->paginate(15);
+        $resource = PrendaResource::collection($prendasProcesos);
 
         return $this->successResponse(
             $resource,

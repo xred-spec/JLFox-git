@@ -27,6 +27,7 @@ class PrendaResource extends JsonResource
             'bordado' => BordadoResource::make($this->bordado),
             'forro' => ForroResource::make($this->forro),
             'tiene_cartera' => $this->tiene_cartera,
+            'procesos' => PrendaProcesoResource::collection($this->whenLoaded('prenda_procesos')),
         ];
     }
 }

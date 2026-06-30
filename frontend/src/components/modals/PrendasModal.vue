@@ -103,7 +103,7 @@ const validateInputs = () => {
         }
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
-        console.log('send. ',sendData)
+        //console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
@@ -113,7 +113,7 @@ watch(() => props.modelValue, () => {
     initForm();
 }, { immediate: true });
 
-console.log('data', formData)
+//console.log('data', formData)
 </script>
 
 <template>

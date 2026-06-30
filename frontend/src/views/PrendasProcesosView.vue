@@ -7,7 +7,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import { procesosInputs } from '@/data/procesosInputs';
 import { prendasProcesosColumns } from '@/data/prendasProcesosColumns';
 import ProcesosModal from '@/components/modals/ProcesosModal.vue';
-import ItemCard from '@/components/ItemCard.vue';
+import PrendasProcesosItemCard from '@/components/PrendasProcesosItemCard.vue';
 import { prendasProcesosInputs } from '@/data/prendasProcesosInputs';
 
 const prendasProcesos = ref()
@@ -22,11 +22,11 @@ const itemsIndex = ref(0)
 const isModalOpened = ref(false)
 
 const getPrendasProcesos = async() => { 
-    const {isFetching, error, data} = await useApi('prendas-procesos').json()
+    const {isFetching, error, data} = await useApi('prendas-procesos/procesos').json()
 
     if(data.value) {
         prendasProcesos.value = data.value
-        console.log('data: ', prendasProcesos.value.data)
+        //console.log('data: ', prendasProcesos.value.data)
         return
     }
 
@@ -43,7 +43,7 @@ const fetchSelects = async() => {
 
     if(prendas.data.value && inputPrendas) {
         inputPrendas.options = prendas.data.value.data.map((prenda: any) => ({
-            label: `${prenda.tipo_prenda.nombre} ${prenda.color_tela.color} Talla: ${prenda.talla} - 
+            label: `${prenda.tipo_prenda.nombre} ${prenda.color_tela.color}, Talla: ${prenda.talla} - 
             Bordado: ${prenda.bordado?.forma || 'Sin bordado'} - 
             Forro: ${prenda.forro?.color || 'Sin forro'} - 
             Cartera: ${prenda.tiene_cartera ? 'Con cartera' : 'Sin cartera'}`,
@@ -68,7 +68,7 @@ const fetchSelects = async() => {
 const storePrendaProceso = async(formData: any) => {
     isModalOpened.value = false
     selectedPrendaProceso.value = null
-    console.log('formData: ', formData)
+    //console.log('formData: ', formData)
 
     if(formData.id) {
         const {data, error} = await useApi(`prendas-procesos`).post(
@@ -132,7 +132,7 @@ onMounted (async() => {
 const openModal = (selected?: any) => {
     if(selected) selectedPrendaProceso.value = selected
     else selectedPrendaProceso.value = null
-    console.log('selected: ', selected)
+    //console.log('selected: ', selected)
     isModalOpened.value = true
 }
 </script>
@@ -152,8 +152,8 @@ const openModal = (selected?: any) => {
     <GenericContainer>
         <template #content>
             <SubPageToogle>
-                <PageTitle 
-                name="Procesos"
+                <PageTitle :hide-button="true"
+                name="Prendas-Procesos"
                 @store="openModal()"/>
             </SubPageToogle>
 
@@ -166,7 +166,7 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in prendasProcesos.data"
+                    <PrendasProcesosItemCard v-for="f in prendasProcesos.data"
                     :item="f"
                     :index=itemsIndex + 1
                     :columns="prendasProcesosColumns"

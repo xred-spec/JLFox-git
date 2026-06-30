@@ -54,6 +54,10 @@ const emits = defineEmits<{
                     {{ getForeignValues(props.item, column.key) }}, 
                 </p>
             </template>
+
+            <p class="flex-1 text-end font-bold text-[#2630bb] text-base">
+                {{ props.item.procesos.length || 0 }} proceso/s
+            </p>
         </div>
 
         <div class="flex w-full py-1.5 rounded-[10px]"
@@ -71,7 +75,7 @@ const emits = defineEmits<{
             </template>
 
             <template v-else-if="expanded">
-                <div class="grid grid-cols-3 pl-14 relative">
+                <div class="grid grid-cols-3 pl-14 pb-2 relative border-b-2 border-[#63492a]">
                     <div class="bg-[#c41a1a] flex items-center justify-center absolute rounded-[10px] rounded-t-none p-4 -top-2.5 left-0">
                         <label class="text-[#ffffff] font-bold">
                             {{ props.index }}
@@ -87,7 +91,21 @@ const emits = defineEmits<{
                     </div>
                 </div>
 
-                <div class="bg-[#e4e4e4] rounded-[10px] flex justify-between gap-2 items-center px-5 py-2 mt-1.5">
+                <div class="flex flex-col w-full px-2 py-2">
+                    <label class="text-[#000000] font-bold text-base mb-1">
+                        Procesos asignados ({{ props.item.procesos.length || 0 }})
+                    </label>
+
+                    <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
+                        <template v-for="process in props.item.procesos">
+                            <button class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-1 px-4 mx-1 font-bold">
+                                {{ process.proceso.nombre }}
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="bg-[#e4e4e4] rounded-[10px] flex justify-between items-center px-5 py-2 mt-1.5">
                     <div class="flex">
                         <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-sm font-bold cursor-pointer hover:scale-105"
                         @click="emits('update', props.item.id)">
@@ -96,12 +114,6 @@ const emits = defineEmits<{
                     class="lucide lucide-pencil-icon lucide-pencil size-3 ml-1"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
                         </button>
 
-                        <button class="flex py-1 px-4 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                        @click="emits('delete', props.item.id)">
-                            Eliminar
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                    class="lucide lucide-trash2-icon lucide-trash-2 size-3 ml-1"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                        </button>
                     </div>
 
                     <button class="font-bold text-sm cursor-pointer hover:underline" 
