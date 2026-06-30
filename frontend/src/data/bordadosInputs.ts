@@ -13,7 +13,10 @@ export const bordadosInputs: Input[] = [
         modelKey: 'color_hilo_id',
         type: 'select',
         required: true,
-        options: [],
+        options: [
+            {label: 'Seleccione una opción', value: ''}
+        ],
     },
+    
 ]
 

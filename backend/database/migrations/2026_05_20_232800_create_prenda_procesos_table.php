@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('prendas_procesos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('prenda_id')->constrained('prendas');
-            $table->foreignId('proceso_id')->constrained('procesos');
+            $table->foreignId('prenda_id')->constrained('prendas')->onDelete('cascade');
+            $table->foreignId('proceso_id')->constrained('procesos')->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique([
+                'prenda_id', 'proceso_id'
+            ], 'prenda_proceso_unique');
         });
     }
 

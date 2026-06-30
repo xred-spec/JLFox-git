@@ -33,7 +33,7 @@ const validateInputs = () => {
     Object.keys(formErrors).forEach(key => delete formErrors[key])
 
     for(const i of props.inputs) {
-        if(i.required) {
+        if(i.required && i.modelKey != '') {
             const value = formData[i.modelKey]
 
             if(value === undefined || value === null || value === '') {
@@ -45,9 +45,6 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
-        //console.log('modelValue. ',props.modelValue)
-        //console.log('form. ',formData)
-        //console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
@@ -61,17 +58,17 @@ const validateInputs = () => {
         <div 
         @click.stop
         class="flex flex-col justify-center w-full max-w-[40vw] bg-[#ffffff] rounded-[15px] p-5">
-            <h1 class="text-xl w-full text-center font-bold text-[#000000]">
+            <h1 class="text-xl w-full text-center font-bold text-[#000000] pb-2 border-[#63492a] border-b-2">
                 {{header}}
             </h1>
 
-            <div v-for="i in inputs" class="flex flex-col justify-center py-2 my-2 border-y border-[#63492a]">
+            <div v-for="i in inputs" class="flex flex-col justify-center py-2 border-[#63492a]">
                 <div class="flex items-center justify-between px-2">
-                    <label class="text-[#000000] font-bold text-lg mb-1">
+                    <label v-if="i.type != 'checkboxes'" class="text-[#000000] font-bold text-lg mb-1">
                         {{ i.label }} <span v-if="i.required" class="text-[#c41a1a]">*</span>
                     </label>
 
-                    <label v-if="formErrors[i.modelKey]" class="text-[#c41a1a] font-bold text-lg mb-1">
+                    <label v-if="formErrors[i.modelKey] && i.type != 'checkboxes'" class="text-[#c41a1a] font-bold text-lg mb-1">
                         Campo faltante
                     </label>
                 </div>
@@ -80,7 +77,7 @@ const validateInputs = () => {
                     <select v-model="formData[i.modelKey]"
                     :required="i.required"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
-                        <option v-for="o in i.options" :key="o.value" :value="o.value">
+                        <option v-for="o in i.options" :key="o.value" :value="o.value || ''">
                             {{ o.label }}
                         </option>
                     </select>
@@ -94,6 +91,18 @@ const validateInputs = () => {
                     </textarea>
                 </template>
 
+                <template v-else-if="i.type === 'checkboxes'">
+                    <div class="flex items-center justify-between">
+                        <div v-for="item in i.checkboxItems" class="flex items-center px-2">
+                            <label class="text-[#000000] font-bold text-lg">
+                                {{ item.label }} <span v-if="item.required" class="text-[#c41a1a]">*</span>
+                            </label>
+
+                            <input type="checkbox" v-model="formData[item.modelKey]" class="border border-[#63492a]">
+                        </div>
+                    </div>
+                </template>
+
                 <template v-else>
                     <input v-model="formData[i.modelKey]"
                     :type="i.type" :placeholder="i.placeholder" :required="i.required"
@@ -103,7 +112,7 @@ const validateInputs = () => {
                 </template>
             </div>
 
-            <div class="mt-2 flex items-center justify-between">
+            <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
                 <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
                 @click="cleanInputs(), emits('close')">
                     Cerrar

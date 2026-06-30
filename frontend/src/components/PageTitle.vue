@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps({
     name: String,
+    hideButton: Boolean
 })
 
 const emits = defineEmits([
@@ -14,7 +15,7 @@ const emits = defineEmits([
             {{ name }}
         </h1>
 
-        <button class="font-bold flex items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102 ml-1"
+        <button v-if="!hideButton" class="font-bold flex items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102 ml-1"
         @click="emits('store')">
             Crear nuevo
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 

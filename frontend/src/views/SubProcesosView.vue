@@ -4,23 +4,23 @@ import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { forrosInputs } from '@/data/forrosInputs';
-import { forrosColumns } from '@/data/forrosColumns';
+import { procesosInputs } from '@/data/procesosInputs';
+import { procesosColumns } from '@/data/procesosColumns';
 import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 
-const forros = ref()
-const selectedForro = ref(null)
+const procesos = ref()
+const selectedProceso = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getForros = async() => { 
-    const {isFetching, error, data} = await useApi('forros').json()
+const getProcesos = async() => { 
+    const {isFetching, error, data} = await useApi('procesos').json()
 
     if(data.value) {
-        forros.value = data.value
+        procesos.value = data.value
         return
     }
 
@@ -31,19 +31,19 @@ const getForros = async() => {
     }
 }
 
-const storeForro = async(formData: any) => {
+const storeProceso = async(formData: any) => {
     isModalOpened.value = false
-    selectedForro.value = null
+    selectedProceso.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`forros/${formData.id}`).put(
+        const {data, error} = await useApi(`procesos/${formData.id}`).put(
             {
-                color: formData.color
+                nombre: formData.nombre
             }
         ).json()
 
         if(data.value) {
-            await getForros()
+            await getProcesos()
             return
         }
 
@@ -53,14 +53,14 @@ const storeForro = async(formData: any) => {
             return
         }
     } else {
-        const {data, error} = await useApi('forros').post(
+        const {data, error} = await useApi('procesos').post(
             {
-                color: formData.color
+                nombre: formData.nombre
             }
         ).json()
 
         if(data.value) {
-            await getForros()
+            await getProcesos()
             return
         }
 
@@ -72,11 +72,11 @@ const storeForro = async(formData: any) => {
     } 
 }
 
-const deleteForro = async(id: number) => {
-    const {data, error} = await useApi(`forros/${id}`).delete().json()
+const deleteProceso = async(id: number) => {
+    const {data, error} = await useApi(`procesos/${id}`).delete().json()
 
     if(data.value) {
-        await getForros()
+        await getProcesos()
         return
     }
 
@@ -88,12 +88,12 @@ const deleteForro = async(id: number) => {
 }
 
 onMounted (async() => {
-    await getForros()
+    await getProcesos()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedForro.value = selected
-    else selectedForro.value = null
+    if(selected) selectedProceso.value = selected
+    else selectedProceso.value = null
     isModalOpened.value = true
 }
 </script>
@@ -101,23 +101,23 @@ const openModal = (selected?: any) => {
 <template>
     <GenericModal 
     v-if="isModalOpened"
-    :header="selectedForro ? 'Editar forro' : 'Agregar forro'" 
-    :inputs="forrosInputs" 
+    :header="selectedProceso ? 'Editar proceso' : 'Agregar proceso'" 
+    :inputs="procesosInputs" 
     :show="isModalOpened" 
-    :model-value="selectedForro"
+    :model-value="selectedProceso"
     @close="isModalOpened = false"
-    @accept="(formData) => storeForro(formData)"
+    @accept="(formData) => storeProceso(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Forros"
+                name="Procesos"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!forros || !forros.data || forros.data.length === 0" 
+            <div v-if="!procesos || !procesos.data || procesos.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -126,13 +126,13 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in forros.data"
+                    <ItemCard v-for="f in procesos.data"
                     :item="f"
                     :index=itemsIndex + 1
-                    :columns="forrosColumns"
+                    :columns="procesosColumns"
                     :show="true"
                     @update="openModal(f)"
-                    @delete="deleteForro(f.id)"
+                    @delete="deleteProceso(f.id)"
                     />
             </div>
         </template>

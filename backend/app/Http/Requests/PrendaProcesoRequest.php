@@ -24,14 +24,14 @@ class PrendaProcesoRequest extends FormRequest
     {
         return [
             'prenda_id' => 'required|integer|exists:prendas,id',
-            'proceso_id' => 'required|integer|exists:procesos,id',
+            'procesos' => 'required|array',
+            'procesos.*' => 'integer|exists:procesos,id'
         ];
     }
 
     public function messages(): array {
         return [
-            'prenda_id.exists' => 'No existe la prenda especificada',
-            'proceso_id.exists' => 'No existe el proceso especificado',
+            'prenda_id.exists' => 'No existe la prenda especificada'
         ];
     }
 }

@@ -14,7 +14,7 @@ class PrendaController extends Controller
      */
     public function index()
     {
-        $prendas = Prenda::with('tipo_prenda', 'color_tela', 'bordado', 'forro')->paginate(15);
+        $prendas = Prenda::with('tipo_prenda', 'color_tela.tela', 'bordado.color_hilo', 'forro')->paginate(15);
         $resource = PrendaResource::collection($prendas);
 
         return $this->successResponse(

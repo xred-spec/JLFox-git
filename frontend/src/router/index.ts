@@ -69,6 +69,52 @@ const router = createRouter({
               meta: { requiresAuth: true }
             },
           ]
+        },
+        {
+          path: '/prendas',
+          name: 'prendas',
+          component: () => import('../views/PrendasView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/tipos-prendas',
+            name: 'tipos-prenda',
+            component: () => import('../views/TiposPrendasView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/sub-prendas',
+              name: 'sub-prendas',
+              component: () => import('../views/SubPrendasView.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
+        },
+        {
+          path: '/procesos',
+          name: 'procesos',
+          component: () => import('../views/ProcesosView.vue'),
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/sub-procesos',
+            name: 'sub-procesos',
+            component: () => import('../views/SubProcesosView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+              path: '/prendas-procesos',
+              name: 'prendas-procesos',
+              component: () => import('../views/PrendasProcesosView.vue'), 
+              meta: { requiresAuth: true }
+            },
+            {
+              path: '/prendas-sub-procesos',
+              name: 'prendas-sub-procesos',
+              component: () => import('../views/PrendasSubProcesos.vue'), 
+              meta: { requiresAuth: true }
+            },
+          ]
         }
       ]
     },

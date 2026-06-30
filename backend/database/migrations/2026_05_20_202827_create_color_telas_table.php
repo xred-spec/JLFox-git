@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('color');
             $table->foreignId('tela_id')->constrained('telas');
             $table->timestamps();
+
+            $table->unique([
+                'color', 'tela_id'
+            ], 'color_tela_unico');
         });
     }
 

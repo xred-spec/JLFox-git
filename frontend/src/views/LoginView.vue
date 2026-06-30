@@ -31,7 +31,6 @@ async function handleLogin() {
 
     if(error.value) { 
         errorMessage.value = 'Credenciales incorrectas o error en el servidor'
-        console.log('NO leggó a logear')
         return
     }
 

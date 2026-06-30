@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useLocalStorage } from '@vueuse/core';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import SubPageButton from '@/components/SubPageButton.vue';
 import GenericContainer from '@/components/GenericContainer.vue';
+import { onMounted, ref } from 'vue';
 
 const router = useRouter()
-const subPageName = ref('colores-hilo')
-const selectedSubPage = useLocalStorage<string | null>('current_sub_page_bordados', subPageName)
+const subPageName = ref('sub-procesos')
+const selectedSubPage = useLocalStorage<string | null>('current_sub_page_procesos', subPageName)
 
 const toogleSubPage = (subPage: string) => {
     subPageName.value = subPage
@@ -23,14 +23,14 @@ onMounted(() => {
 <template>
     <GenericContainer>
         <SubPageToogle>
-            <SubPageButton name="Colores de hilo" class="mr-2"
-            :selected="selectedSubPage === 'colores-hilo'"
-            @select="toogleSubPage('colores-hilo')"
+            <SubPageButton name="Procesos" class="mr-2"
+            :selected="selectedSubPage === 'sub-procesos'"
+            @select="toogleSubPage('sub-procesos')"
             />
 
-            <SubPageButton name="Bordados" class="ml-2"
-            :selected="selectedSubPage === 'sub-bordados'"
-            @select="toogleSubPage('sub-bordados')"
+            <SubPageButton name="Prendas-Procesos" class="ml-2"
+            :selected="selectedSubPage === 'prendas-procesos'"
+            @select="toogleSubPage('prendas-procesos')"
             />
         </SubPageToogle>
 

@@ -15,7 +15,7 @@ class PrendaProcesoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'prenda' => $this->prenda,
+            'id' => $this->id,
             'proceso' => $this->proceso, 
         ];
     }

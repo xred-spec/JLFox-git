@@ -25,7 +25,7 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     //Rutas Usuario
     Route::apiResource('usuarios', UsuarioController::class);
 
@@ -54,8 +54,14 @@ Route::post('register', [AuthController::class, 'register']);
     Route::apiResource('procesos', ProcesoController::class);
 
     //Rutas PrendaProceso
-    Route::apiResource('prendas-procesos', PrendaProcesoController::class);
+    Route::prefix('prendas-procesos')->group(function() {
+        Route::get('/', [PrendaProcesoController::class, 'index']);
+        Route::get('/procesos', [PrendaProcesoController::class, 'indexWithProcess']);
+        Route::get('/{id}', [PrendaProcesoController::class, 'show']);
+        Route::post('/', [PrendaProcesoController::class, 'store']);
+        Route::delete('/{id}', [PrendaProcesoController::class, 'delete']);
+    });
 
     //Rutas PrendaSubProceso
     Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
-//});
+});
