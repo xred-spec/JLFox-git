@@ -105,7 +105,7 @@ const validateInputs = () => {
         emits('accept', sendData)
     }
 } 
-console.log('formData', formData)
+//console.log('formData', formData)
 </script>
 
 <template>

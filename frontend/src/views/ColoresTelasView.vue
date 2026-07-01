@@ -144,6 +144,7 @@ const openModal = (selected?: any) => {
             <div v-else
             class="flex flex-col size-full justify-start items-center">
                     <ItemCard v-for="c in coloresTela.data"
+                    :grids="4"
                     :item="c"
                     :index=itemsIndex + 1
                     :columns="coloresTelaColumns"

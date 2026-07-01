@@ -127,6 +127,7 @@ const openModal = (selected?: any) => {
             <div v-else
             class="flex flex-col size-full justify-start items-center">
                     <ItemCard v-for="c in coloresHilo.data"
+                    :grids="3"
                     :item="c"
                     :index=itemsIndex + 1
                     :columns="coloresHiloColumns"
