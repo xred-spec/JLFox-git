@@ -27,7 +27,13 @@ class PrendaProcesoController extends Controller
     }
 
     public function indexWithProcess() {
-        $prendasProcesos = Prenda::with('tipo_prenda', 'color_tela.tela', 'bordado.color_hilo', 'forro', 'prenda_procesos')->paginate(15);
+        $prendasProcesos = Prenda::with(
+            'tipo_prenda', 
+            'color_tela.tela', 
+            'bordado.color_hilo', 
+            'forro', 
+            'prenda_procesos'
+        )->paginate(15);
         $resource = PrendaResource::collection($prendasProcesos);
 
         return $this->successResponse(

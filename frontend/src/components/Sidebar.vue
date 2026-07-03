@@ -39,5 +39,15 @@ const routeTo = (routeName: string) => {
         <ItemSidebar name="Procesos" 
         :selected="itemSelected === 'procesos'"
         @select="routeTo('procesos')"/>
+
+        <!--
+        <DeployItemSidebar />
+        <ItemSidebar name="Producción" 
+        :selected="itemSelected === 'produccion'"
+        @select="routeTo('produccion')"/>
+        <ItemSidebar name="Inventario" 
+        :selected="itemSelected === 'inventario'"
+        @select="routeTo('inventario')"/>
+        -->
     </div>
 </template>

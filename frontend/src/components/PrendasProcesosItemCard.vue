@@ -38,10 +38,12 @@ const emits = defineEmits<{
 
 <template>
     <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs"> 
-        <div v-if="!expanded" class="flex w-full justify-start px-5">
-            <p class="font-bold text-[#c41a1a] text-base mr-2">
-                {{ props.index }}.
-            </p>
+        <div v-if="!expanded" class="flex w-full justify-start items-center px-5 py-1">
+            <div class="bg-[#c41a1a] flex items-center justify-center rounded-[10px] py-0.5 px-2 mr-2">
+                <label class="text-[#ffffff] font-bold">
+                    {{ props.index }}
+                </label>
+            </div>
 
             <template v-for="column in props.columns">
                 <p v-if="column.key === 'tipo_prenda.nombre'" class="font-bold text-base mr-1">

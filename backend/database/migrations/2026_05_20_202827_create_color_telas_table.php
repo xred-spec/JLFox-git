@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('colores_tela', function (Blueprint $table) {
             $table->id();
             $table->string('color');
-            $table->foreignId('tela_id')->constrained('telas');
+            $table->foreignId('tela_id')->constrained('telas')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique([

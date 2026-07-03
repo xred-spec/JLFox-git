@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bordados', function (Blueprint $table) {
             $table->id();
             $table->string('forma');
-            $table->foreignId('color_hilo_id')->constrained('colores_hilo');
+            $table->foreignId('color_hilo_id')->constrained('colores_hilo')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique([

@@ -27,7 +27,6 @@ class Prenda extends Model
         'color_tela_id',
         'bordado_id',
         'forro_id',
-        //'cartera_id',
     ];
 
     public function tipo_prenda(): BelongsTo{

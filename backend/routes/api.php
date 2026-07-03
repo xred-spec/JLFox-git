@@ -25,7 +25,7 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
     //Rutas Usuario
     Route::apiResource('usuarios', UsuarioController::class);
 
@@ -64,4 +64,4 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Rutas PrendaSubProceso
     Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
-});
+//});
