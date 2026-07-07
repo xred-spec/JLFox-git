@@ -16,7 +16,7 @@ class Lote extends Model
         'fecha_final',
     ];
 
-    public function prendasLote(): HasMany {
+    public function prendas_lote(): HasMany {
         return $this->hasMany(PrendaLote::class);
     }
 }

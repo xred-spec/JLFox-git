@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('lotes', function (Blueprint $table) {
             $table->id();
-            $table->enum('estado', ['pendiente','en_produccion','terminado']);
+            $table->enum('estado', ['pendiente','produccion','terminado'])->default('pendiente');
             $table->date('fecha_inicio');
             $table->date('fecha_final')->nullable();
             $table->timestamps();
