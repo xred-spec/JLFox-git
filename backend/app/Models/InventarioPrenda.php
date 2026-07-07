@@ -11,11 +11,11 @@ class InventarioPrenda extends Model
     protected $table = 'inventario_prendas';
 
     protected $fillable = [
-        'cantidad_inventario',
+        'cantidad',
         'prenda_id',
     ];
 
-    public function prendas(): HasMany {
+    public function prenda(): HasMany {
         return $this->hasMany(Prenda::class);
     }
 }

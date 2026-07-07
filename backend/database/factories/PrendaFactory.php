@@ -26,7 +26,6 @@ class PrendaFactory extends Factory
             'tipo' => 'adulto',
             'talla' => 36,
             'tiene_cartera' => true,
-            'cartera_tiene_bordado' => true,
             'tipo_prenda_id' => TipoPrenda::factory(),
             'color_tela_id' => ColorTela::factory(),
             'bordado_id' => Bordado::factory(),

@@ -13,7 +13,10 @@ use App\Http\Controllers\TipoPrendaController;
 use App\Http\Controllers\PrendaController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\PrendaProcesoController;
-use App\Http\Controllers\PrendaSubProcesoController;
+//use App\Http\Controllers\PrendaSubProcesoController;
+use App\Http\Controllers\LoteController;
+use App\Http\Controllers\PrendaLoteController;
+use App\Http\Controllers\InventarioPrendaController;
 
 /*
 Route::get('/user', function (Request $request) {
@@ -63,5 +66,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     //Rutas PrendaSubProceso
-    Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
+    //Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
+
+    //Rutas Lote
+    Route::apiResource('lotes', LoteController::class);
+
+    //Rutas PrendaLote
+    Route::apiResource('prenda-lote', PrendaLoteController::class);
+
+    //Rutas InventarioPrenda
+    Route::apiResource('inventario', InventarioPrendaController::class);
 });

@@ -17,11 +17,10 @@ return new class extends Migration
             $table->integer('talla');
             $table->boolean('tiene_cartera')->default(false);
 
-            $table->foreignId('tipo_prenda_id')->constrained('tipos_prenda');
-            $table->foreignId('color_tela_id')->constrained('colores_tela');
-            $table->foreignId('bordado_id')->nullable()->constrained('bordados');
-            $table->foreignId('forro_id')->nullable()->constrained('forros');
-            //$table->foreignId('cartera_id')->nullable()->constrained('carteras');
+            $table->foreignId('tipo_prenda_id')->constrained('tipos_prenda')->onDelete('cascade');
+            $table->foreignId('color_tela_id')->constrained('colores_tela')->onDelete('cascade');
+            $table->foreignId('bordado_id')->nullable()->constrained('bordados')->onDelete('cascade');
+            $table->foreignId('forro_id')->nullable()->constrained('forros')->onDelete('cascade');
 
             $table->timestamps();
 

@@ -21,8 +21,4 @@ class Proceso extends Model
     public function prendas_procesos(): HasMany {
         return $this->hasMany(PrendaProceso::class);
     }
-
-    public function sub_procesos(): HasMany {
-        return $this->hasMany(PrendaSubProcesos::class);
-    }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Lote;
-use App\Models\PrendaSubProceso;
+use App\Models\PrendaProceso;
 
 class PrendaLote extends Model
 {
@@ -16,16 +16,15 @@ class PrendaLote extends Model
         'cantidad_proceso',
         'cantidad_final',
         'proceso_actual',
-        'sub_proceso_actual',
         'lote_id',
-        'prenda_sub_proceso_id',
+        'prenda_proceso_id',
     ];
 
     public function lote(): BelongsTo {
         return $this->belongsTo(Lote::class);
     }
 
-    public function prendaSubProceso(): BelongsTo {
-        return $this->belongsTo(PrendaSubProceso::class);
+    public function prenda_proceso(): BelongsTo {
+        return $this->belongsTo(PrendaProceso::class);
     }
 }
