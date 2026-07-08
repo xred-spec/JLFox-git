@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('cantidad_prevista');
             $table->integer('cantidad_proceso')->nullable();
+            $table->integer('cantidad_final')->nullable();
             $table->integer('proceso_actual')->nullable();
             $table->foreignId('lote_id')->constrained('lotes')->onDelete('cascade');
             $table->foreignId('prenda_proceso_id')->constrained('prendas_procesos')->onDelete('cascade');

@@ -7,7 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\TipoPrendaResource;
 use App\Http\Resources\ColorTelaResource;
 use App\Http\Resources\BordadoResource;
-use App\Http\Resources\ForroPrendaResource;
+use App\Http\Resources\ForroResource;
 
 class PrendaResource extends JsonResource
 {
