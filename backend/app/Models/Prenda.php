@@ -54,7 +54,7 @@ class Prenda extends Model
         return $this->hasMany(Lote::class);
     }
 
-    public function inventario_prenda(): BelongsTo{
-        return $this->belongsTo(InventarioPrenda::class);
+    public function inventario_prenda(): HasMany{
+        return $this->hasMany(InventarioPrenda::class);
     }
 }

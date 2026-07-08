@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Prenda: string {
+enum Lote: string {
     case PENDIENTE = 'pendiente';
     case PRODUCCION = 'producción';
     case TERMINADO = 'terminado';

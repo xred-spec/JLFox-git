@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PrendaLote;
-use App\Http\Requests\PerndaLoteRequest;
+use App\Http\Requests\PrendaLoteRequest;
 use App\Http\Resources\PrendaLoteResource;
 
 class PrendaLoteController extends Controller
