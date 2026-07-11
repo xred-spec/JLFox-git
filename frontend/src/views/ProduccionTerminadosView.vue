@@ -4,28 +4,27 @@ import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { prendasProcesosColumns } from '@/data/prendasProcesosColumns';
-import ProcesosModal from '@/components/modals/ProcesosModal.vue';
-import PrendasProcesosItemCard from '@/components/PrendasProcesosItemCard.vue';
-import { prendasProcesosInputs } from '@/data/prendasProcesosInputs';
+import { lotesColumns } from '@/data/lotesColumns';
+import { lotesInputs } from '@/data/lotesInputs';
+import LotesModal from '@/components/modals/LotesModal.vue';
+import ItemCard from '@/components/ItemCard.vue';
 
-const prendasProcesos = ref()
-const procesos = ref()
+const formInputs = ref([...lotesInputs]) 
 
-const formInputs = ref([...prendasProcesosInputs]) 
-
-const selectedPrendaProceso = ref(null)
+const prendasOptions = ref<{label: string, value: any}[]>([])
+const lotesTerminados = ref()
+const selectedLote = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getPrendasProcesos = async() => { 
-    const {isFetching, error, data} = await useApi('prendas-procesos/procesos').json()
+const getLotes = async() => {
+    const {isFetching, error, data} = await useApi('lotes/terminados').json()
 
     if(data.value) {
-        prendasProcesos.value = data.value
-        //console.log('data: ', prendasProcesos.value.data)
+        lotesTerminados.value = data.value
+        console.log('data', data.value)
         return
     }
 
@@ -38,10 +37,9 @@ const getPrendasProcesos = async() => {
 
 const fetchSelects = async() => {
     const prendas = await useApi('prendas').json()
-    const inputPrendas = formInputs.value.find(i => i.modelKey === 'prenda_id')
 
-    if(prendas.data.value && inputPrendas) {
-        inputPrendas.options = prendas.data.value.data.map((prenda: any) => ({
+    if(prendas.data.value) {
+        prendasOptions.value = prendas.data.value.data.map((prenda: any) => ({
             label: `${prenda.tipo_prenda.nombre} ${prenda.color_tela.color}, Talla: ${prenda.talla} - 
             Bordado: ${prenda.bordado?.forma || 'Sin bordado'} - 
             Forro: ${prenda.forro?.color || 'Sin forro'} - 
@@ -49,36 +47,24 @@ const fetchSelects = async() => {
             value: prenda.id
         }))
     }
-
-    const {error, data} = await useApi('procesos').json()
-
-    if(data.value) {
-        procesos.value = data.value
-        return
-    }
-
-    if(error.value) {
-        errorMessage.value = error.value
-        console.log('error: ', errorMessage.value)
-        return
-    }    
 }
 
-const storePrendaProceso = async(formData: any) => {
+const storeLote = async(formData: any) => {
     isModalOpened.value = false
-    selectedPrendaProceso.value = null
-    //console.log('formData: ', formData)
+    selectedLote.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`prendas-procesos`).post(
+        const {data, error} = await useApi(`lotes/${formData.id}`).put(
             {
-                prenda_id: formData.prenda_id,
-                procesos: formData.procesos
+                estado: formData.estado,
+                fecha_inicio: formData.fecha_inicio,
+                fecha_final: formData.fecha_final,
+                prendas: formData.prendas
             }
         ).json()
 
         if(data.value) {
-            await getPrendasProcesos()
+            await getLotes()
             return
         }
 
@@ -88,15 +74,17 @@ const storePrendaProceso = async(formData: any) => {
             return
         }
     } else {
-        const {data, error} = await useApi('prendas-procesos').post(
+        const {data, error} = await useApi('lotes').post(
             {
-                prenda_id: formData.prenda_id,
-                procesos: formData.procesos
+                estado: formData.estado,
+                fecha_inicio: formData.fecha_inicio,
+                fecha_final: formData.fecha_final,
+                prendas: formData.prendas
             }
         ).json()
 
         if(data.value) {
-            await getPrendasProcesos()
+            await getLotes()
             return
         }
 
@@ -108,11 +96,11 @@ const storePrendaProceso = async(formData: any) => {
     } 
 }
 
-const deletePrendaProceso = async(id: number) => {
-    const {data, error} = await useApi(`procesos/${id}`).delete().json()
+const deleteLote = async(id: number) => {
+    const {data, error} = await useApi(`lotes/${id}`).delete().json()
 
     if(data.value) {
-        await getPrendasProcesos()
+        await getLotes()
         return
     }
 
@@ -125,38 +113,37 @@ const deletePrendaProceso = async(id: number) => {
 
 onMounted (async() => {
     await fetchSelects()
-    await getPrendasProcesos()
+    await getLotes()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedPrendaProceso.value = selected
-    else selectedPrendaProceso.value = null
-    //console.log('selected: ', selected)
+    if(selected) selectedLote.value = selected
+    else selectedLote.value = null
     isModalOpened.value = true
 }
 </script>
 
 <template>
-    <ProcesosModal 
+    <LotesModal 
     v-if="isModalOpened"
-    :header="selectedPrendaProceso ? 'Editar prenda-proceso' : 'Agregar prenda-proceso'" 
-    :inputs="prendasProcesosInputs" 
-    :labels="procesos.data"
+    :header="selectedLote ? 'Editar lote' : 'Agregar lote'" 
+    :inputs="formInputs" 
+    :prendas="prendasOptions"
     :show="isModalOpened" 
-    :model-value="selectedPrendaProceso"
+    :model-value="selectedLote"
     @close="isModalOpened = false"
-    @accept="(formData) => storePrendaProceso(formData)"
+    @accept="(formData) => storeLote(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
-                <PageTitle :hide-button="true"
-                name="Prendas-Procesos"
+                <PageTitle 
+                name="Bordados"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!prendasProcesos || !prendasProcesos.data || prendasProcesos.data.length === 0" 
+            <div v-if="!lotesTerminados || !lotesTerminados.data || lotesTerminados.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -165,13 +152,14 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <PrendasProcesosItemCard v-for="f in prendasProcesos.data"
-                    :item="f"
+                    <ItemCard v-for="l in lotesTerminados.data"
+                    :grids="5"
+                    :item="l"
                     :index=itemsIndex + 1
-                    :columns="prendasProcesosColumns"
+                    :columns="lotesColumns"
                     :show="true"
-                    @update="openModal(f)"
-                    @delete="deletePrendaProceso(f.id)"
+                    @update="openModal(l)"
+                    @delete="deleteLote(l.id)"
                     />
             </div>
         </template>

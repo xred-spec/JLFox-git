@@ -28,7 +28,8 @@ class PrendaLoteRequest extends FormRequest
             'cantidad_final' => 'nullable|integer',
             'proceso_actual' => 'nullable|integer|exists:prendas_procesos,id',
             'lote_id' => 'required|integer|exists:lotes,id',
-            'prenda_proceso_id' => 'required|exists:prendas_procesos,id'
+            'prendas' => 'required|array',
+            'prendas.*' => 'integer|exists:prendas,id'
         ];
     }
 }

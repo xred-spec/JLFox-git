@@ -26,8 +26,8 @@ class LoteRequest extends FormRequest
     {
         return [
             'estado' => ['required', Rule::enum(Lote::class)],
-            'fecha_inicio' => 'required|date_format:Y-m-d H:i:s',
-            'fecha_final' => 'nullable|date_format:Y-m-d H:i:s'
+            'fecha_inicio' => 'required|date',
+            'fecha_final' => 'nullable|date',
         ];
     }
 }

@@ -50,14 +50,14 @@ const fetchSelects = async() => {
         inputBordados && bordados.data.value &&
         inputForros && forros.data.value 
     ){
-        inputTiposPrenda.options = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
-            label: tipoPrenda.nombre,
-            value: tipoPrenda.id
-        }))
-
         inputColoresTela.options = coloresTela.data.value.data.map((colorTela: any) => ({
             label: `${colorTela.tela.nombre} - ${colorTela.color}`,
             value: colorTela.id
+        }))
+
+        inputTiposPrenda.options = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
+            label: tipoPrenda.nombre,
+            value: tipoPrenda.id
         }))
 
         inputBordados.options = bordados.data.value.data.map((bordado: any) => ({

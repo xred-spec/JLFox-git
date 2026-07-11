@@ -24,6 +24,42 @@ class LoteController extends Controller
         );
     }
 
+    public function indexPendientes()
+    {
+        $lotes = Lote::with('prendas_lote')->where('estado', 'pendiente')->paginate(15);
+        $resuorce = LoteResource::collection($lotes);
+
+        return $this->successResponse(
+            $resuorce,
+            'Lotes obtenidos correctamente',
+            200
+        );
+    }
+
+    public function indexProduccion()
+    {
+        $lotes = Lote::with('prendas_lote')->where('estado', 'produccion')->paginate(15);
+        $resuorce = LoteResource::collection($lotes);
+
+        return $this->successResponse(
+            $resuorce,
+            'Lotes obtenidos correctamente',
+            200
+        );
+    }
+
+    public function indexTerminados()
+    {
+        $lotes = Lote::with('prendas_lote')->where('estado', 'terminado')->paginate(15);
+        $resuorce = LoteResource::collection($lotes);
+
+        return $this->successResponse(
+            $resuorce,
+            'Lotes obtenidos correctamente',
+            200
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      */

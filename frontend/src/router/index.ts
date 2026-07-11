@@ -117,10 +117,30 @@ const router = createRouter({
           ]
         },
         {
-          path: '/inventario',
-          name: 'inventario',
+          path: '/produccion',
+          name: 'produccion',
           component: () => import('../views/ProduccionView.vue'),
-          meta: { requiresAuth: true }
+          meta: { requiresAuth: true },
+          children: [
+            {
+            path: '/pendientes',
+            name: 'pendientes',
+            component: () => import('../views/ProduccionPendientesView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+            path: '/proceso',
+            name: 'proceso',
+            component: () => import('../views/ProduccionProcesoView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
+            path: '/terminados',
+            name: 'terminados',
+            component: () => import('../views/ProduccionTerminadosView.vue'), 
+            meta: { requiresAuth: true }
+            },
+          ]
         },
         {
           path: '/inventario',

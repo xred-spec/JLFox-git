@@ -26,7 +26,7 @@ onMounted(() => {
 
                 <p class="font-bold text-[#d1a66f]">JLFox Tracking System</p>
 
-                <button class="font-bold flex items-center border-2 py-1 px-2 rounded-[5px] text-[#ffffff] border-[#c41a1a] cursor-pointer hover:bg-[#c41a1a]"
+                <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a]"
                 @click="logout">
                     Cerrar sesión
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
 import { reactive, ref, watch } from 'vue';
-import { f } from 'vue-router/dist/useApi-D6ckOsFy.js';
 
 interface ProcesoLabel {
     id: number;
@@ -100,7 +99,7 @@ const validateInputs = () => {
         sendData.procesos = procesosAsignados
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
-        //console.log('send. ',sendData)
+        console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
