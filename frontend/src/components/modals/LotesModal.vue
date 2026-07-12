@@ -2,6 +2,7 @@
 import type { Input } from '@/interfaces/FormInput';
 import { reactive, ref, watch } from 'vue';
 
+const finalDateValidation = ref(false)
 
 const props = defineProps<{
     header: string
@@ -53,7 +54,13 @@ const cleanInputs = () => {
 
 const validateInputs = () => {
     let valid = true
+    finalDateValidation.value = false
     Object.keys(formErrors).forEach(key => delete formErrors[key])
+
+    if((formData['estado'] === 'terminado' && !formData['fecha_final']) || (formData['estado'] != 'terminado' && formData['fecha_final'])) {
+        finalDateValidation.value = true
+        valid = false
+    }
 
     for(const i of props.inputs) {
         if(i.required && i.modelKey != '') {
@@ -104,8 +111,8 @@ const validateInputs = () => {
                                 {{ i.label }} <span v-if="i.required" class="text-[#c41a1a]">*</span>
                             </label>
 
-                            <label v-if="formErrors[i.modelKey] && i.type != 'checkboxes'" class="text-[#c41a1a] font-bold text-lg mb-1">
-                                Campo faltante
+                            <label v-if="(formErrors[i.modelKey] && i.type != 'checkboxes') || (i.modelKey === 'fecha_final' && finalDateValidation)" class="text-[#c41a1a] font-bold text-lg mb-1">
+                                Campo faltante o incorrecto
                             </label>
                         </div>
 

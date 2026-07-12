@@ -28,6 +28,10 @@ class LoteRequest extends FormRequest
             'estado' => ['required', Rule::enum(Lote::class)],
             'fecha_inicio' => 'required|date',
             'fecha_final' => 'nullable|date',
+
+            'prendas' => 'required|array|min:1',
+            'prendas.*.prenda_id' => 'required|integer|exists:prendas,id',
+            'prendas.*.cantidad' => 'required|integer|min:1'
         ];
     }
 }

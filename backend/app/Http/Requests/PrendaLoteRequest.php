@@ -23,13 +23,7 @@ class PrendaLoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cantidad_prevista' => 'required|integer',
-            'cantidad_proceso' => 'nullable|integer',
-            'cantidad_final' => 'nullable|integer',
-            'proceso_actual' => 'nullable|integer|exists:prendas_procesos,id',
-            'lote_id' => 'required|integer|exists:lotes,id',
-            'prendas' => 'required|array',
-            'prendas.*' => 'integer|exists:prendas,id'
+            
         ];
     }
 }

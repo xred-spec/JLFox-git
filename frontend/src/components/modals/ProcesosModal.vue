@@ -99,7 +99,7 @@ const validateInputs = () => {
         sendData.procesos = procesosAsignados
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
-        console.log('send. ',sendData)
+        //console.log('send. ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Lote;
+use App\Models\PrendaLote;
 use App\Http\Requests\LoteRequest;
 use App\Http\Resources\LoteResource;
+use App\Http\Resources\PrendaLoteResource;
 
 class LoteController extends Controller
 {
@@ -65,12 +68,38 @@ class LoteController extends Controller
      */
     public function store(LoteRequest $request)
     {
-        $lote = Lote::create($request->validated());
-        $resource = new LoteResource($lote);
+        $lote = DB::transaction(function () use ($request) {
+            $newLote = Lote::create([
+                'estado' => $request->estado,
+                'fecha_inicio' => $request->fecha_inicio,
+                'fecha_final' => $request->fecha_final
+            ]);
+
+            $prendas = $request->prendas;
+            $insertData = [];
+
+            foreach($prendas as $prenda) {
+                $insertData[] = [
+                    'lote_id' => $newLote->id,
+                    'prenda_id' => $prenda['prenda_id'],
+                    'cantidad_prevista' => $prenda['cantidad'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if(!empty($insertData)) {
+                PrendaLote::insert($insertData);
+            }
+
+            return $newLote;
+        });
+        
+        $resource = LoteResource::make($lote);
 
         return $this->successResponse(
             $resource,
-            'Lote creado correctamente',
+            'Lote y prendas creados correctamente',
             201
         );
     }
