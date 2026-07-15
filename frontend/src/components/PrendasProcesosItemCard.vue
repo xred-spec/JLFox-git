@@ -77,7 +77,7 @@ const emits = defineEmits<{
             </template>
 
             <template v-else-if="expanded">
-                <div class="grid grid-cols-3 pl-14 pb-2 relative border-b-2 border-[#63492a]">
+                <div class="grid grid-cols-3 pl-12 pb-2 relative border-b-2 border-[#63492a]">
                     <div class="bg-[#c41a1a] flex items-center justify-center absolute rounded-[10px] rounded-t-none p-4 -top-2.5 left-0">
                         <label class="text-[#ffffff] font-bold">
                             {{ props.index }}

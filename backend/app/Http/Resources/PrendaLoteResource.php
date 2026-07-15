@@ -22,7 +22,7 @@ class PrendaLoteResource extends JsonResource
             'cantidad_final' => $this->cantidad_final,
             'proceso_actual' => $this->proceso_actual,
             'lote' => LoteResource::make($this->whenLoaded('lote')),
-            'prenda' => PrendaResource::make($this->whenLoaded('prenda_proceso'))
+            'prenda' => PrendaResource::make($this->whenLoaded('prenda'))
         ];
     }
 }

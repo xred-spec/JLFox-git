@@ -17,7 +17,7 @@ export const lotesInputs: Input[] = [
         label: 'Fecha de inicio',
         modelKey: 'fecha_inicio',
         type: 'date',
-        required: true,
+        required: false,
         placeholder: 'Introduzca la fecha de inicio...'
     },
     {

@@ -7,7 +7,7 @@ import PageTitle from '@/components/PageTitle.vue';
 import { lotesColumns } from '@/data/lotesColumns';
 import { lotesInputs } from '@/data/lotesInputs';
 import LotesModal from '@/components/modals/LotesModal.vue';
-import ItemCard from '@/components/ItemCard.vue';
+import LoteItemCard from '@/components/LoteItemCard.vue';
 
 const formInputs = ref([...lotesInputs]) 
 
@@ -24,7 +24,7 @@ const getLotes = async() => {
 
     if(data.value) {
         lotesProceso.value = data.value
-        console.log('data', data.value)
+        //console.log('data', data.value)
         return
     }
 
@@ -152,10 +152,10 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="l in lotesProceso.data"
+                    <LoteItemCard v-for="l in lotesProceso.data"
                     :grids="5"
                     :item="l"
-                    :index=itemsIndex + 1
+                    :index="itemsIndex"
                     :columns="lotesColumns"
                     :show="true"
                     @update="openModal(l)"

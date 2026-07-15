@@ -76,7 +76,8 @@ Route::post('register', [AuthController::class, 'register']);
         Route::get('/terminados', [LoteController::class, 'indexTerminados']);
         Route::get('/{id}', [LoteController::class, 'show']);
         Route::post('/', [LoteController::class, 'store']);
-        Route::delete('/{id}', [PrendaLoteControllerProcesoController::class, 'delete']);
+        Route::put('/{id}', [LoteController::class, 'update']);
+        Route::delete('/{id}', [LoteController::class, 'destroy']);
     });
 
     //Rutas PrendaLote

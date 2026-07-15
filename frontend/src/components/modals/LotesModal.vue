@@ -2,7 +2,9 @@
 import type { Input } from '@/interfaces/FormInput';
 import { reactive, ref, watch } from 'vue';
 
+const startDateValidation = ref(false)
 const finalDateValidation = ref(false)
+const validPrendas = ref(true)
 
 const props = defineProps<{
     header: string
@@ -18,33 +20,51 @@ const emits = defineEmits([
 ])
 
 const prendas = ref<{prenda_id: number | string, cantidad: number }[]>([
-    {prenda_id: '', cantidad: 1}
+    {prenda_id: '', cantidad: 0}
 ])
 
 const agregarPrenda = () => {
-    prendas.value.push({prenda_id: '', cantidad: 1})
+    prendas.value.push({prenda_id: '', cantidad: 0})
 }
 
 const eliminarPrenda = (index: number) => {
     if (prendas.value.length === 1) {
-        prendas.value[0] = {prenda_id: '', cantidad: 1}
+        prendas.value[0] = {prenda_id: '', cantidad: 0}
+        return
     }
 
-    prendas.value.slice(index, 1)
+    prendas.value.splice(index, 1)
 }
 
 const formData = reactive<Record<string, any>>({});
-
-if(props.modelValue) {
-    for(const p in props.modelValue ) {
-        formData[p] = props.modelValue[p]
-    } 
-} else {
-    for (const i of props.inputs) {
-        formData[i.modelKey] = ''
-    }
-}
 const formErrors = reactive<Record<string, boolean>>({});
+
+const initForm = () => {
+    Object.keys(formData).forEach(key => delete formData[key])
+
+    for (const i of props.inputs) {
+        if (i.modelKey) {
+            formData[i.modelKey] = ''
+        }
+    }
+
+    if (props.modelValue) {
+        for (const p in props.modelValue) {
+            formData[p] = props.modelValue[p]
+        }
+        
+
+        if(props.modelValue.prendas && Array.isArray(props.modelValue.prendas)) {
+            prendas.value = props.modelValue.prendas.map((p: any) => ({
+                prenda_id: p.prenda.id,
+                cantidad: p.cantidad_prevista ?? p.cantidad ?? 0
+            }))
+        }
+    } else {
+        prendas.value = [{prenda_id: '', cantidad: 0}]
+    }
+    console.log('prendas: ', prendas.value)
+}
 
 const cleanInputs = () => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -54,11 +74,18 @@ const cleanInputs = () => {
 
 const validateInputs = () => {
     let valid = true
+    startDateValidation.value = false
     finalDateValidation.value = false
     Object.keys(formErrors).forEach(key => delete formErrors[key])
 
     if((formData['estado'] === 'terminado' && !formData['fecha_final']) || (formData['estado'] != 'terminado' && formData['fecha_final'])) {
         finalDateValidation.value = true
+        valid = false
+    }
+
+    if(formData['estado'] === 'pendiente' && !formData['fecha_inicio']) valid = true
+    else if(formData['estado'] !== 'pendiente' && !formData['fecha_inicio']) {
+        startDateValidation.value = true
         valid = false
     }
 
@@ -73,7 +100,7 @@ const validateInputs = () => {
         }
     }
 
-    const validPrendas = prendas.value.every(p => p.prenda_id !== '' && p.cantidad > 0)
+    validPrendas.value = prendas.value.every(p => p.prenda_id !== '' && p.cantidad > 0)
     if(!validPrendas){
         valid = false
     }
@@ -83,13 +110,22 @@ const validateInputs = () => {
             formData,
             prendas: prendas.value
         }
+        if(sendData.prendas.some(p => p.prenda_id === '') || 
+        sendData.prendas.some(p => p.cantidad < 1)) {
+            valid = false
+            return
+        }
         console.log('data: ', sendData)
         cleanInputs()
         emits('accept', sendData)
     }
 } 
 
+watch(() => props.modelValue, () => {
+    initForm();
+}, { immediate: true });
 
+console.log('model: ', props.modelValue)
 </script>
 
 <template>
@@ -111,7 +147,10 @@ const validateInputs = () => {
                                 {{ i.label }} <span v-if="i.required" class="text-[#c41a1a]">*</span>
                             </label>
 
-                            <label v-if="(formErrors[i.modelKey] && i.type != 'checkboxes') || (i.modelKey === 'fecha_final' && finalDateValidation)" class="text-[#c41a1a] font-bold text-lg mb-1">
+                            <label v-if="(formErrors[i.modelKey] && i.type != 'checkboxes') || 
+                            (i.modelKey === 'fecha_final' && finalDateValidation) ||
+                            (i.modelKey === 'fecha_inicio' && startDateValidation)" 
+                            class="text-[#c41a1a] font-bold text-lg mb-1">
                                 Campo faltante o incorrecto
                             </label>
                         </div>
@@ -160,7 +199,12 @@ const validateInputs = () => {
                 <div class="p-2">
                     <div class="flex items-center justify-between border-[#63492a] border-b pb-1">
                         <label class="text-[#000000] font-bold text-lg">
-                            Prenda(s)
+                            Prenda(s) <span class="text-[#c41a1a]">*</span>
+                        </label>
+
+                        <div class="flex items-center">
+                        <label v-if="!validPrendas" class="text-[#c41a1a] font-bold text-lg mr-2">
+                            Falta llenar campo(s)
                         </label>
 
                         <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102"
@@ -169,6 +213,7 @@ const validateInputs = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
                             class="lucide lucide-plus-icon lucide-plus size-5 ml-1"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                         </button>
+                        </div>
                     </div>
                     
                     <div class="overflow-y-auto max-h-[50vh]">
@@ -177,7 +222,8 @@ const validateInputs = () => {
                             <select v-model="item.prenda_id"
                             class="w-full text-sm bg-[#FFFFFF] py-1 px-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
                                 <option value="" disabled selected>Seleccione una prenda</option>
-                                <option v-for="p in props.prendas" :key="p.value" :value="p.value"> 
+                                <option v-for="p in props.prendas" :key="p.value" :value="p.value"
+                                :disabled="prendas.some(pr => pr.prenda_id === p.value) && item.prenda_id != p.value"> 
                                     {{ p.label }}
                                 </option>
                             </select>
@@ -188,10 +234,11 @@ const validateInputs = () => {
                                     </label>
 
                                     <input 
-                                    type="number" value="1" min="1" v-model="item.cantidad"
+                                    type="number" value="0" min="0" v-model="item.cantidad"
                                     class="w-fit bg-[#FFFFFF] py-1 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                                     >
                                 </div>
+                                
                                 
                                 <button class="flex py-1 px-5 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer"
                                 @click="eliminarPrenda(index)">

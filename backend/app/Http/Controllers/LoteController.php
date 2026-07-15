@@ -17,7 +17,7 @@ class LoteController extends Controller
      */
     public function index()
     {
-        $lotes = Lote::with('prendas_lote')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -29,7 +29,7 @@ class LoteController extends Controller
 
     public function indexPendientes()
     {
-        $lotes = Lote::with('prendas_lote')->where('estado', 'pendiente')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'pendiente')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -41,7 +41,7 @@ class LoteController extends Controller
 
     public function indexProduccion()
     {
-        $lotes = Lote::with('prendas_lote')->where('estado', 'produccion')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'produccion')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -53,7 +53,7 @@ class LoteController extends Controller
 
     public function indexTerminados()
     {
-        $lotes = Lote::with('prendas_lote')->where('estado', 'terminado')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'terminado')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -124,13 +124,40 @@ class LoteController extends Controller
      */
     public function update(LoteRequest $request, string $id)
     {
-        $lote = Lote::findOrFail($id);
-        $lote->update($request->validated());
+        $lote = DB::transaction(function () use ($request, $id) {
+            $storedLote = Lote::findOrFail($id);
+            $storedLote->update([
+                'estado' => $request->estado,
+                'fecha_inicio' => $request->fecha_inicio,
+                'fecha_final' => $request->fecha_final
+            ]);
 
-        $resource = new LoteResource($lote);
+            PrendaLote::where('lote_id', $storedLote->id)->delete();
+            $prendas = $request->prendas;
+            $insertData = [];
+
+            foreach($prendas as $prenda) {
+                $insertData[] = [
+                    'lote_id' => $storedLote->id,
+                    'prenda_id' => $prenda['prenda_id'],
+                    'cantidad_prevista' => $prenda['cantidad'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            if(!empty($insertData)) {
+                PrendaLote::insert($insertData);
+            }
+
+            return $storedLote;
+        });
+        
+        $resource = LoteResource::make($lote);
+
         return $this->successResponse(
             $resource,
-            'Lote actualizado',
+            'Lote y prendas editados correctamente',
             200
         );
     }

@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import Sidebar from '@/components/Sidebar.vue';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import ModalConfirm from '@/components/modals/ModalConfirm.vue';
 
 const auth = useAuthStore()
 const router = useRouter()
+
+const modalOpened = ref(false)
+const modalText = ref('')
+
+const showModal = () => {
+    modalOpened.value = true
+    modalText.value = '¿Cerrar sesioń?'
+}
 
 const logout = () => {
     auth.logout()
@@ -18,6 +27,13 @@ onMounted(() => {
 </script>
 
 <template>
+    <ModalConfirm 
+    :text="modalText"
+    :show="modalOpened"
+    @close="modalOpened = false"
+    @confirm="logout()"
+    />
+
     <div class="flex min-w-screen min-h-screen">
         <Sidebar />
 
@@ -27,7 +43,7 @@ onMounted(() => {
                 <p class="font-bold text-[#d1a66f]">JLFox Tracking System</p>
 
                 <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a]"
-                @click="logout">
+                @click="showModal">
                     Cerrar sesión
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-log-out-icon lucide-log-out size-6 pl-2"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>

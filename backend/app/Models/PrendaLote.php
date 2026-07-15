@@ -27,7 +27,7 @@ class PrendaLote extends Model
         return $this->belongsTo(Lote::class);
     }
 
-    public function prenda_proceso(): BelongsTo {
-        return $this->belongsTo(PrendaProceso::class);
+    public function prenda(): BelongsTo {
+        return $this->belongsTo(Prenda::class);
     }
 }
