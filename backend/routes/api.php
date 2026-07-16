@@ -77,6 +77,7 @@ Route::post('register', [AuthController::class, 'register']);
         Route::get('/{id}', [LoteController::class, 'show']);
         Route::post('/', [LoteController::class, 'store']);
         Route::put('/{id}', [LoteController::class, 'update']);
+        Route::put('/state/{id}', [LoteController::class, 'updateState']);
         Route::delete('/{id}', [LoteController::class, 'destroy']);
     });
 

@@ -162,6 +162,34 @@ class LoteController extends Controller
         );
     }
 
+    public function updateState(Request $request, string $id) {
+        $request->validate([
+            'estado' => 'required|string|min:1'
+        ]);
+        $state = $request->estado;
+
+        $lote = Lote::findOrFail($id);
+
+        $insertData = [
+            'estado' => $state
+        ];
+
+        if($state === 'produccion' && is_null($lote->fecha_inicio)) {
+            $insertData['fecha_inicio'] = now();
+        } else if($state === 'terminado' && is_null($lote->fecha_final)) {
+            $insertData['fecha_final'] = now();
+        }
+
+        $lote->update($insertData);
+        $resource = LoteResource::make($lote);
+
+        return $this->successResponse(
+            $resource,
+            'Estado del lote actualizado correctamente',
+            200
+        );
+    } 
+
     /**
      * Remove the specified resource from storage.
      */

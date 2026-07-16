@@ -78,15 +78,23 @@ const validateInputs = () => {
     finalDateValidation.value = false
     Object.keys(formErrors).forEach(key => delete formErrors[key])
 
-    if((formData['estado'] === 'terminado' && !formData['fecha_final']) || (formData['estado'] != 'terminado' && formData['fecha_final'])) {
+    if((formData['estado'] === 'terminado' && !formData['fecha_final']) ||
+        (formData['estado'] !== 'terminado' && formData['fecha_final'])
+    ) {
         finalDateValidation.value = true
         valid = false
     }
 
-    if(formData['estado'] === 'pendiente' && !formData['fecha_inicio']) valid = true
-    else if(formData['estado'] !== 'pendiente' && !formData['fecha_inicio']) {
+    if(formData['estado'] !== 'pendiente' && !formData['fecha_inicio']) {
         startDateValidation.value = true
         valid = false
+    }
+
+    if ((formData['estado'] !== 'pendiente' && !formData['fecha_inicio']) || 
+        (formData['estado'] === 'pendiente' && formData['fecha_inicio'])
+    ) {
+        startDateValidation.value = true;
+        valid = false;
     }
 
     for(const i of props.inputs) {

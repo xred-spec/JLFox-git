@@ -121,6 +121,23 @@ const openModal = (selected?: any) => {
     else selectedLote.value = null
     isModalOpened.value = true
 }
+
+const changeState = async(id: number, state: string) => {
+    const {data, error} =  await useApi(`lotes/state/${id}`).put({
+        estado: state
+    })
+
+    if(data.value){
+        await getLotes()
+        return
+    }
+
+    if(error.value) {
+        errorMessage.value = error.value
+        console.log(errorMessage.value)
+        return
+    }
+}
 </script>
 
 <template>
@@ -160,6 +177,7 @@ const openModal = (selected?: any) => {
                     :show="true"
                     @update="openModal(l)"
                     @delete="deleteLote(l.id)"
+                    @state="changeState(l.id, 'produccion')"
                     />
             </div>
         </template>

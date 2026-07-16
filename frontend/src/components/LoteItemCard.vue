@@ -53,7 +53,9 @@ const getForeignValues = (object: any, rute: string) => {
 
 const emits = defineEmits<{
     (e: 'update', id: number): void,
-    (e: 'delete', id: number): void
+    (e: 'delete', id: number): void,
+    (e: 'state', id: number, state: string): void,
+    (e: 'production', id: number): void
 }>()
 
 //console.log('columns: ', props.columns)
@@ -64,7 +66,7 @@ const emits = defineEmits<{
     :text="modalText"
     :show="modalOpened"
     @close="modalConfirmClose()"
-    @confirm="actionModal === 'start' ? '' : emits('delete', props.item.id), modalConfirmClose()"
+    @confirm="actionModal === 'start' ? emits('state', props.item.id, 'proceso') : emits('delete', props.item.id), modalConfirmClose()"
     />
 
     <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs">
@@ -156,7 +158,7 @@ const emits = defineEmits<{
 
                         <template v-if="props.item.estado === 'produccion'">
                             <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#3bb937] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                            @click="emits('update', props.item.id)">
+                            @click="emits('production', props.item.id)">
                                 Gestionar producción
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                                 class="lucide lucide-factory-icon lucide-factory size-3 ml-1"><path d="M12 16h.01"/><path d="M16 16h.01"/><path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/><path d="M8 16h.01"/></svg>
