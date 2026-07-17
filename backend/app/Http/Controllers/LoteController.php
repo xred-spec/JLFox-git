@@ -17,7 +17,7 @@ class LoteController extends Controller
      */
     public function index()
     {
-        $lotes = Lote::with('prendas_lote.prenda')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -29,7 +29,7 @@ class LoteController extends Controller
 
     public function indexPendientes()
     {
-        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'pendiente')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'pendiente')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -41,7 +41,7 @@ class LoteController extends Controller
 
     public function indexProduccion()
     {
-        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'produccion')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'produccion')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -53,7 +53,7 @@ class LoteController extends Controller
 
     public function indexTerminados()
     {
-        $lotes = Lote::with('prendas_lote.prenda')->where('estado', 'terminado')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'terminado')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(

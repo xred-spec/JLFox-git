@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\ProcesoResource;
 
 class PrendaProcesoResource extends JsonResource
 {
@@ -16,7 +17,7 @@ class PrendaProcesoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'proceso' => $this->proceso, 
+            'proceso' => ProcesoResource::make($this->proceso), 
         ];
     }
 }
