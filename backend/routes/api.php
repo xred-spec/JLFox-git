@@ -70,7 +70,7 @@ Route::post('register', [AuthController::class, 'register']);
 
     //Rutas Lote
     Route::prefix('lotes')->group(function() {
-        Route::get('/', [LoteController::class, 'index']);
+        //Route::get('/', [LoteController::class, 'index']);
         Route::get('/pendientes', [LoteController::class, 'indexPendientes']);
         Route::get('/produccion', [LoteController::class, 'indexProduccion']);
         Route::get('/terminados', [LoteController::class, 'indexTerminados']);

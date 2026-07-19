@@ -57,7 +57,8 @@ class PrendaProcesoController extends Controller
         foreach($procesosIds as $process) {
             $insertData[] = [
                 'prenda_id' => $prendaId,
-                'proceso_id' => $process,
+                'proceso_id' => $process['proceso_id'],
+                'orden' => $process['orden'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

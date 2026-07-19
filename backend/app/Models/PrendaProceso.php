@@ -16,7 +16,8 @@ class PrendaProceso extends Model
 
     protected $fillable = [
         'prenda_id',
-        'proceso_id'
+        'proceso_id',
+        'orden'
     ];
 
     public function prenda(): BelongsTo {

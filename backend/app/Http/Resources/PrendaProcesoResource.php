@@ -17,6 +17,7 @@ class PrendaProcesoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'orden' => $this->orden,
             'proceso' => ProcesoResource::make($this->proceso), 
         ];
     }

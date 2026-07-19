@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import type { Column } from '@/interfaces/DataColumn';
 
 const expanded = ref(false)
@@ -29,11 +29,15 @@ const getForeignValues = (object: any, rute: string) => {
     return (value === null || value === undefined || value === '') ? '-' : value;
 }
 
+const sortedProcess = computed(() => {
+    return [...props.item.procesos].sort((a, b) => (a.orden || 0) - (b.orden || 0))
+})
+
 const emits = defineEmits<{
     (e: 'update', id: number): void,
     (e: 'delete', id: number): void
 }>()
-//console.log('item: ', props.item)
+console.log('item: ', props.item)
 </script>
 
 <template>
@@ -99,9 +103,9 @@ const emits = defineEmits<{
                     </label>
 
                     <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
-                        <template v-for="process in props.item.procesos">
+                        <template v-for="process in sortedProcess">
                             <button class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-1 px-4 mx-1 font-bold">
-                                {{ process.proceso.nombre }}
+                                {{ process.orden }}. {{ process.proceso.nombre }}
                             </button>
                         </template>
                     </div>

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive, ref, watch } from 'vue';
+import { reactive, ref, watch, computed } from 'vue';
+
+const emptyProcess = ref(false)
+const statedLabels = ref<ProcesoLabel[]>([])
+const formData = reactive<Record<string, any>>({});
+const formErrors = reactive<Record<string, boolean>>({});
 
 interface ProcesoLabel {
     id: number;
@@ -16,10 +21,43 @@ const props = defineProps<{
     modelValue?: Record<string, any> | null
 }>()
 
-const emptyProcess = ref(false)
-const statedLabels = ref<ProcesoLabel[]>([])
-const formData = reactive<Record<string, any>>({});
-const formErrors = reactive<Record<string, boolean>>({});
+if(props.modelValue) {
+    for(const p in props.modelValue ) {
+        formData[p] = props.modelValue[p]
+    }
+}
+
+const assignatedLabels = computed(() => {
+    return statedLabels.value
+    .filter(label => label.state === 'assigned')
+    .sort((a, b) => (a.orden || 0) - (b.orden || 0)) 
+})
+
+const unassignedLabels = computed(() => {
+    return statedLabels.value.filter(label => label.state === 'unassigned')
+})
+
+const assignProcess = (label: ProcesoLabel) => {
+    label.state = 'assigned'
+    label.orden = 9999
+    recalculateOrder()
+}
+
+const removeProcess = (label: ProcesoLabel) => {
+    label.state = 'unassigned'
+    label.orden = 0
+    recalculateOrder()
+}
+
+const recalculateOrder = () => {
+    const assigned = statedLabels.value
+    .filter(l => l.state === 'assigned')
+    .sort((a, b) => (a.orden || 0) - (b.orden || 0))
+
+    assigned.forEach((label, index) => {
+        label.orden = index + 1
+    });
+}
 
 watch(() => props.modelValue, (newValue) => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -32,7 +70,7 @@ watch(() => props.modelValue, (newValue) => {
         }
 
         if (newValue.id) {
-            formData['prenda_id'] = String(newValue.id); 
+            formData['prenda_id'] = String(newValue.id) 
         }
 
     } else {
@@ -41,12 +79,17 @@ watch(() => props.modelValue, (newValue) => {
         }
     }
 
+    const procesoArray = Array.isArray(newValue?.procesos) ? 
+        newValue?.procesos : []
+
     statedLabels.value = props.labels.map((label) => {
+        const indexInModel = procesoArray.indexOf(label.id)
         const alreadyAssigned = newValue?.procesos?.includes(label.id)
         
         return {
             ...label,
-            state: alreadyAssigned ? 'assigned' : 'unassigned'
+            state: alreadyAssigned ? 'assigned' : 'unassigned',
+            orden: alreadyAssigned ? indexInModel + 1 : 0
         }
     })
 }, { immediate: true })
@@ -56,12 +99,6 @@ const emits = defineEmits([
     'close',
     'accept'
 ])
-
-if(props.modelValue) {
-    for(const p in props.modelValue ) {
-        formData[p] = props.modelValue[p]
-    }
-}
 
 const cleanInputs = () => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -91,20 +128,20 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
+        sendData.procesos = assignatedLabels.value.map(label => ({
+            proceso_id: label.id,
+            orden: label.orden
+        }));
 
-        const procesosAsignados = statedLabels.value
-            .filter(label => label.state === 'assigned')
-            .map(label => label.id)
-
-        sendData.procesos = procesosAsignados
         //console.log('modelValue. ',props.modelValue)
         //console.log('form. ',formData)
-        //console.log('send. ',sendData)
+        //console.log('send: ',sendData)
         cleanInputs()
         emits('accept', sendData)
     }
 } 
 //console.log('formData', formData)
+console.log('stateds: ', statedLabels.value)
 </script>
 
 <template>
@@ -145,7 +182,7 @@ const validateInputs = () => {
                 <div class="flex flex-col">
                     <div class="flex justify-between">
                         <label class="text-[#000000] font-bold text-lg mb-1">
-                            Procesos asignados
+                            Procesos asignados en orden
                         </label>
 
                         <label v-if="emptyProcess" class="text-[#c41a1a] font-bold text-base mb-1">
@@ -154,11 +191,11 @@ const validateInputs = () => {
                     </div>    
 
                     <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
-                        <template v-for="label in statedLabels">
-                            <button v-if="label.state === 'assigned'"
+                        <template v-for="label in assignatedLabels" :key="label.id">
+                            <button 
                             class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-2 px-5 m-1 cursor-pointer font-bold"
-                            @click="label.state = 'unassigned'">
-                                {{ label.nombre }}
+                            @click="label.state = 'unassigned', removeProcess(label)">
+                                {{ label.orden }}. {{ label.nombre }}
                             </button>
                         </template>
                     </div>
@@ -170,10 +207,10 @@ const validateInputs = () => {
                     </label>
 
                     <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
-                        <template v-for="label in statedLabels">
-                            <button v-if="label.state === 'unassigned'"
+                        <template v-for="label in unassignedLabels" :key="label.id">
+                            <button 
                             class="bg-[#f7bbbb] border border-[#c41a1a] rounded-[10px] py-2 px-5 m-1 cursor-pointer font-bold"
-                            @click="label.state = 'assigned'">
+                            @click="label.state = 'assigned', assignProcess(label)">
                                 {{ label.nombre }}
                             </button>
                         </template>

@@ -25,7 +25,9 @@ class PrendaProcesoRequest extends FormRequest
         return [
             'prenda_id' => 'required|integer|exists:prendas,id',
             'procesos' => 'required|array',
-            'procesos.*' => 'integer|exists:procesos,id'
+            'procesos.proceso_id' => 'integer|exists:procesos,id',
+            'procesos.orden' => 'integer|min:1'
+
         ];
     }
 

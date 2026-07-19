@@ -44,16 +44,20 @@ const selectedPrenda = computed(() => {
     return null
 })
 
+const closeModal = () => {
+    selectedPrendaId.value = ''
+    emits('close')
+}
 console.log('model: ', props.modelValue)
 </script>
 
 <template>
     <div v-if="show" class="modal-fondo fixed inset-0 bg-black/40 backdrop-blur-sm transition-all duration-300 px-4 z-50
     flex items-center justify-center" 
-    @click="emits('close')">
+    @click="closeModal">
         <div 
         @click.stop
-        class="flex flex-col justify-center w-full max-w-[80vw] bg-[#ffffff] rounded-[15px] p-5">
+        class="flex flex-col justify-center w-full max-w-[60vw] bg-[#ffffff] rounded-[10px] p-5">
             <div class="flex flex-col px-2 items-center pb-2">
                 <div class="flex items-center w-full mb-2 py-1">
                     <label class="text-[#000000] font-bold text-lg mb-1">
@@ -96,6 +100,8 @@ console.log('model: ', props.modelValue)
                         <label class="text-[#000000] font-bold text-base mb-1">
                             Proceso anterior
                         </label>
+
+
                     </div>
 
                     <div class="flex flex-col items-center border border-[#63492a] rounded-[15px]">
@@ -112,8 +118,22 @@ console.log('model: ', props.modelValue)
                 </div>
             </div>            
 
-            <div class="">
+            <div class="grid grid-cols-3 w-full gap-x-2 py-2">
+                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" 
+                    class="lucide lucide-move-left-icon lucide-move-left size-4 mr-1"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
+                    Retroceder al proceso anterior
+                </button>
 
+                <select class="bg-[#FFFFFF] w-full py-2 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
+                    <option value="" disabled>Seleccionar procesos</option>
+                </select>
+
+                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102">
+                    Avanzar al proceso siguiente
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" 
+                    class="lucide lucide-move-right-icon lucide-move-right size-4 ml-1"><path d="M18 8L22 12L18 16"/><path d="M2 12H22"/></svg>
+                </button>
             </div>
 
         <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">

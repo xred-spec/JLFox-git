@@ -15,17 +15,6 @@ class LoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->paginate(15);
-        $resuorce = LoteResource::collection($lotes);
-
-        return $this->successResponse(
-            $resuorce,
-            'Lotes obtenidos correctamente',
-            200
-        );
-    }
 
     public function indexPendientes()
     {
@@ -72,7 +61,7 @@ class LoteController extends Controller
             $newLote = Lote::create([
                 'estado' => $request->estado,
                 'fecha_inicio' => $request->fecha_inicio,
-                'fecha_final' => $request->fecha_final
+                'fecha_final' => $request->fecha_final,
             ]);
 
             $prendas = $request->prendas;
@@ -107,6 +96,7 @@ class LoteController extends Controller
     /**
      * Display the specified resource.
      */
+    /*
     public function show(string $id)
     {
         $lote = Lote::findOrFail($id);
@@ -118,6 +108,7 @@ class LoteController extends Controller
             200
         );
     }
+    */
 
     /**
      * Update the specified resource in storage.

@@ -21,7 +21,8 @@ class PrendaProcesoFactory extends Factory
     {
         return [
             'prenda_id' => Prenda::factory(),
-            'proceso_id' => Proceso::factory()
+            'proceso_id' => Proceso::factory(),
+            'orden' => 1
         ];
     }
 }

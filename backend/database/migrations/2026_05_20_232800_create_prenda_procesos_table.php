@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('prenda_id')->constrained('prendas')->onDelete('cascade');
             $table->foreignId('proceso_id')->constrained('procesos')->onDelete('cascade');
+            $table->integer('orden');
             $table->timestamps();
 
             $table->unique([
