@@ -6,6 +6,7 @@ const props = defineProps<{
     show: boolean
     modelValue: Record<string, any> | null
 }>()
+console.log('model: ', props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -45,6 +46,14 @@ const selectOptions = computed(() => {
     }
 
     return []  
+})
+
+const allFinish = computed(() => {
+    const prendas = props.modelValue?.prendas
+
+    if(!prendas || !Array.isArray(prendas) || prendas.length === 0) return false
+
+    return prendas.every((p: any) => p.cantidad_final !== null && p.cantidad_final !== undefined)
 })
 
 const closeModal = () => {
@@ -144,6 +153,19 @@ const closeProduction = async() => {
     }
 }
 
+const finishLote = async() => {
+    const {error} = useApi(`lotes/state/${props.modelValue?.id}`).put({
+        estado: 'terminado'
+    }).json()
+
+    if(!error.value) {
+        emits('accept')
+        closeModal()
+    } else {
+        console.log('error: ', error.value)
+    }
+}
+
 const findProcess = (index: number) => {
     if (!selectedPrenda.value) return '-';
 
@@ -162,10 +184,12 @@ watch((selectedPrenda), (newPrenda) => {
     } else {
         cantidadProcesos.value = ''
     }
-
 })
 
-//console.log('model: ', props.modelValue)
+watch(allFinish, (allFinished) => {
+    console.log('allFinished')
+    if(allFinished) finishLote()
+})
 </script>
 
 <template>

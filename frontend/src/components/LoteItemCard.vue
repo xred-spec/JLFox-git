@@ -60,6 +60,7 @@ const emits = defineEmits<{
     (e: 'delete', id: number): void,
     (e: 'state', id: number, state: string): void,
     (e: 'production', id: number): void
+    (e: 'get'): void
 }>()
 
 //console.log('columns: ', props.columns)
@@ -70,6 +71,7 @@ const emits = defineEmits<{
     :show="modalProduccionOpened"
     :model-value="props.item"
     @close="modalProduccionOpened = false"
+    @accept="emits('get')"
     />
 
     <ModalConfirm 

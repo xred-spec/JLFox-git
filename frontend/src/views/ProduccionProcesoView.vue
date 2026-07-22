@@ -160,6 +160,7 @@ const openModal = (selected?: any) => {
                     :show="true"
                     @update="openModal(l)"
                     @delete="deleteLote(l.id)"
+                    @get="getLotes()"
                     />
             </div>
         </template>
