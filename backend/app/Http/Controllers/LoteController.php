@@ -155,7 +155,7 @@ class LoteController extends Controller
 
     public function updateState(Request $request, string $id) {
         $request->validate([
-            'estado' => 'required|string|min:1'
+            'estado' => 'required|string|min:1',
         ]);
         $state = $request->estado;
 
@@ -180,6 +180,43 @@ class LoteController extends Controller
             200
         );
     } 
+
+    public function updateCurrentProcess(Request $request, string $id) {
+        $newProcess = $request->validate([
+            'proceso_actual' => 'required|integer|min:1',
+            'cantidad_proceso' => 'nullable|integer'
+        ]);
+
+        $prendaLote = PrendaLote::findOrFail($id);
+        $prendaLote->proceso_actual = $newProcess['proceso_actual'];
+        $prendaLote->cantidad_proceso = $newProcess['cantidad_proceso'];
+        $prendaLote->save();
+
+        $resource = $prendaLote;
+        return $this->successResponse(
+            $resource,
+            'Proceso actual ctualizado',
+            200
+        );
+    }
+
+    public function closeProduction(Request $request, string $id) {
+        $request->validate([
+            'cantidad_final' => 'required|integer'
+        ]);
+
+        $prendaLote = PrendaLote::findOrFail($id);
+
+        $prendaLote->cantidad_final = $request->cantidad_final; 
+        $prendaLote->save();
+
+        $resource = $prendaLote;
+        return $this->successResponse(
+            $resource,
+            'Estado actual ctualizado',
+            200
+        );
+    }
 
     /**
      * Remove the specified resource from storage.

@@ -93,7 +93,7 @@ watch(() => props.modelValue, (newValue) => {
         }
     })
 }, { immediate: true })
-//console.log(props.modelValue)
+console.log(props.modelValue)
 
 const emits = defineEmits([
     'close',

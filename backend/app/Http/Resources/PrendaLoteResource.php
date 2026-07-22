@@ -17,6 +17,7 @@ class PrendaLoteResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id_prenda_lote' => $this->id,
             'cantidad_prevista' => $this->cantidad_prevista,
             'cantidad_proceso' => $this->cantidad_proceso,
             'cantidad_final' => $this->cantidad_final,
