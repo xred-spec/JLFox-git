@@ -8,6 +8,7 @@ import { lotesColumns } from '@/data/lotesColumns';
 import { lotesInputs } from '@/data/lotesInputs';
 import LotesModal from '@/components/modals/LotesModal.vue';
 import LoteItemCard from '@/components/LoteItemCard.vue';
+import TerminadosModal from '@/components/modals/TerminadosModal.vue';
 
 const formInputs = ref([...lotesInputs]) 
 
@@ -18,6 +19,7 @@ const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
+const dataModalOpened = ref(false)
 
 const getLotes = async() => {
     const {isFetching, error, data} = await useApi('lotes/terminados').json()
@@ -121,6 +123,12 @@ const openModal = (selected?: any) => {
     else selectedLote.value = null
     isModalOpened.value = true
 }
+
+const openModalData = (selected?: any) => {
+    if(selected) selectedLote.value = selected
+    else selectedLote.value = null
+    dataModalOpened.value = true
+}
 </script>
 
 <template>
@@ -133,6 +141,12 @@ const openModal = (selected?: any) => {
     :model-value="selectedLote"
     @close="isModalOpened = false"
     @accept="(formData) => storeLote(formData)"
+    />
+
+    <TerminadosModal 
+    :show="dataModalOpened"
+    :model-value="selectedLote"
+    @close="dataModalOpened = false"
     />
 
     <GenericContainer>
@@ -158,6 +172,7 @@ const openModal = (selected?: any) => {
                     :index="itemsIndex"
                     :columns="lotesColumns"
                     :show="true"
+                    @data="openModalData(l)"
                     @update="openModal(l)"
                     @delete="deleteLote(l.id)"
                     />
