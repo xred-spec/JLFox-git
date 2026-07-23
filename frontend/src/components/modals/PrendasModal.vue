@@ -54,6 +54,10 @@ const initForm = () => {
         if (props.modelValue.bordado) {
             formData['bordado_id'] = props.modelValue.bordado.id;
         }
+    } else {
+        for (const i of props.inputs) {
+            formData[i.modelKey] = ''
+        }
     }
 }
 
@@ -144,6 +148,7 @@ watch(() => props.modelValue, () => {
                         :required="i.required"
                         :disabled="(i.modelKey === 'forro_id' && !formData['tiene_forro']) || (i.modelKey === 'bordado_id' && !formData['tiene_bordado'])"
                         class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
+                            <option value="" disabled>Seleccione una opción</option>
                             <option v-for="o in i.options" :key="o.value" :value="o.value">
                                 {{ o.label }}
                             </option>

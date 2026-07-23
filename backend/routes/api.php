@@ -69,7 +69,19 @@ Route::post('register', [AuthController::class, 'register']);
     //Route::apiResource('prendas-sub-procesos', PrendaSubProcesoController::class);
 
     //Rutas Lote
-    Route::apiResource('lotes', LoteController::class);
+    Route::prefix('lotes')->group(function() {
+        //Route::get('/', [LoteController::class, 'index']);
+        Route::get('/pendientes', [LoteController::class, 'indexPendientes']);
+        Route::get('/produccion', [LoteController::class, 'indexProduccion']);
+        Route::get('/terminados', [LoteController::class, 'indexTerminados']);
+        Route::get('/{id}', [LoteController::class, 'show']);
+        Route::post('/', [LoteController::class, 'store']);
+        Route::put('/{id}', [LoteController::class, 'update']);
+        Route::put('/state/{id}', [LoteController::class, 'updateState']);
+        Route::put('/process/{id}', [LoteController::class, 'updateCurrentProcess']);
+        Route::put('/close-production/{id}', [LoteController::class, 'closeProduction']);
+        Route::delete('/{id}', [LoteController::class, 'destroy']);
+    });
 
     //Rutas PrendaLote
     Route::apiResource('prenda-lote', PrendaLoteController::class);

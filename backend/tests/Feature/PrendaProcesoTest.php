@@ -24,7 +24,8 @@ test('PP03. Store PrendaProceso', function () {
 
     $prendaProceso = [
         'prenda_id' => 1,
-        'procesos' => [1,3,5]
+        'procesos' => [1],
+        'orden' => 1
     ];
 
     $response = $this->postJson('api/prendas-procesos', $prendaProceso);

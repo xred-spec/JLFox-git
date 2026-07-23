@@ -29,14 +29,22 @@ const getForeignValues = (object: any, rute: string) => {
     return (value === null || value === undefined || value === '') ? '-' : value;
 }
 
-const sortedProcess = computed(() => {
-    return [...props.item.procesos].sort((a, b) => (a.orden || 0) - (b.orden || 0))
-})
-
 const emits = defineEmits<{
     (e: 'update', id: number): void,
     (e: 'delete', id: number): void
 }>()
+
+const cantidadInventario = computed(() => {
+    const inventario = props.item.inventario;
+    if (!inventario) return 0;
+
+    if (Array.isArray(inventario)) {
+        if (inventario.length === 0) return 0;
+        return inventario[0].cantidad || 0;
+    }
+
+    return inventario.cantidad || 0;
+});
 console.log('item: ', props.item)
 </script>
 
@@ -62,7 +70,7 @@ console.log('item: ', props.item)
             </template>
 
             <p class="flex-1 text-end font-bold text-[#2630bb] text-base">
-                {{ props.item.procesos.length || 0 }} proceso/s
+                {{ cantidadInventario }} en inventario
             </p>
         </div>
 
@@ -97,28 +105,11 @@ console.log('item: ', props.item)
                     </div>
                 </div>
 
-                <div class="flex flex-col w-full px-2 py-2">
-                    <label class="text-[#000000] font-bold text-base mb-1">
-                        Procesos asignados ({{ props.item.procesos.length || 0 }})
-                    </label>
-
-                    <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
-                        <template v-for="process in sortedProcess">
-                            <button class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-1 px-4 mx-1 font-bold">
-                                {{ process.orden }}. {{ process.proceso.nombre }}
-                            </button>
-                        </template>
-                    </div>
-                </div>
-
-                <div class="bg-[#e4e4e4] rounded-[10px] flex justify-between items-center px-5 py-2 mt-1.5">
+                <div class="bg-[#e4e4e4] rounded-[10px] flex justify-between items-center px-5 py-2 mt-2">
                     <div class="flex">
-                        <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-sm font-bold cursor-pointer hover:scale-105"
-                        @click="emits('update', props.item.id)">
-                            Editar
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                    class="lucide lucide-pencil-icon lucide-pencil size-3 ml-1"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
-                        </button>
+                        <label class="font-bold text-base text-[#c41a1a]">
+                        Cantidad en inventario: {{ cantidadInventario }}
+                    </label>
 
                     </div>
 

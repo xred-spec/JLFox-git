@@ -11,7 +11,7 @@ use App\Models\ColorTela;
 use App\Models\Bordado;
 use App\Models\Forro;
 use App\Models\PrendaProceso;
-use App\Models\Lote;
+use App\Models\PrendaLote;
 use App\Models\InventarioPrenda;
 
 class Prenda extends Model
@@ -51,7 +51,7 @@ class Prenda extends Model
     }
 
     public function lotes(): HasMany {
-        return $this->hasMany(Lote::class);
+        return $this->hasMany(PrendaLote::class);
     }
 
     public function inventario_prenda(): HasMany{

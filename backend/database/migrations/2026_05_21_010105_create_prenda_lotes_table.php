@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('cantidad_final')->nullable();
             $table->integer('proceso_actual')->nullable();
             $table->foreignId('lote_id')->constrained('lotes')->onDelete('cascade');
-            $table->foreignId('prenda_proceso_id')->constrained('prendas_procesos')->onDelete('cascade');
+            $table->foreignId('prenda_id')->constrained('prendas')->onDelete('cascade');
             $table->timestamps();
         });
     }

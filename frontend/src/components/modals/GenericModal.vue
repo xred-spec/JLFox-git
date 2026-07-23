@@ -20,6 +20,10 @@ if(props.modelValue) {
     for(const p in props.modelValue ) {
         formData[p] = props.modelValue[p]
     }
+} else {
+    for (const i of props.inputs) {
+        formData[i.modelKey] = ''
+    }
 }
 const formErrors = reactive<Record<string, boolean>>({});
 
@@ -77,7 +81,8 @@ const validateInputs = () => {
                     <select v-model="formData[i.modelKey]"
                     :required="i.required"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
-                        <option v-for="o in i.options" :key="o.value" :value="o.value || ''">
+                        <option value="" disabled>Seleccione una opción</option>
+                        <option v-for="o in i.options" :key="o.value" :value="o.value">
                             {{ o.label }}
                         </option>
                     </select>
