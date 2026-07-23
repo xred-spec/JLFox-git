@@ -17,7 +17,6 @@ class InventarioPrendaResource extends JsonResource
     {
         return [
             'cantidad' => $this->cantidad,
-            'prenda' => PrendaResource::make($this->whenLoaded('prenda'))
         ];
     }
 }

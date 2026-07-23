@@ -43,6 +43,17 @@ const selectOptions = computed(() => {
     return []  
 })
 
+const mermaPrenda = computed(() => {
+    if (!selectedPrenda.value) return '-';
+
+    const prevista = selectedPrenda.value.cantidad_prevista;
+    const final = selectedPrenda.value.cantidad_final;
+
+    if (final === null || final === undefined) return '-';
+
+    return Number(prevista) - Number(final);
+});
+
 const closeModal = () => {
     emits('close')
 }
@@ -71,18 +82,25 @@ console.log(selectedPrenda)
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 w-full gap-x-2 py-4">
+                <div class="grid grid-cols-3 w-full gap-x-2 py-4">
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad prevista: 
-                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#c41a1a]">
+                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#2630bb]">
                             {{ selectedPrenda?.cantidad_prevista || '-'}}
                         </span>
                     </label>
 
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad final producida: 
-                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#2630bb]">
+                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#000000]">
                             {{ selectedPrenda?.cantidad_final || '-'}}
+                        </span>
+                    </label>
+
+                    <label class="text-[#000000] font-bold text-lg mb-1 text-center">
+                        Merma: 
+                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#c41a1a]">
+                            {{ mermaPrenda }}
                         </span>
                     </label>
                 </div>

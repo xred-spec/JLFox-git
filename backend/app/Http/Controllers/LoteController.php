@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Lote;
 use App\Models\PrendaLote;
+use App\Models\InventarioPrenda;
 use App\Http\Requests\LoteRequest;
 use App\Http\Resources\LoteResource;
 use App\Http\Resources\PrendaLoteResource;
@@ -202,18 +203,25 @@ class LoteController extends Controller
 
     public function closeProduction(Request $request, string $id) {
         $request->validate([
-            'cantidad_final' => 'required|integer'
+            'cantidad_final' => 'required|integer',
         ]);
 
-        $prendaLote = PrendaLote::findOrFail($id);
+        $prendaLote = DB::transaction(function () use ($request, $id) {
+            $lote = PrendaLote::findOrFail($id);
+            $lote->cantidad_final = $request->cantidad_final; 
+            $lote->save();
 
-        $prendaLote->cantidad_final = $request->cantidad_final; 
-        $prendaLote->save();
+            $inventarioPrenda = InventarioPrenda::firstOrNew(['prenda_id' => $lote->prenda_id]);
+            $inventarioPrenda->cantidad = ($inventarioPrenda->cantidad ?? 0) + $request->cantidad_final; 
+            $inventarioPrenda->save();
+
+            return $lote;
+        });
 
         $resource = $prendaLote;
         return $this->successResponse(
             $resource,
-            'Estado actual ctualizado',
+            'Producción terminada e inventario actualizado',
             200
         );
     }

@@ -22,7 +22,7 @@ class PrendaLote extends Model
         'cantidad_final',
         'proceso_actual',
         'lote_id',
-        'prenda_proceso_id',
+        'prenda_id',
     ];
 
     public function lote(): BelongsTo {

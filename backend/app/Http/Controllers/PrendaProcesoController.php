@@ -32,7 +32,8 @@ class PrendaProcesoController extends Controller
             'color_tela.tela', 
             'bordado.color_hilo', 
             'forro', 
-            'prenda_procesos'
+            'prenda_procesos',
+            'inventario_prenda'
         )->paginate(15);
         $resource = PrendaResource::collection($prendasProcesos);
 

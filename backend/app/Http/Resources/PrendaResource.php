@@ -8,6 +8,7 @@ use App\Http\Resources\TipoPrendaResource;
 use App\Http\Resources\ColorTelaResource;
 use App\Http\Resources\BordadoResource;
 use App\Http\Resources\ForroResource;
+use App\Http\Resources\InventarioPrendaResource;
 
 class PrendaResource extends JsonResource
 {
@@ -28,6 +29,7 @@ class PrendaResource extends JsonResource
             'forro' => ForroResource::make($this->forro),
             'tiene_cartera' => $this->tiene_cartera,
             'procesos' => PrendaProcesoResource::collection($this->whenLoaded('prenda_procesos')),
+            'inventario' => $this->inventario_prenda
         ];
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('inventario_prendas', function (Blueprint $table) {
             $table->id();
-            $table->integer('cantidad');
+            $table->integer('cantidad')->nullable();
             $table->foreignId('prenda_id')->constrained('prendas')->onDelete('cascade');
             $table->timestamps();
         });
