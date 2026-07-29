@@ -28,6 +28,7 @@ onMounted(() => {
             @select="toogleSubPage('sub-procesos')"
             />
 
+            
             <SubPageButton name="Prendas-Procesos" class="ml-2"
             :selected="selectedSubPage === 'prendas-procesos'"
             @select="toogleSubPage('prendas-procesos')"

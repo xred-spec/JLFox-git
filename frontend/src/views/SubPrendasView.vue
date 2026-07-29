@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted} from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';

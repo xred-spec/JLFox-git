@@ -59,6 +59,19 @@ const recalculateOrder = () => {
     });
 }
 
+const pieces = computed(() => {
+    const piezasArray = props.modelValue?.tipo_prenda?.piezas;
+    
+    if (Array.isArray(piezasArray) && piezasArray.length > 0) {
+        return piezasArray.map((pieza: any) => ({
+            label: pieza.nombre,
+            value: pieza.id
+        }));
+    }
+    
+    return []; 
+});
+
 watch(() => props.modelValue, (newValue) => {
     Object.keys(formData).forEach(key => delete formData[key])
     Object.keys(formErrors).forEach(key => delete formErrors[key])
@@ -169,10 +182,14 @@ console.log('stateds: ', statedLabels.value)
                 <template v-if="i.type === 'select'">
                     <select v-model="formData[i.modelKey]"
                     :required="i.required"
-                    :disabled="formData ? true : false"
+                    :disabled="i.modelKey === 'prenda_id' && formData ? true : false"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
-                        <option v-for="o in i.options" :key="o.value" :value="o.value || ''">
+                        <option v-if="i.modelKey !== 'pieza_id'" v-for="o in i.options" :key="o.value" :value="o.value || ''">
                             {{ o.label }}
+                        </option>
+
+                        <option v-else v-for="p in pieces" :key="p.value" :value="p.value || ''">
+                            {{ p.label }}
                         </option>
                     </select>
                 </template>

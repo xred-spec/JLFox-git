@@ -1,6 +1,6 @@
-<script setup lang="ts">
+1<script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive } from 'vue';
+import { reactive, watch } from 'vue';
 
 const props = defineProps<{
     header: string
@@ -15,17 +15,53 @@ const emits = defineEmits([
 ])
 
 const formData = reactive<Record<string, any>>({});
-
-if(props.modelValue) {
-    for(const p in props.modelValue ) {
-        formData[p] = props.modelValue[p]
-    }
-} else {
-    for (const i of props.inputs) {
-        formData[i.modelKey] = ''
-    }
-}
 const formErrors = reactive<Record<string, boolean>>({});
+
+watch(() => props.modelValue, (newValue) => {
+    Object.keys(formData).forEach(key => delete formData[key])
+    Object.keys(formErrors).forEach(key => delete formErrors[key])
+    
+    if (newValue) {
+        for (const p in newValue) {
+            formData[p] = newValue[p]
+        }
+    } else {
+        for (const i of props.inputs) {
+            if (i.modelKey) formData[i.modelKey] = ''
+        }
+    }
+}, { immediate: true })
+
+
+watch(() => formData['tipo_prenda_id'], (nuevoValor, valorAnterior) => {
+    if (valorAnterior !== undefined && nuevoValor !== valorAnterior) {
+        formData['pieza_prenda_id'] = ''; 
+    }
+});
+
+
+const getOptions = (inputItem: Input) => {
+    if (inputItem.modelKey === 'pieza_prenda_id') {
+        const tipoSeleccionadoId = formData['tipo_prenda_id'];
+    
+        if (!tipoSeleccionadoId) return [];
+
+        const inputTipos = props.inputs.find(i => i.modelKey === 'tipo_prenda_id');
+        if (!inputTipos || !inputTipos.options) return [];
+
+        const tipoSeleccionado = inputTipos.options.find((opt: any) => opt.value == tipoSeleccionadoId);
+        
+        if (tipoSeleccionado && (tipoSeleccionado as any).piezas) {
+            return (tipoSeleccionado as any).piezas.map((pieza: any) => ({
+                label: pieza.nombre,
+                value: pieza.id
+            }));
+        }
+        return [];
+    }
+    
+    return inputItem.options || [];
+}
 
 const cleanInputs = () => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -49,10 +85,13 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
+        //console.log('send: ', sendData)
         cleanInputs()
         emits('accept', sendData)
     }
 } 
+
+//console.log('model: ', props.modelValue)
 </script>
 
 <template>
@@ -66,7 +105,7 @@ const validateInputs = () => {
                 {{header}}
             </h1>
 
-            <div v-for="i in inputs" class="flex flex-col justify-center py-2 border-[#63492a]">
+            <div v-for="i in inputs" :key="i.modelKey" class="flex flex-col justify-center py-2 border-[#63492a]">
                 <div class="flex items-center justify-between px-2">
                     <label v-if="i.type != 'checkboxes'" class="text-[#000000] font-bold text-lg mb-1">
                         {{ i.label }} <span v-if="i.required" class="text-[#c41a1a]">*</span>
@@ -82,7 +121,8 @@ const validateInputs = () => {
                     :required="i.required"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
                         <option value="" disabled>Seleccione una opción</option>
-                        <option v-for="o in i.options" :key="o.value" :value="o.value">
+                        <!-- AQUÍ REEMPLAZAMOS i.options POR NUESTRA FUNCIÓN INTELIGENTE getOptions(i) -->
+                        <option v-for="o in getOptions(i)" :key="o.value" :value="o.value">
                             {{ o.label }}
                         </option>
                     </select>
@@ -90,7 +130,7 @@ const validateInputs = () => {
 
                 <template v-else-if="i.type === 'textarea'">
                     <textarea v-model="formData[i.modelKey]" 
-                    :required="i.required" :placeholder="i.placeholder" :rows=3
+                    :required="i.required" :placeholder="i.placeholder" :rows="3"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                     >
                     </textarea>
@@ -98,7 +138,7 @@ const validateInputs = () => {
 
                 <template v-else-if="i.type === 'checkboxes'">
                     <div class="flex items-center justify-between">
-                        <div v-for="item in i.checkboxItems" class="flex items-center px-2">
+                        <div v-for="item in i.checkboxItems" :key="item.modelKey" class="flex items-center px-2">
                             <label class="text-[#000000] font-bold text-lg">
                                 {{ item.label }} <span v-if="item.required" class="text-[#c41a1a]">*</span>
                             </label>
@@ -131,4 +171,3 @@ const validateInputs = () => {
         </div>
     </div>
 </template>
-

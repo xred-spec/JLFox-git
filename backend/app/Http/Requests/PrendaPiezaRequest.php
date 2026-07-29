@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PrendaProcesoRequest extends FormRequest
+class PrendaPiezaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,8 @@ class PrendaProcesoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'prenda_pieza_id' => 'required|integer|exists:prenda_piezas,id',
-            'procesos' => 'required|array',
-            'procesos.proceso_id' => 'integer|exists:procesos,id',
-            'procesos.orden' => 'integer|min:1'
-
+            'nombre' => 'required|string|min:1',
+            'tipo_prenda_id' => 'required|integer|exists:tipos_prenda,id'
         ];
     }
 }

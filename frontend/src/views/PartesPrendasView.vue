@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { useApi } from '@/composables/useApi';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
-import { procesosInputs } from '@/data/procesosInputs';
-import { procesosColumns } from '@/data/procesosColumns';
+import { piezasPrendasInputs } from '@/data/piezasPrendasInputs';
+import { piezasPrendasColumns } from '@/data/piezasPrendasColumns';
 import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 
-const tiposPrendaOriginales = ref<any[]>([]);
-const formInputs = ref([... procesosInputs])
+const formInputs = ref([...piezasPrendasInputs]) 
 
-const procesos = ref()
-const selectedProceso = ref(null)
+const piezas = ref()
+const selectedPieza = ref(null)
 const errorMessage = ref(null)
 const itemsIndex = ref(0)
 
 const isModalOpened = ref(false)
 
-const getProcesos = async() => { 
-    const {isFetching, error, data} = await useApi('procesos').json()
+const getPiezas = async() => { 
+    const {isFetching, error, data} = await useApi('piezas-prenda').json()
 
     if(data.value) {
-        procesos.value = data.value
+        piezas.value = data.value
+        console.log('piezas: ', piezas.value)
         return
     }
 
@@ -35,34 +35,31 @@ const getProcesos = async() => {
 }
 
 const fetchSelects = async() => {
-    const tiposPrenda = await useApi('tipos-prenda').json()
-    const inputTiposPrenda = formInputs.value.find(i => i.modelKey === 'tipo_prenda_id')
+    const tiposPrendas = await useApi('tipos-prenda').json()
+    const inputTiposPrendas = formInputs.value.find(i => i.modelKey === 'tipo_prenda_id')
 
-    if(tiposPrenda.data.value && inputTiposPrenda) {
-        tiposPrendaOriginales.value = tiposPrenda.data.value.data;
-        inputTiposPrenda.options = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
+    if(inputTiposPrendas && tiposPrendas.data.value) {
+        inputTiposPrendas.options = tiposPrendas.data.value.data.map((tipoPrenda: any) => ({
             label: tipoPrenda.nombre,
-            value: tipoPrenda.id,
-            piezas: tipoPrenda.piezas
+            value: tipoPrenda.id
         }))
     }
 }
 
-const storeProceso = async(formData: any) => {
+const storePiezas = async(formData: any) => {
     isModalOpened.value = false
-    selectedProceso.value = null
+    selectedPieza.value = null
 
     if(formData.id) {
-        const {data, error} = await useApi(`procesos/${formData.id}`).put(
+        const {data, error} = await useApi(`piezas-prenda/${formData.id}`).put(
             {
-                area: formData.area,
-                descripcion: formData.descripcion,
-                pieza_prenda_id: formData.pieza_prenda_id
+                nombre: formData.nombre,
+                tipo_prenda_id: formData.tipo_prenda_id
             }
         ).json()
 
         if(data.value) {
-            await getProcesos()
+            await getPiezas()
             return
         }
 
@@ -72,16 +69,15 @@ const storeProceso = async(formData: any) => {
             return
         }
     } else {
-        const {data, error} = await useApi('procesos').post(
+        const {data, error} = await useApi('piezas-prenda').post(
             {
-                area: formData.area,
-                descripcion: formData.descripcion,
-                pieza_prenda_id: formData.pieza_prenda_id
+                nombre: formData.nombre,
+                tipo_prenda_id: formData.tipo_prenda_id
             }
         ).json()
 
         if(data.value) {
-            await getProcesos()
+            await getPiezas()
             return
         }
 
@@ -93,11 +89,11 @@ const storeProceso = async(formData: any) => {
     } 
 }
 
-const deleteProceso = async(id: number) => {
-    const {data, error} = await useApi(`procesos/${id}`).delete().json()
+const deletePiezas = async(id: number) => {
+    const {data, error} = await useApi(`piezas-prenda/${id}`).delete().json()
 
     if(data.value) {
-        await getProcesos()
+        await getPiezas()
         return
     }
 
@@ -109,38 +105,37 @@ const deleteProceso = async(id: number) => {
 }
 
 onMounted (async() => {
-    await getProcesos()
+    await getPiezas()
     await fetchSelects()
 })
 
 const openModal = (selected?: any) => {
-    if(selected) selectedProceso.value = selected
-    else selectedProceso.value = null
+    if(selected) selectedPieza.value = selected
+    else selectedPieza.value = null
     isModalOpened.value = true
 }
-
 </script>
 
 <template>
     <GenericModal 
     v-if="isModalOpened"
-    :header="selectedProceso ? 'Editar proceso' : 'Agregar proceso'" 
-    :inputs="procesosInputs" 
+    :header="selectedPieza ? 'Editar pieza de prenda' : 'Agregar pieza de prenda'" 
+    :inputs="formInputs" 
     :show="isModalOpened" 
-    :model-value="selectedProceso"
+    :model-value="selectedPieza"
     @close="isModalOpened = false"
-    @accept="(formData) => storeProceso(formData)"
+    @accept="(formData) => storePiezas(formData)"
     />
 
     <GenericContainer>
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Procesos"
+                name="Piezas de prendas"
                 @store="openModal()"/>
             </SubPageToogle>
 
-            <div v-if="!procesos || !procesos.data || procesos.data.length === 0" 
+            <div v-if="!piezas || !piezas.data || piezas.data.length === 0" 
             class="flex flex-col size-full justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
             class="lucide lucide-circle-x-icon lucide-circle-x size-10"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
@@ -149,14 +144,14 @@ const openModal = (selected?: any) => {
 
             <div v-else
             class="flex flex-col size-full justify-start items-center">
-                    <ItemCard v-for="f in procesos.data"
+                    <ItemCard v-for="f in piezas.data"
                     :grids="4"
                     :item="f"
                     :index=itemsIndex + 1
-                    :columns="procesosColumns"
+                    :columns="piezasPrendasColumns"
                     :show="true"
                     @update="openModal(f)"
-                    @delete="deleteProceso(f.id)"
+                    @delete="deletePiezas(f.id)"
                     />
             </div>
         </template>

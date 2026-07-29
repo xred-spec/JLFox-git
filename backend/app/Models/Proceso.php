@@ -15,7 +15,8 @@ class Proceso extends Model
     protected $table = 'procesos';
 
     protected $fillable = [
-        'nombre'
+        'descripcion',
+        'area',
     ];
 
     public function prendas_procesos(): HasMany {

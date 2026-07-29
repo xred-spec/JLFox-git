@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Proceso;
+use App\Models\PrendaProceso;
+use App\Models\PrendaPieza;
 use App\Http\Requests\ProcesoRequest;
 use App\Http\Resources\ProcesoResource;
 
@@ -29,12 +32,31 @@ class ProcesoController extends Controller
      */
     public function store(ProcesoRequest $request)
     {
-        $proceso = Proceso::create($request->validated());
-        $resource = new ProcesoResource($proceso);
+        $proceso = DB::transaction(function () use ($request) {
+            $data = $request->validated();
+
+            $newProceso = Proceso::create([
+                'descripcion' => $data['descripcion'],
+                'area' => $data['area']
+            ]);
+
+            $pieza = PrendaPieza::findOrFail($data['pieza_prenda_id']);
+            $order = $pieza->procesos()->count() + 1;
+
+            $newPrendaProceso = PrendaProceso::create([
+                'prenda_pieza_id' => $pieza->id,
+                'proceso_id' => $newProceso->id,
+                'orden' => $order
+            ]);
+
+            return $newProceso;
+        });
+
+        $resource = ProcesoResource::make($proceso);
 
         return $this->successResponse(
             $resource,
-            'Proceso creado correctamente',
+            'Proceso creado y asignado correctamente',
             201
         );
     }

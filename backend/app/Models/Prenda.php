@@ -46,10 +46,6 @@ class Prenda extends Model
         return $this->belongsTo(Forro::class);
     }
 
-    public function prenda_procesos(): HasMany {
-        return $this->hasMany(PrendaProceso::class);
-    }
-
     public function lotes(): HasMany {
         return $this->hasMany(PrendaLote::class);
     }

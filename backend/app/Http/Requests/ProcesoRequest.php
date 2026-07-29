@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Enums\AreaProduccion;
 
 class ProcesoRequest extends FormRequest
 {
@@ -23,13 +25,9 @@ class ProcesoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|unique:procesos,nombre'
-        ];
-    }
-
-    public function messages(): array {
-        return [
-            'nombre.unique' => 'El proceso ya existe. Intenta con otro'
+            'descripcion' => 'required|string|min:1',
+            'area' => ['required', Rule::enum(AreaProduccion::class)],
+            'pieza_prenda_id' => 'required|integer|exists:prenda_piezas,id'
         ];
     }
 }

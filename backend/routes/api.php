@@ -10,6 +10,7 @@ use App\Http\Controllers\ForroController;
 use App\Http\Controllers\TelaController;
 use App\Http\Controllers\ColorTelaController;
 use App\Http\Controllers\TipoPrendaController;
+use App\Http\Controllers\PrendaPiezaController;
 use App\Http\Controllers\PrendaController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\PrendaProcesoController;
@@ -49,6 +50,9 @@ Route::post('register', [AuthController::class, 'register']);
 
     //Rutas TipoPrenda
     Route::apiResource('tipos-prenda', TipoPrendaController::class);
+
+    //Rutas PrendaPieza
+    Route::apiResource('piezas-prenda', PrendaPiezaController::class);
 
     //Rutas Prenda
     Route::apiResource('prendas', PrendaController::class);

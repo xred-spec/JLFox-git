@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\PrendaLote;
 use App\Models\Lote;
-use App\Models\PrendaProceso;
+use App\Models\Prenda;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -25,7 +25,7 @@ class PrendaLoteFactory extends Factory
             'cantidad_final' => null,
             'proceso_actual' => null,
             'lote_id' => Lote::factory(),
-            'prenda_proceso_id' => PrendaProceso::factory()
+            'prenda_id' => Prenda::factory()
         ];
     }
 }

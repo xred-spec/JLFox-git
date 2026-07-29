@@ -16,7 +16,8 @@ class ProcesoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nombre' => $this->nombre
+            'descripcion' => $this->descripcion,
+            'area' => $this->area
         ];
     }
 }

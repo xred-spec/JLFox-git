@@ -17,11 +17,13 @@ const routeTo = (routeName: string) => {
 </script>
 
 <template>
-    <div class="flex flex-col h-screen justify-start border-r-2 border-[#ac7b3a] w-70 bg-[#e4e4e4]">
+    <div class="flex flex-col h-screen justify-start border-r-2 border-[#ac7b3a] w-80 bg-[#e4e4e4]">
         <div class="flex items-center justify-center h-14 bg-[#000000] border-b-2 border-[#ac7b3a]">
+            <p class="font-bold text-[#ffffff]">JLFox Tracking System</p>
         </div>
 
-        <DeployItemSidebar />
+        <DeployItemSidebar 
+        name="Materia prima"/>
         <ItemSidebar name="Bordados" 
         :selected="itemSelected === 'bordados'"
         @select="routeTo('bordados')"/>
@@ -32,16 +34,19 @@ const routeTo = (routeName: string) => {
         :selected="itemSelected === 'telas'"
         @select="routeTo('telas')"/>
 
-        <DeployItemSidebar />
+        <DeployItemSidebar 
+        name="Prendas-Procesos"/>
         <ItemSidebar name="Prendas" 
         :selected="itemSelected === 'prendas'"
         @select="routeTo('prendas')"/>
         <ItemSidebar name="Procesos" 
-        :selected="itemSelected === 'procesos'"
-        @select="routeTo('procesos')"/>
+        :selected="itemSelected === 'sub-procesos'"
+        @select="routeTo('sub-procesos')"/>
 
 
-        <DeployItemSidebar />
+        <DeployItemSidebar 
+        name="Producción"/>
+        
         <ItemSidebar name="Producción" 
         :selected="itemSelected === 'produccion'"
         @select="routeTo('produccion')"/>

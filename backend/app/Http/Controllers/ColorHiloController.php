@@ -15,10 +15,19 @@ class ColorHiloController extends Controller
     public function index()
     {
         $coloresHilo = ColorHilo::paginate(15);
-        $resuorce = ColorHiloResource::collection($coloresHilo);
+        $resource = ColorHiloResource::collection($coloresHilo);
+
+        $responseData = [
+            'items' => $resource,
+            'pagination' => [
+                'current_page' => $coloresHilo->currentPage(),
+                'last_page' => $coloresHilo->lastPage(),
+                'total' => $coloresHilo->total(),
+            ]
+        ];
 
         return $this->successResponse(
-            $resuorce,
+            $resource,
             'Colores de hilo obtenidos correctamente',
             200
         );

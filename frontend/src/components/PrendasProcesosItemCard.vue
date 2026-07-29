@@ -29,8 +29,8 @@ const getForeignValues = (object: any, rute: string) => {
     return (value === null || value === undefined || value === '') ? '-' : value;
 }
 
-const sortedProcess = computed(() => {
-    return [...props.item.procesos].sort((a, b) => (a.orden || 0) - (b.orden || 0))
+const sortedPieces = computed(() => {
+    return [...props.item.tipo_prenda.piezas].sort((a, b) => (a.id || 0) - (b.id || 0))
 })
 
 const emits = defineEmits<{
@@ -62,7 +62,7 @@ console.log('item: ', props.item)
             </template>
 
             <p class="flex-1 text-end font-bold text-[#2630bb] text-base">
-                {{ props.item.procesos.length || 0 }} proceso/s
+                {{ props.item.tipo_prenda.piezas.length || 0 }} piezas
             </p>
         </div>
 
@@ -99,13 +99,13 @@ console.log('item: ', props.item)
 
                 <div class="flex flex-col w-full px-2 py-2">
                     <label class="text-[#000000] font-bold text-base mb-1">
-                        Procesos asignados ({{ props.item.procesos.length || 0 }})
+                        Cantidad de piezas ({{ props.item.tipo_prenda.piezas.length || 0 }})
                     </label>
 
                     <div class="flex flex-wrap bg-[#e4e4e4] rounded-[10px] size-full p-2 overflow-y-auto">
-                        <template v-for="process in sortedProcess">
-                            <button class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-1 px-4 mx-1 font-bold">
-                                {{ process.orden }}. {{ process.proceso.nombre }}
+                        <template v-for="piece in sortedPieces">
+                            <button class="bg-[#bfbbf5] border border-[#584cff] rounded-[10px] py-1 px-4 m-1 font-bold">
+                                {{ piece.nombre }}
                             </button>
                         </template>
                     </div>

@@ -38,9 +38,7 @@ onMounted(() => {
         <Sidebar />
 
         <div class="flex flex-col flex-1 bg-[#e4e4e4]">
-            <div class="header flex items-center justify-between min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
-
-                <p class="font-bold text-[#d1a66f]">JLFox Tracking System</p>
+            <div class="header flex items-center justify-end min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
 
                 <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a]"
                 @click="showModal">
