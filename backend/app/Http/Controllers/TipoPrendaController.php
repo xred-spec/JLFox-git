@@ -14,7 +14,7 @@ class TipoPrendaController extends Controller
      */
     public function index()
     {
-        $tiposPrendas = TipoPrenda::paginate(15);
+        $tiposPrendas = TipoPrenda::with('piezas')->paginate(15);
         $resource = TipoPrendaResource::collection($tiposPrendas);
 
         return $this->successResponse(

@@ -83,6 +83,12 @@ const router = createRouter({
             meta: { requiresAuth: true }
             },
             {
+            path: '/partes-prendas',
+            name: 'partes-prenda',
+            component: () => import('../views/PartesPrendasView.vue'), 
+            meta: { requiresAuth: true }
+            },
+            {
               path: '/sub-prendas',
               name: 'sub-prendas',
               component: () => import('../views/SubPrendasView.vue'), 
@@ -91,17 +97,19 @@ const router = createRouter({
           ]
         },
         {
+            path: '/sub-procesos',
+            name: 'sub-procesos',
+            component: () => import('../views/SubProcesosView.vue'), 
+            meta: { requiresAuth: true }
+        },
+        /*
+        {
           path: '/procesos',
           name: 'procesos',
           component: () => import('../views/ProcesosView.vue'),
           meta: { requiresAuth: true },
           children: [
-            {
-            path: '/sub-procesos',
-            name: 'sub-procesos',
-            component: () => import('../views/SubProcesosView.vue'), 
-            meta: { requiresAuth: true }
-            },
+            
             {
               path: '/prendas-procesos',
               name: 'prendas-procesos',
@@ -116,6 +124,7 @@ const router = createRouter({
             },
           ]
         },
+        */
         {
           path: '/produccion',
           name: 'produccion',
@@ -147,9 +156,16 @@ const router = createRouter({
           name: 'inventario',
           component: () => import('../views/InventarioView.vue'),
           meta: { requiresAuth: true }
-        }
-      ]
+        },
+        {
+          path: '/areas_produccion',
+          name: 'areas_produccion',
+          component: () => import('../views/AreasProduccionView.vue'), 
+          meta: { requiresAuth: true }
+        },
+      ],
     },
+
   ],
 })
 

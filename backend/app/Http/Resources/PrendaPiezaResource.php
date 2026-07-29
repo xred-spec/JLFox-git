@@ -4,9 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\PrendaPiezaResource;
+use App\Http\Resources\TipoPrendaResource;
+use App\Http\Resources\ProcesoResource;
 
-class TipoPrendaResource extends JsonResource
+class PrendaPiezaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +19,8 @@ class TipoPrendaResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'piezas' => PrendaPiezaResource::collection($this->whenLoaded('piezas'))
+            'tipo_prenda' => TipoPrendaResource::make($this->tipo_prenda),
+            'procesos' => ProcesoResource::collection($this->whenLoaded('procesos'))
         ];
     }
 }

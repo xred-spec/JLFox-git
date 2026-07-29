@@ -28,6 +28,11 @@ onMounted(() => {
             @select="toogleSubPage('tipos-prenda')"
             />
 
+            <SubPageButton name="Piezas de prendas" class="mx-2"
+            :selected="selectedSubPage === 'partes-prenda'"
+            @select="toogleSubPage('partes-prenda')"
+            />
+
             <SubPageButton name="Prendas" class="ml-2"
             :selected="selectedSubPage === 'sub-prendas'"
             @select="toogleSubPage('sub-prendas')"

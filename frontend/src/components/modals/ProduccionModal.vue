@@ -187,7 +187,6 @@ watch((selectedPrenda), (newPrenda) => {
 })
 
 watch(allFinish, (allFinished) => {
-    console.log('allFinished')
     if(allFinished) finishLote()
 })
 </script>

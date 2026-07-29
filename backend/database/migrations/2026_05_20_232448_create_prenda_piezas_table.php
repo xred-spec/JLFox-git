@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('procesos', function (Blueprint $table) {
+        Schema::create('prenda_piezas', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
-            $table->enum('area', ['costura', 'plancha', 'fusion', 'manual'])->default('costura');
+            $table->string('nombre');
+            $table->foreignId('tipo_prenda_id')->constrained('tipos_prenda')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('procesos');
+        Schema::dropIfExists('prenda_piezas');
     }
 };

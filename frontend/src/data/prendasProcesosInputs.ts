@@ -7,8 +7,11 @@ export const prendasProcesosInputs: Input[] = [
         type: 'select',
         required: true,
         placeholder: 'Introduzca el tipo...',
-        options: [
-            {label: 'Seleccione una opcion', value: ''},
-        ]
+    },   
+    {
+        label: 'Pieza',
+        modelKey: 'pieza_id',
+        type: 'select',
+        required: true,
     },   
 ]
