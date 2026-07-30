@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\PrendaProceso;
 use App\Models\TipoPrenda;
+use App\Models\PrendaLotePieza;
 
 class PrendaPieza extends Model
 {
@@ -23,5 +24,9 @@ class PrendaPieza extends Model
 
     public function procesos(): HasMany {
         return $this->hasMany(PrendaProceso::class); 
+    }
+
+    public function prenda_lote(): HasMany {
+        return $this->hasMany(PrendaLotePieza::class);
     }
 }

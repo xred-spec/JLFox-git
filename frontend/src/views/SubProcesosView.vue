@@ -24,6 +24,7 @@ const getProcesos = async() => {
 
     if(data.value) {
         procesos.value = data.value
+        console.log('procesos: ', procesos.value)
         return
     }
 

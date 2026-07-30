@@ -6,7 +6,6 @@ const props = defineProps<{
     show: boolean
     modelValue: Record<string, any> | null
 }>()
-console.log('model: ', props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -14,6 +13,7 @@ const emits = defineEmits([
 ])
 
 const selectedPrendaId = ref<number | string>('')
+const selectedPiezaId = ref<number | string>('')
 const cantidadProcesos = ref<number | string>('')
 
 const validateInput = ref(false)
@@ -28,11 +28,21 @@ const selectedPrenda = computed(() => {
     return null
 })
 
+const selectedPieza = computed(() => {
+    const piezas = selectedPrenda.value?.prenda?.tipo_prenda.piezas
+
+    if(piezas && Array.isArray(piezas) && selectedPiezaId.value !== '') {
+        return piezas.find((p:any) => p.id === selectedPiezaId.value)
+    }
+
+    return null
+})
+
 const selectOptions = computed(() => {
     const prendas = props.modelValue?.prendas
 
     if(prendas && Array.isArray(prendas)) {
-        const options = prendas.map((p: any) => ({
+        return prendas.map((p: any) => ({
             label: `${p.prenda.tipo_prenda.nombre} ${p.prenda.color_tela.color}, 
             Talla: ${p.prenda.talla} - 
             Bordado: ${p.prenda.bordado?.forma || 'Sin bordado'} - 
@@ -40,13 +50,19 @@ const selectOptions = computed(() => {
             Cartera: ${p.prenda.tiene_cartera ? 'Con cartera' : 'Sin cartera'}`,
             value: p.prenda.id
         }))
-
-        //console.log('options: ', options)
-        return options
     }
 
     return []  
 })
+
+// Esta es la variable clave donde vive el progreso real de la pieza seleccionada
+const trackingActual = computed(() => {
+    if (!selectedPieza.value || !selectedPrenda.value) return null;
+
+    return selectedPieza.value.prenda_lote.find(
+        (tracking: any) => tracking.prenda_lote_id === selectedPrenda.value.id_prenda_lote
+    );
+});
 
 const allFinish = computed(() => {
     const prendas = props.modelValue?.prendas
@@ -58,72 +74,65 @@ const allFinish = computed(() => {
 
 const closeModal = () => {
     selectedPrendaId.value = ''
+    selectedPiezaId.value = ''
     validateInput.value = false
     emits('close')
 }
-//console.log('model: ', props.modelValue)
 
 const forwardProcess = async (order: number) => {
-        if (!selectedPrenda.value) return;
-        validateInput.value = false
+    if (!trackingActual.value) return;
+    validateInput.value = false
 
-        if (cantidadProcesos.value === '' || cantidadProcesos.value === null) {
-            validateInput.value = true;
-            return;
-        }
+    if (cantidadProcesos.value === '' || cantidadProcesos.value === null) {
+        validateInput.value = true;
+        return;
+    }
 
-        if(cantidadProcesos.value !== '' && cantidadProcesos.value !== null) {
-            const cantidad = Number(cantidadProcesos.value)
+    if(cantidadProcesos.value !== '' && cantidadProcesos.value !== null) {
+        const cantidad = Number(cantidadProcesos.value)
 
-            if(cantidad <= 0 || cantidad > selectedPrenda.value.cantidad_prevista 
-            ) {
-                validateInput.value = true
-                return
-            }
-        }
-
-        const cantidadAEnviar = cantidadProcesos.value !== '' ? Number(cantidadProcesos.value) : null;
-
-        const {data, error} = await useApi(`lotes/process/${selectedPrenda.value.id_prenda_lote}`).put({
-            proceso_actual: order,
-            cantidad_proceso: cantidadAEnviar
-        }).json()
-
-        if(data.value) {
-            //console.log('data: ', data.value)
-            selectedPrenda.value.proceso_actual = order
-            selectedPrenda.value.cantidad_proceso = cantidadAEnviar;
+        if(cantidad <= 0 || cantidad > selectedPrenda.value.cantidad_prevista) {
+            validateInput.value = true
             return
         }
+    }
 
-    if(error.value) {
-        console.log('error: ', error.value)
+    const cantidadAEnviar = cantidadProcesos.value !== '' ? Number(cantidadProcesos.value) : null;
+
+    const {data, error} = await useApi(`lotes/process/${trackingActual.value.id}`).put({
+        proceso_actual: order,
+        cantidad_proceso: cantidadAEnviar
+    }).json()
+
+    if(data.value) {
+        // Actualizamos el tracking, no la pieza general
+        trackingActual.value.proceso_actual = order
+        trackingActual.value.cantidad_proceso = cantidadAEnviar;
         return
     }
+
+    if(error.value) console.log('error: ', error.value)
 }
 
 const backwardProcess = async (order: number) => {
-    if (!selectedPrenda.value) return;
+    if (!trackingActual.value) return;
 
-    const {data, error} = await useApi(`lotes/process/${selectedPrenda.value.id_prenda_lote}`).put({
-            proceso_actual: order,
-            cantidad_proceso: cantidadProcesos.value !== '' ? cantidadProcesos.value : null
-        }).json()
+    const {data, error} = await useApi(`lotes/process/${trackingActual.value.id}`).put({
+        proceso_actual: order,
+        cantidad_proceso: cantidadProcesos.value !== '' ? cantidadProcesos.value : null
+    }).json()
 
-        if(data.value) {
-            //console.log('data: ', data.value)
-            selectedPrenda.value.proceso_actual = order
-            return
-        }
-
-    if(error.value) {
-        console.log('error: ', error.value)
+    if(data.value) {
+        // Actualizamos el tracking
+        trackingActual.value.proceso_actual = order
         return
     }
+
+    if(error.value) console.log('error: ', error.value)
 }
 
 const closeProduction = async() => {
-    if (!selectedPrenda.value) return;
+    if (!trackingActual.value) return;
     validateInput.value = false
 
     if(cantidadProcesos.value === '' || cantidadProcesos.value === null) {
@@ -137,20 +146,18 @@ const closeProduction = async() => {
         return
     }
 
+    // URL corregida al ID del tracking
     const {data, error} = await useApi(`lotes/close-production/${selectedPrenda.value.id_prenda_lote}`).put({
-            cantidad_final: cantidad
-        }).json()
+        cantidad_final: cantidad
+    }).json()
 
-        if(data.value) {
-            //console.log('data: ', data.value)
-            selectedPrenda.value.cantidad_final = cantidad
-            return
-        }
-
-    if(error.value) {
-        console.log('error: ', error.value)
+    if(data.value) {
+        // Actualizamos el tracking
+        selectedPrenda.value.cantidad_final = cantidad
         return
     }
+
+    if(error.value) console.log('error: ', error.value)
 }
 
 const finishLote = async() => {
@@ -167,20 +174,16 @@ const finishLote = async() => {
 }
 
 const findProcess = (index: number) => {
-    if (!selectedPrenda.value) return '-';
+    if (!selectedPieza.value) return '-';
 
-    const process = selectedPrenda.value.prenda.procesos
-    .find((item: any) => item.orden === index)
-
-    //console.log('process: ', process)
-    return process.proceso.nombre || '-'
+    const process = selectedPieza.value.procesos.find((item: any) => item.orden === index)
+    return process?.proceso?.descripcion || '-'
 }
 
-watch((selectedPrenda), (newPrenda) => {
-    console.log('selected: ', selectedPrenda.value)
-
-    if(newPrenda) {
-        cantidadProcesos.value = newPrenda.cantidad_proceso || ''
+// Ahora vigilamos el trackingActual para pintar la cantidad correspondiente a ESA pieza y ESA prenda
+watch(trackingActual, (newTracking) => {
+    if(newTracking) {
+        cantidadProcesos.value = newTracking.cantidad_proceso || ''
     } else {
         cantidadProcesos.value = ''
     }
@@ -212,6 +215,19 @@ watch(allFinish, (allFinished) => {
                     </select>
                 </div>
 
+                <div class="flex items-center w-full mb-2 py-1">
+                    <label class="text-[#000000] font-bold text-lg mb-1">
+                        Pieza: 
+                    </label> 
+
+                    <select v-model="selectedPiezaId" class="bg-[#FFFFFF] w-full py-2 px-2 rounded-[5px] ml-2 font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
+                        <option value="" disabled>Seleccione una opción</option>
+                        <option v-for="op in selectedPrenda?.prenda.tipo_prenda.piezas" :key="op.id" :value="op.id">
+                            {{ op.nombre }}
+                        </option>
+                    </select>
+                </div>
+
                 <div class="grid grid-cols-3 w-full gap-x-2 mb-2">
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad prevista: 
@@ -225,7 +241,7 @@ watch(allFinish, (allFinished) => {
                             Cantidad proceso: 
                         </label>
 
-                        <input type="number" v-model="cantidadProcesos" :disabled="!selectedPrenda || selectedPrenda?.cantidad_final"
+                        <input type="number" v-model="cantidadProcesos" :disabled="!selectedPrenda || trackingActual?.cantidad_final || !selectedPieza"
                         class="flex-1 ml-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF]"
                         :class="validateInput ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'" />
                     </div>
@@ -233,7 +249,7 @@ watch(allFinish, (allFinished) => {
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad final: 
                         <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm">
-                            {{ selectedPrenda?.cantidad_final || '-'}}
+                            {{ trackingActual?.cantidad_final || '-'}}
                         </span>
                     </label>
                 </div>
@@ -245,12 +261,12 @@ watch(allFinish, (allFinished) => {
                         </label>
 
                         <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-base text-[#c41a1a]">
-                            <template v-if="!selectedPrenda || !selectedPrenda.prenda.procesos?.length || !selectedPrenda.proceso_actual || selectedPrenda.proceso_actual <= 1">
+                            <template v-if="!selectedPieza || !selectedPieza?.procesos?.length || !trackingActual?.proceso_actual || trackingActual?.proceso_actual <= 1">
                                 -
                             </template>
 
-                            <template v-else-if="selectedPrenda.proceso_actual > 1">
-                                {{ findProcess(selectedPrenda.proceso_actual - 1) }}
+                            <template v-else>
+                                {{ findProcess(trackingActual.proceso_actual - 1) }}
                             </template>
                         </label>
                     </div>
@@ -261,20 +277,20 @@ watch(allFinish, (allFinished) => {
                         </label>
 
                         <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-base">
-                            <template v-if="!selectedPrenda">
+                            <template v-if="!selectedPieza">
                                 -
                             </template>
 
-                            <template v-else-if="!selectedPrenda.prenda.procesos?.length">
+                            <template v-else-if="!selectedPieza.procesos?.length">
                                 No hay procesos asignados
                             </template>
 
-                            <template v-else-if="!selectedPrenda.proceso_actual">
+                            <template v-else-if="!trackingActual?.proceso_actual">
                                 No se ha iniciado producción
                             </template>
 
                             <template v-else>
-                                {{ findProcess(selectedPrenda.proceso_actual) }}
+                                {{ findProcess(trackingActual.proceso_actual) }}
                             </template>
                         </label>
                     </div>
@@ -285,12 +301,12 @@ watch(allFinish, (allFinished) => {
                         </label>
 
                         <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-base text-[#2630bb]">
-                            <template v-if="!selectedPrenda || !selectedPrenda.prenda.procesos?.length || !selectedPrenda.proceso_actual || selectedPrenda.proceso_actual === selectedPrenda.prenda.procesos.length">
+                            <template v-if="!selectedPieza || !selectedPieza.procesos?.length || !trackingActual?.proceso_actual || trackingActual.proceso_actual >= selectedPieza.procesos.length">
                                 -
                             </template>
 
                             <template v-else>
-                                {{ findProcess(selectedPrenda.proceso_actual + 1) }}
+                                {{ findProcess(trackingActual.proceso_actual + 1) }}
                             </template>
                         </label>
                     </div>
@@ -299,16 +315,16 @@ watch(allFinish, (allFinished) => {
 
             <div class="grid grid-cols-2 w-full gap-x-2 py-2">
                 <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"
-                :disabled="!selectedPrenda?.prenda.procesos?.length || !selectedPrenda?.proceso_actual || selectedPrenda?.proceso_actual <= 1 || selectedPrenda?.cantidad_final"
-                @click="backwardProcess(selectedPrenda?.proceso_actual - 1)">
+                :disabled="!selectedPieza?.procesos?.length || !trackingActual?.proceso_actual || trackingActual?.proceso_actual <= 1 || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final"
+                @click="backwardProcess(trackingActual?.proceso_actual - 1)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-move-left-icon lucide-move-left size-4 mr-1"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
                     Retroceder al proceso anterior
                 </button>
 
                 <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"
-                :disabled="!selectedPrenda?.prenda.procesos?.length || selectedPrenda?.proceso_actual >= selectedPrenda?.prenda.procesos?.length || selectedPrenda?.cantidad_final"
-                @click="forwardProcess((selectedPrenda?.proceso_actual || 0) + 1)"
+                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) >= selectedPieza?.procesos?.length || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final"
+                @click="forwardProcess((trackingActual?.proceso_actual || 0) + 1)"
                 >
                     Avanzar al proceso siguiente
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" 
@@ -318,7 +334,7 @@ watch(allFinish, (allFinished) => {
 
             <div class="flex items-center w-full mb-2">
                 <button class="w-full font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#3bb937] enabled:hover:scale-102 disabled:bg-[#3bb937]/50"
-                :disabled="!selectedPrenda?.proceso_actual || !selectedPrenda?.prenda.procesos?.length || selectedPrenda.proceso_actual < selectedPrenda.prenda.procesos.length || selectedPrenda?.cantidad_final"
+                :disabled="!trackingActual?.proceso_actual || !selectedPieza?.procesos?.length || trackingActual.proceso_actual < selectedPieza.procesos.length || selectedPrenda?.cantidad_final"
                 @click="closeProduction()">
                     Terminar producción
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" 
