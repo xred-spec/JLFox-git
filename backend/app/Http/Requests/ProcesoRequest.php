@@ -25,6 +25,7 @@ class ProcesoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'clave' => 'required|string|min:1',
             'descripcion' => 'required|string|min:1',
             'area' => ['required', Rule::enum(AreaProduccion::class)],
             'pieza_prenda_id' => 'required|integer|exists:prenda_piezas,id'

@@ -21,6 +21,7 @@ const getTiposPrenda = async() => {
 
     if(data.value) {
         tiposPrenda.value = data.value
+        console.log('tiposPrenda: ', tiposPrenda.value)
         return
     }
 
@@ -114,6 +115,7 @@ const openModal = (selected?: any) => {
             <SubPageToogle>
                 <PageTitle 
                 name="Tipos de prendas"
+                :hide-filter="true"
                 @store="openModal()"/>
             </SubPageToogle>
 

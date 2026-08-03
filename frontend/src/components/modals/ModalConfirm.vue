@@ -22,12 +22,12 @@ const emits = defineEmits([
             </h1>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t">
-                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-2 bg-[#c41a1a] cursor-pointer hover:scale-102"
+                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#c41a1a] py-2 bg-[#ffffff] cursor-pointer hover:scale-102 shadow-2xs border border-[#]"
                 @click="emits('close')">
                     Cancelar
                 </button>
 
-                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-2 bg-[#3bb937] cursor-pointer hover:scale-102"
+                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-2 bg-[#c41a1a] cursor-pointer hover:scale-102"
                 @click="emits('confirm')">
                     Confirmar
                 </button>

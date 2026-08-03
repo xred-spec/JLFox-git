@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\Prenda;
+use App\Models\PrendaPieza;
 use App\Models\Proceso;
 
 class PrendaProceso extends Model
@@ -15,13 +15,14 @@ class PrendaProceso extends Model
     protected $table = 'prendas_procesos';
 
     protected $fillable = [
+        'clave',
         'prenda_pieza_id',
         'proceso_id',
         'orden'
     ];
 
     public function prenda(): BelongsTo {
-        return $this->belongsTo(Prenda::class);
+        return $this->belongsTo(PrendaPieza::class);
     }
 
     public function proceso(): BelongsTo {

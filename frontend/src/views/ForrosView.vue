@@ -114,6 +114,7 @@ const openModal = (selected?: any) => {
             <SubPageToogle>
                 <PageTitle 
                 name="Forros"
+                :hide-filter="true"
                 @store="openModal()"/>
             </SubPageToogle>
 

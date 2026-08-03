@@ -85,7 +85,7 @@ const validateInputs = () => {
 
     if(valid) {
         const sendData = {...formData}
-        //console.log('send: ', sendData)
+        console.log('send: ', sendData)
         cleanInputs()
         emits('accept', sendData)
     }

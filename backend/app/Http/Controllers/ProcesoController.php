@@ -44,6 +44,7 @@ class ProcesoController extends Controller
             $order = $pieza->procesos()->count() + 1;
 
             $newPrendaProceso = PrendaProceso::create([
+                'clave' => $data['clave'],
                 'prenda_pieza_id' => $pieza->id,
                 'proceso_id' => $newProceso->id,
                 'orden' => $order

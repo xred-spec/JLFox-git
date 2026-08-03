@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\TipoPrendaResource;
 use App\Http\Resources\ProcesoResource;
+use App\Http\Resources\PrendaLotePiezaResource;
 
 class PrendaPiezaResource extends JsonResource
 {
@@ -20,7 +21,8 @@ class PrendaPiezaResource extends JsonResource
             'id' => $this->id,
             'nombre' => $this->nombre,
             'tipo_prenda' => TipoPrendaResource::make($this->tipo_prenda),
-            'procesos' => ProcesoResource::collection($this->whenLoaded('procesos'))
+            'procesos' => PrendaProcesoResource::collection($this->whenLoaded('procesos')),
+            'prenda_lote' => $this->prenda_lote
         ];
     }
 }

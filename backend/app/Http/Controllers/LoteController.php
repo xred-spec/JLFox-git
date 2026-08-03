@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Lote;
+use App\Models\Prenda;
 use App\Models\PrendaLote;
+use App\Models\PrendaLotePieza;
 use App\Models\InventarioPrenda;
 use App\Http\Requests\LoteRequest;
 use App\Http\Resources\LoteResource;
@@ -19,7 +21,7 @@ class LoteController extends Controller
 
     public function indexPendientes()
     {
-        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'pendiente')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'pendiente')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -31,7 +33,7 @@ class LoteController extends Controller
 
     public function indexProduccion()
     {
-        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'produccion')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'produccion')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -43,7 +45,7 @@ class LoteController extends Controller
 
     public function indexTerminados()
     {
-        $lotes = Lote::with('prendas_lote.prenda.prenda_procesos')->where('estado', 'terminado')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'terminado')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -65,21 +67,32 @@ class LoteController extends Controller
                 'fecha_final' => $request->fecha_final,
             ]);
 
-            $prendas = $request->prendas;
-            $insertData = [];
-
-            foreach($prendas as $prenda) {
-                $insertData[] = [
+            foreach($request->prendas as $prendaReq) {
+                $prendaLote = PrendaLote::create([
                     'lote_id' => $newLote->id,
-                    'prenda_id' => $prenda['prenda_id'],
-                    'cantidad_prevista' => $prenda['cantidad'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            }
+                    'prenda_id' => $prendaReq['prenda_id'],
+                    'cantidad_prevista' => $prendaReq['cantidad'],
+                    'cantidad_final' => $newLote->estado === 'terminado' ? $prendaReq['cantidad'] : null,
+                ]);
 
-            if(!empty($insertData)) {
-                PrendaLote::insert($insertData);
+                $prendaCatalogo = Prenda::with('tipo_prenda.piezas')->findOrFail($prendaReq['prenda_id']);
+                $piezasInsert = [];
+
+                
+                foreach($prendaCatalogo->tipo_prenda->piezas as $pieza) {
+                    $piezasInsert[] = [
+                        'prenda_lote_id' => $prendaLote->id,
+                        'prenda_pieza_id' => $pieza->id,
+                        'proceso_actual' => null, 
+                        'cantidad_proceso' => null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+
+                if(!empty($piezasInsert)) {
+                    PrendaLotePieza::insert($piezasInsert);
+                }
             }
 
             return $newLote;
@@ -89,7 +102,7 @@ class LoteController extends Controller
 
         return $this->successResponse(
             $resource,
-            'Lote y prendas creados correctamente',
+            'Lote y desglose de piezas creados correctamente',
             201
         );
     }
@@ -179,6 +192,30 @@ class LoteController extends Controller
             $resource,
             'Estado del lote actualizado correctamente',
             200
+        );$request->validate([
+            'estado' => 'required|string|min:1',
+        ]);
+        $state = $request->estado;
+
+        $lote = Lote::findOrFail($id);
+
+        $insertData = [
+            'estado' => $state
+        ];
+
+        if($state === 'produccion' && is_null($lote->fecha_inicio)) {
+            $insertData['fecha_inicio'] = now();
+        } else if($state === 'terminado' && is_null($lote->fecha_final)) {
+            $insertData['fecha_final'] = now();
+        }
+
+        $lote->update($insertData);
+        $resource = LoteResource::make($lote);
+
+        return $this->successResponse(
+            $resource,
+            'Estado del lote actualizado correctamente',
+            200
         );
     } 
 
@@ -188,15 +225,16 @@ class LoteController extends Controller
             'cantidad_proceso' => 'nullable|integer'
         ]);
 
-        $prendaLote = PrendaLote::findOrFail($id);
-        $prendaLote->proceso_actual = $newProcess['proceso_actual'];
-        $prendaLote->cantidad_proceso = $newProcess['cantidad_proceso'];
-        $prendaLote->save();
+        
+        $trackingPieza = PrendaLotePieza::findOrFail($id);
+        
+        $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
+        $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+        $trackingPieza->save();
 
-        $resource = $prendaLote;
         return $this->successResponse(
-            $resource,
-            'Proceso actual ctualizado',
+            $trackingPieza,
+            'Proceso de la pieza actualizado',
             200
         );
     }

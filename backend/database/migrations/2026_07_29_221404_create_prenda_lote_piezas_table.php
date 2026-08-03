@@ -11,17 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prendas_procesos', function (Blueprint $table) {
+        Schema::create('prenda_lote_piezas', function (Blueprint $table) {
             $table->id();
-            $table->string('clave');
+            $table->foreignId('prenda_lote_id')->constrained('prendas_lote')->onDelete('cascade');
             $table->foreignId('prenda_pieza_id')->constrained('prenda_piezas')->onDelete('cascade');
-            $table->foreignId('proceso_id')->constrained('procesos')->onDelete('cascade');
-            $table->integer('orden');
+            $table->integer('proceso_actual')->nullable();
+            $table->integer('cantidad_proceso')->nullable();
             $table->timestamps();
-
-            $table->unique([
-                'prenda_pieza_id', 'proceso_id'
-            ], 'prenda_proceso_unique');
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prendas_procesos');
+        Schema::dropIfExists('prenda_lote_piezas');
     }
 };
