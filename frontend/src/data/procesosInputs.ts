@@ -3,6 +3,13 @@ import type { Input } from "@/interfaces/FormInput";
 export const procesosInputs: Input[] = [
 
     {
+        label: 'Clave',
+        modelKey: 'clave',
+        type: 'text',
+        required: true,
+        placeholder: 'Introduzca la clave...'
+    },
+    {
         label: 'Tipo de prenda',
         modelKey: 'tipo_prenda_id',
         type: 'select',

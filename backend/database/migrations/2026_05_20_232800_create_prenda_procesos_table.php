@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('prendas_procesos', function (Blueprint $table) {
             $table->id();
+            $table->string('clave');
             $table->foreignId('prenda_pieza_id')->constrained('prenda_piezas')->onDelete('cascade');
             $table->foreignId('proceso_id')->constrained('procesos')->onDelete('cascade');
             $table->integer('orden');

@@ -31,6 +31,17 @@ export const prendasInputs: Input[] = [
             {label: 'Seleccione una opción', value: ''},
         ]
     },
+    /*
+    {
+        label: 'Modelo',
+        modelKey: 'talla',
+        type: 'select',
+        required: true,
+        options: [
+            {label: 'Rodeo', value: 1}
+        ]
+    },
+    */
     {
         label: 'Tipo y clor de tela',
         modelKey: 'color_tela_id',

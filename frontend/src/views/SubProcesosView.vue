@@ -44,7 +44,7 @@ const fetchSelects = async() => {
         inputTiposPrenda.options = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
             label: tipoPrenda.nombre,
             value: tipoPrenda.id,
-            piezas: tipoPrenda.piezas
+            piezas: tipoPrenda.piezas,
         }))
     }
 }
@@ -56,6 +56,7 @@ const storeProceso = async(formData: any) => {
     if(formData.id) {
         const {data, error} = await useApi(`procesos/${formData.id}`).put(
             {
+                clave: formData.clave,
                 area: formData.area,
                 descripcion: formData.descripcion,
                 pieza_prenda_id: formData.pieza_prenda_id
@@ -75,6 +76,7 @@ const storeProceso = async(formData: any) => {
     } else {
         const {data, error} = await useApi('procesos').post(
             {
+                clave: formData.clave,
                 area: formData.area,
                 descripcion: formData.descripcion,
                 pieza_prenda_id: formData.pieza_prenda_id

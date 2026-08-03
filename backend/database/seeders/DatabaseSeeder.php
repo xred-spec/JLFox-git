@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolSeeder::class,
             UsuarioSeeder::class,
+            TipoTelaSeeder::class,
+            ColorTelaSeeder::class,
+            TipoPrendaSeeder::class,
+            ProcesoSeeder::class,
+            PrendaPiezaSeeder::class,
+            PrendaProcesoSeeder::class,
         ]);
     }
 }

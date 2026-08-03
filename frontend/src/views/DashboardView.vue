@@ -34,11 +34,11 @@ onMounted(() => {
     @confirm="logout()"
     />
 
-    <div class="flex min-w-screen min-h-screen">
+    <div class="flex w-screen h-screen overflow-hidden">
         <Sidebar />
 
-        <div class="flex flex-col flex-1 bg-[#e4e4e4]">
-            <div class="header flex items-center justify-end min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
+        <div class="flex flex-col flex-1 min-w-0 bg-[#e4e4e4]">
+            <div class="header shrink-0 flex items-center justify-end min-h-14 bg-[#000000] border-b-2 border-[#ac7b3a] py-2 px-5">
 
                 <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a]"
                 @click="showModal">
@@ -48,7 +48,7 @@ onMounted(() => {
                 </button>
             </div>
 
-            <div class="flex px-5 py-2 items-start justify-center size-full">
+            <div class="flex-1 overflow-auto px-5 py-2">
                 <RouterView />
             </div>
         </div>

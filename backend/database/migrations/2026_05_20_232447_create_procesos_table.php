@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('procesos', function (Blueprint $table) {
             $table->id();
+            //$table->string('clave);
             $table->string('descripcion');
             $table->enum('area', ['costura', 'plancha', 'fusion', 'manual'])->default('costura');
             $table->timestamps();
