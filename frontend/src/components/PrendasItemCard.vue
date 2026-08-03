@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { Column } from '@/interfaces/DataColumn';
+import ModalConfirm from './modals/ModalConfirm.vue';
 
 const expanded = ref(false)
+const modalOpened = ref(false)
 
 const props = defineProps <{
     item: Record<string, any>
@@ -37,6 +39,13 @@ const emits = defineEmits<{
 </script>
 
 <template>
+    <ModalConfirm 
+    :show="modalOpened"
+    :text="'¿Eliminar registro?'"
+    @confirm="emits('delete', props.item.id)"
+    @close="modalOpened = false"
+    />
+
     <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs"> 
         <div v-if="!expanded" class="flex w-full justify-start items-center px-5 py-1">
             <div class="bg-[#c41a1a] flex items-center justify-center rounded-[10px] py-0.5 px-2 mr-2">
@@ -99,7 +108,7 @@ const emits = defineEmits<{
                         </button>
 
                         <button class="flex py-1 px-4 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                        @click="emits('delete', props.item.id)">
+                        @click="modalOpened = true">
                             Eliminar
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-trash2-icon lucide-trash-2 size-3 ml-1"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
