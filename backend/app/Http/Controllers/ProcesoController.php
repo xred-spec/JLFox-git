@@ -17,7 +17,7 @@ class ProcesoController extends Controller
      */
     public function index()
     {
-        $procesos = Proceso::paginate(15);
+        $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->paginate(15);
         $resource = ProcesoResource::collection($procesos);
 
         return $this->successResponse(

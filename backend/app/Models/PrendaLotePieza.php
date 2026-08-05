@@ -15,7 +15,9 @@ class PrendaLotePieza extends Model
         'prenda_lote_id',
         'prenda_pieza_id',
         'proceso_actual',
-        'cantidad_proceso'
+        'cantidad_proceso',
+        'hora_inicio',
+        'hora_final'
     ];
 
     public function pieza(): BelongsTo {

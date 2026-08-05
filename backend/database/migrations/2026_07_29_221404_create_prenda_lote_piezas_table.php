@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('prenda_pieza_id')->constrained('prenda_piezas')->onDelete('cascade');
             $table->integer('proceso_actual')->nullable();
             $table->integer('cantidad_proceso')->nullable();
+            $table->integer('cantidad_final_pieza')->nullable();
+            $table->time('hora_inicio')->nullable();
+            $table->time('hora_final')->nullable();
+            $table->time('tiempo_produccion_final')->nullable();
             $table->timestamps();
         });
     }

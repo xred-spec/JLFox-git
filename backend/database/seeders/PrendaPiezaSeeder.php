@@ -15,16 +15,14 @@ class PrendaPiezaSeeder extends Seeder
     {
         //Saco {
             PrendaPieza::firstOrCreate(['nombre' => 'Delantero', 'tipo_prenda_id' => 1]); //id: 1
-            PrendaPieza::firstOrCreate(['nombre' => 'Espalda', 'tipo_prenda_id' => 1]); //id: 2
-            PrendaPieza::firstOrCreate(['nombre' => 'Cuello', 'tipo_prenda_id' => 1]); //id: 3
-            PrendaPieza::firstOrCreate(['nombre' => 'Tapa', 'tipo_prenda_id' => 1]); //id: 4
-            PrendaPieza::firstOrCreate(['nombre' => 'Manga menor', 'tipo_prenda_id' => 1]); //id: 5
-            PrendaPieza::firstOrCreate(['nombre' => 'Manga mayor', 'tipo_prenda_id' => 1]); //id: 6
+            PrendaPieza::firstOrCreate(['nombre' => 'Mangas', 'tipo_prenda_id' => 1]); //id: 2
+            PrendaPieza::firstOrCreate(['nombre' => 'Cartera', 'tipo_prenda_id' => 1]); //id: 3
+            PrendaPieza::firstOrCreate(['nombre' => 'Bata', 'tipo_prenda_id' => 1]); //id: 4
+            PrendaPieza::firstOrCreate(['nombre' => 'Espalda', 'tipo_prenda_id' => 1]); //id: 5
+            PrendaPieza::firstOrCreate(['nombre' => 'Cuello / Tapa', 'tipo_prenda_id' => 1]); //id: 6
             PrendaPieza::firstOrCreate(['nombre' => 'Vista', 'tipo_prenda_id' => 1]); //id: 7
-            PrendaPieza::firstOrCreate(['nombre' => 'Vivos', 'tipo_prenda_id' => 1]); //id: 8
-            PrendaPieza::firstOrCreate(['nombre' => 'Cartera', 'tipo_prenda_id' => 1]); //id: 9
-            PrendaPieza::firstOrCreate(['nombre' => 'Batas', 'tipo_prenda_id' => 1]); //id: 10
-            PrendaPieza::firstOrCreate(['nombre' => 'Costadillo', 'tipo_prenda_id' => 1]); //id: 11
+            PrendaPieza::firstOrCreate(['nombre' => 'Cuerpo', 'tipo_prenda_id' => 1]); //id: 8
+            PrendaPieza::firstOrCreate(['nombre' => 'Saco', 'tipo_prenda_id' => 1]); //id: 9
         //}
     }
 }

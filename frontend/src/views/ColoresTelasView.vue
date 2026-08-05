@@ -146,7 +146,7 @@ const openModal = (selected?: any) => {
                     <ItemCard v-for="c in coloresTela.data"
                     :grids="4"
                     :item="c"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex
                     :columns="coloresTelaColumns"
                     :show="true"
                     @update="openModal(c)"

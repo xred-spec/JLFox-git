@@ -8,7 +8,8 @@ export const prendasInputs: Input[] = [
         required: true,
         placeholder: 'Introduzca el tipo...',
         options: [
-            {label: 'Adulto', value: 'adulto'},
+            {label: 'Hombre', value: 'hombre'},
+            {label: 'Mujer', value: 'mujer'},
             {label: 'Niño', value: 'niño'},
         ]
     },

@@ -75,7 +75,7 @@ const validateInputs = () => {
         let invalidTalla = false
 
         if(formData.tipo === 'niño' && talla > 18) invalidTalla = true
-        else if (formData.tipo === 'adulto' && talla < 30) invalidTalla = true
+        else if ((formData.tipo === 'hombre' && talla < 30) || (formData.tipo === 'mujer' && talla < 30)) invalidTalla = true
         else if ((talla > 18 && talla < 30) || talla % 2 != 0 || talla > 50 || talla < 2) invalidTalla = true
 
         if(invalidTalla) {

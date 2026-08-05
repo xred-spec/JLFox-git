@@ -121,7 +121,6 @@ const validateInputs = () => {
                     :required="i.required"
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a]">
                         <option value="" disabled>Seleccione una opción</option>
-                        <!-- AQUÍ REEMPLAZAMOS i.options POR NUESTRA FUNCIÓN INTELIGENTE getOptions(i) -->
                         <option v-for="o in getOptions(i)" :key="o.value" :value="o.value">
                             {{ o.label }}
                         </option>

@@ -72,7 +72,7 @@ class LoteController extends Controller
                     'lote_id' => $newLote->id,
                     'prenda_id' => $prendaReq['prenda_id'],
                     'cantidad_prevista' => $prendaReq['cantidad'],
-                    'cantidad_final' => $newLote->estado === 'terminado' ? $prendaReq['cantidad'] : null,
+                    'cantidad_final_prenda' => $newLote->estado === 'terminado' ? $prendaReq['cantidad'] : null,
                 ]);
 
                 $prendaCatalogo = Prenda::with('tipo_prenda.piezas')->findOrFail($prendaReq['prenda_id']);
@@ -222,14 +222,17 @@ class LoteController extends Controller
     public function updateCurrentProcess(Request $request, string $id) {
         $newProcess = $request->validate([
             'proceso_actual' => 'required|integer|min:1',
-            'cantidad_proceso' => 'nullable|integer'
+            'cantidad_proceso' => 'nullable|integer',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_final' => 'required|date_format:H:i|after:hora_inicio'
         ]);
-
         
         $trackingPieza = PrendaLotePieza::findOrFail($id);
         
         $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
         $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+        $trackingPieza->hora_inicio = $newProcess['hora_inicio'];
+        $trackingPieza->hora_final = $newProcess['hora_final'];
         $trackingPieza->save();
 
         return $this->successResponse(
@@ -239,14 +242,35 @@ class LoteController extends Controller
         );
     }
 
+    public function closePieceProduction(Request $request, string $id) {
+        $request->validate([
+            'cantidad_final_pieza' => 'required|integer'
+        ]);
+
+        $prendaLotePieza = DB::transaction(function () use ($request, $id) {
+            $piezaLote = PrendaLotePieza::findOrFail($id);
+            $piezaLote->cantidad_final_pieza = $request->cantidad_final_pieza;
+            $piezaLote->save();
+
+            return $piezaLote;
+        });
+
+        $resource = $prendaLotePieza;
+        return $this->successResponse(
+            $resource,
+            'Producción de pieza terminada',
+            200
+        );
+    }
+
     public function closeProduction(Request $request, string $id) {
         $request->validate([
-            'cantidad_final' => 'required|integer',
+            'cantidad_final_prenda' => 'required|integer',
         ]);
 
         $prendaLote = DB::transaction(function () use ($request, $id) {
             $lote = PrendaLote::findOrFail($id);
-            $lote->cantidad_final = $request->cantidad_final; 
+            $lote->cantidad_final_prenda = $request->cantidad_final_prenda; 
             $lote->save();
 
             $inventarioPrenda = InventarioPrenda::firstOrNew(['prenda_id' => $lote->prenda_id]);

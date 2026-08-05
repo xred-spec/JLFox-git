@@ -22,7 +22,7 @@ class PrendaProceso extends Model
     ];
 
     public function prenda(): BelongsTo {
-        return $this->belongsTo(PrendaPieza::class);
+        return $this->belongsTo(PrendaPieza::class, 'prenda_pieza_id');
     }
 
     public function proceso(): BelongsTo {
