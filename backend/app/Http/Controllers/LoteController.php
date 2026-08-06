@@ -223,12 +223,40 @@ class LoteController extends Controller
         $newProcess = $request->validate([
             'proceso_actual' => 'required|integer|min:1',
             'cantidad_proceso' => 'nullable|integer',
+            'tiempo_realizado_hora' => 'nullable|integer',
+            'tiempo_realizado_minuto' => 'nullable|integer',
+            'tiempo_realizado_segundo' => 'nullable|integer'
         ]);
         
         $trackingPieza = PrendaLotePieza::findOrFail($id);
         
         $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
         $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+
+        $hReal = $newProcess['tiempo_realizado_hora'] ?? 0;
+        $mReal = $newProcess['tiempo_realizado_minuto'] ?? 0;
+        $sReal = $newProcess['tiempo_realizado_segundo'] ?? 0;
+
+        $trackingPieza->tiempo_realizado_hora = $newProcess['tiempo_realizado_hora'];
+        $trackingPieza->tiempo_realizado_minuto = $newProcess['tiempo_realizado_minuto'];
+        $trackingPieza->tiempo_realizado_segundo = $newProcess['tiempo_realizado_segundo'];
+
+        $hFinalActual = $trackingPieza->tiempo_final_hora ?? 0;
+        $mFinalActual = $trackingPieza->tiempo_final_minuto ?? 0;
+        $sFinalActual = $trackingPieza->tiempo_final_segundo ?? 0;
+
+        $totalSegundosNuevos = ($hReal * 3600) + ($mReal * 60) + $sReal;
+        $totalSegundosHistoricos = ($hFinalActual * 3600) + ($mFinalActual * 60) + $sFinalActual;
+
+        $granTotalSegundos = $totalSegundosHistoricos + $totalSegundosNuevos;
+
+        $trackingPieza->tiempo_final_hora = floor($granTotalSegundos / 3600);
+        $trackingPieza->tiempo_final_minuto = floor(($granTotalSegundos % 3600) / 60);
+        $trackingPieza->tiempo_final_segundo = $granTotalSegundos % 60;
+
+        $trackingPieza->tiempo_final_hora = $trackingPieza->tiempo_final_hora ? ($trackingPieza->tiempo_final_hora + $newProcess['tiempo_realizado_hora']) : $newProcess['tiempo_realizado_hora'];
+        $trackingPieza->tiempo_final_minuto = $trackingPieza->tiempo_final_minuto ? ($trackingPieza->tiempo_final_minuto + $newProcess['tiempo_realizado_minuto']) : $newProcess['tiempo_realizado_minuto'];
+        $trackingPieza->tiempo_final_segundo = $trackingPieza->tiempo_final_segundo ? ($trackingPieza->tiempo_final_segundo + $newProcess['tiempo_realizado_segundo']) : $newProcess['tiempo_realizado_segundo'];
         $trackingPieza->save();
 
         return $this->successResponse(
