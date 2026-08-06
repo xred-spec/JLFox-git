@@ -72,7 +72,7 @@ class LoteController extends Controller
                     'lote_id' => $newLote->id,
                     'prenda_id' => $prendaReq['prenda_id'],
                     'cantidad_prevista' => $prendaReq['cantidad'],
-                    'cantidad_final' => $newLote->estado === 'terminado' ? $prendaReq['cantidad'] : null,
+                    'cantidad_final_prenda' => $newLote->estado === 'terminado' ? $prendaReq['cantidad'] : null,
                 ]);
 
                 $prendaCatalogo = Prenda::with('tipo_prenda.piezas')->findOrFail($prendaReq['prenda_id']);
@@ -222,14 +222,41 @@ class LoteController extends Controller
     public function updateCurrentProcess(Request $request, string $id) {
         $newProcess = $request->validate([
             'proceso_actual' => 'required|integer|min:1',
-            'cantidad_proceso' => 'nullable|integer'
+            'cantidad_proceso' => 'nullable|integer',
+            'tiempo_realizado_hora' => 'nullable|integer',
+            'tiempo_realizado_minuto' => 'nullable|integer',
+            'tiempo_realizado_segundo' => 'nullable|integer'
         ]);
-
         
         $trackingPieza = PrendaLotePieza::findOrFail($id);
         
         $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
         $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+
+        $hReal = $newProcess['tiempo_realizado_hora'] ?? 0;
+        $mReal = $newProcess['tiempo_realizado_minuto'] ?? 0;
+        $sReal = $newProcess['tiempo_realizado_segundo'] ?? 0;
+
+        $trackingPieza->tiempo_realizado_hora = $newProcess['tiempo_realizado_hora'];
+        $trackingPieza->tiempo_realizado_minuto = $newProcess['tiempo_realizado_minuto'];
+        $trackingPieza->tiempo_realizado_segundo = $newProcess['tiempo_realizado_segundo'];
+
+        $hFinalActual = $trackingPieza->tiempo_final_hora ?? 0;
+        $mFinalActual = $trackingPieza->tiempo_final_minuto ?? 0;
+        $sFinalActual = $trackingPieza->tiempo_final_segundo ?? 0;
+
+        $totalSegundosNuevos = ($hReal * 3600) + ($mReal * 60) + $sReal;
+        $totalSegundosHistoricos = ($hFinalActual * 3600) + ($mFinalActual * 60) + $sFinalActual;
+
+        $granTotalSegundos = $totalSegundosHistoricos + $totalSegundosNuevos;
+
+        $trackingPieza->tiempo_final_hora = floor($granTotalSegundos / 3600);
+        $trackingPieza->tiempo_final_minuto = floor(($granTotalSegundos % 3600) / 60);
+        $trackingPieza->tiempo_final_segundo = $granTotalSegundos % 60;
+
+        $trackingPieza->tiempo_final_hora = $trackingPieza->tiempo_final_hora ? ($trackingPieza->tiempo_final_hora + $newProcess['tiempo_realizado_hora']) : $newProcess['tiempo_realizado_hora'];
+        $trackingPieza->tiempo_final_minuto = $trackingPieza->tiempo_final_minuto ? ($trackingPieza->tiempo_final_minuto + $newProcess['tiempo_realizado_minuto']) : $newProcess['tiempo_realizado_minuto'];
+        $trackingPieza->tiempo_final_segundo = $trackingPieza->tiempo_final_segundo ? ($trackingPieza->tiempo_final_segundo + $newProcess['tiempo_realizado_segundo']) : $newProcess['tiempo_realizado_segundo'];
         $trackingPieza->save();
 
         return $this->successResponse(
@@ -239,14 +266,35 @@ class LoteController extends Controller
         );
     }
 
+    public function closePieceProduction(Request $request, string $id) {
+        $request->validate([
+            'cantidad_final_pieza' => 'required|integer'
+        ]);
+
+        $prendaLotePieza = DB::transaction(function () use ($request, $id) {
+            $piezaLote = PrendaLotePieza::findOrFail($id);
+            $piezaLote->cantidad_final_pieza = $request->cantidad_final_pieza;
+            $piezaLote->save();
+
+            return $piezaLote;
+        });
+
+        $resource = $prendaLotePieza;
+        return $this->successResponse(
+            $resource,
+            'Producción de pieza terminada',
+            200
+        );
+    }
+
     public function closeProduction(Request $request, string $id) {
         $request->validate([
-            'cantidad_final' => 'required|integer',
+            'cantidad_final_prenda' => 'required|integer',
         ]);
 
         $prendaLote = DB::transaction(function () use ($request, $id) {
             $lote = PrendaLote::findOrFail($id);
-            $lote->cantidad_final = $request->cantidad_final; 
+            $lote->cantidad_final_prenda = $request->cantidad_final_prenda; 
             $lote->save();
 
             $inventarioPrenda = InventarioPrenda::firstOrNew(['prenda_id' => $lote->prenda_id]);

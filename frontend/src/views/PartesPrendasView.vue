@@ -147,7 +147,7 @@ const openModal = (selected?: any) => {
                     <ItemCard v-for="f in piezas.data"
                     :grids="4"
                     :item="f"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex
                     :columns="piezasPrendasColumns"
                     :show="true"
                     @update="openModal(f)"

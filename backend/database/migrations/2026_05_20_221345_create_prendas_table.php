@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prendas', function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo', ['adulto', 'niño'])->default('adulto');
+            $table->enum('tipo', ['hombre', 'mujer', 'niño'])->default('hombre');
             $table->integer('talla');
             $table->boolean('tiene_cartera')->default(false);
 

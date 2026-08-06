@@ -184,7 +184,7 @@ const openModal = (selected?: any) => {
             class="flex flex-col size-full justify-start items-center">
                     <PrendasItemCard v-for="p in prendas.data"
                     :item="p"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex
                     :columns="prendasColumns"
                     :show="true"
                     @update="openModal(p)"

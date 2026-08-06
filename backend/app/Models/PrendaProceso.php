@@ -18,11 +18,14 @@ class PrendaProceso extends Model
         'clave',
         'prenda_pieza_id',
         'proceso_id',
-        'orden'
+        'orden',
+        'tiempo_previsto_hora',
+        'tiempo_previsto_minuto',
+        'tiempo_previsto_segundo',
     ];
 
     public function prenda(): BelongsTo {
-        return $this->belongsTo(PrendaPieza::class);
+        return $this->belongsTo(PrendaPieza::class, 'prenda_pieza_id');
     }
 
     public function proceso(): BelongsTo {

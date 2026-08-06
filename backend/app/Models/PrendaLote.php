@@ -18,7 +18,7 @@ class PrendaLote extends Model
 
     protected $fillable = [
         'cantidad_prevista',
-        'cantidad_final',
+        'cantidad_final_prenda',
         'lote_id',
         'prenda_id',
     ];

@@ -130,7 +130,7 @@ const openModal = (selected?: any) => {
                     <ItemCard v-for="f in tiposTela.data"
                     :grids="3"
                     :item="f"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex
                     :columns="tiposTelasColumns"
                     :show="true"
                     @update="openModal(f)"

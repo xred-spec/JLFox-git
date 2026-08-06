@@ -36,7 +36,7 @@ async function handleLogin() {
 
     if(data.value) {
         authStore.setSession(data.value.data.token, data.value.data.user)
-        router.push('/dashboard')
+        router.push({ name: 'bordados' })
     }
 }
 </script>
