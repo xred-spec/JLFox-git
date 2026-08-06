@@ -223,16 +223,12 @@ class LoteController extends Controller
         $newProcess = $request->validate([
             'proceso_actual' => 'required|integer|min:1',
             'cantidad_proceso' => 'nullable|integer',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_final' => 'required|date_format:H:i|after:hora_inicio'
         ]);
         
         $trackingPieza = PrendaLotePieza::findOrFail($id);
         
         $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
         $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
-        $trackingPieza->hora_inicio = $newProcess['hora_inicio'];
-        $trackingPieza->hora_final = $newProcess['hora_final'];
         $trackingPieza->save();
 
         return $this->successResponse(

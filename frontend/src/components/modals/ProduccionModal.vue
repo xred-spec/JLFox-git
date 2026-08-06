@@ -16,12 +16,11 @@ const selectedPrendaId = ref<number | string>('')
 const selectedPiezaId = ref<number | string>('')
 const cantidadProcesos = ref<number | string>('')
 
-const horaInicio = ref<number | string>('')
-const horaFinal = ref<number | string>('')
+const tiempoHoras = ref('')
+const tiempoMin = ref('')
+const tiempoSeg = ref('')
 
 const validateInput = ref(false)
-const validateInputHoraIni = ref(false)
-const validateInputHoraFin = ref(false)
 
 const selectedPrenda = computed(() => {
     const prendas = props.modelValue?.prendas
@@ -114,16 +113,6 @@ const forwardProcess = async (order: number) => {
         return;
     }
 
-    if(horaInicio.value === '' || horaInicio.value === null) {
-        validateInputHoraIni.value = true;
-        return;
-    }
-
-    if(horaFinal.value === '' || horaFinal.value === null) {
-        validateInputHoraFin.value = true;
-        return;
-    }
-
     if(cantidadProcesos.value !== '' && cantidadProcesos.value !== null) {
         const cantidad = Number(cantidadProcesos.value)
 
@@ -134,25 +123,15 @@ const forwardProcess = async (order: number) => {
     }
 
     const cantidadAEnviar = cantidadProcesos.value !== '' ? Number(cantidadProcesos.value) : null;
-    const horaIniSend = horaInicio.value !== '' ? horaInicio.value : null
-    const horaFinSend = horaFinal.value !== '' ? horaFinal.value : null
 
     const {data, error} = await useApi(`lotes/process/${trackingActual.value.id}`).put({
         proceso_actual: order,
         cantidad_proceso: cantidadAEnviar,
-        hora_inicio: horaIniSend,
-        hora_final: horaFinSend
     }).json()
 
     if(data.value) {
-        // Actualizamos el tracking, no la pieza general
         trackingActual.value.proceso_actual = order
         trackingActual.value.cantidad_proceso = cantidadAEnviar;
-        trackingActual.value.hora_inicio = horaIniSend
-        trackingActual.value.hora_final = horaFinSend
-
-        horaInicio.value = horaFinal.value = ''
-        validateInput.value = validateInputHoraFin.value = validateInputHoraIni.value = false
         return
     }
 
@@ -257,13 +236,29 @@ const findProcess = (index: number) => {
     if (!selectedPieza.value) return '-';
 
     const process = selectedPieza.value.procesos.find((item: any) => item.orden === index)
-    return process?.proceso?.descripcion || '-'
+    return process?.clave || '-'
+}
+
+const findTimes = (index: number, time: string) => {
+    if (!selectedPieza.value) return '-';
+
+    const process = selectedPieza.value.procesos.find((item: any) => item.orden === index)
+    if(!process) return '00'
+
+    let valor = 0
+
+    if(time === 'hora') valor = process?.tiempo_previsto_hora 
+    else if(time === 'minuto') valor = process?.tiempo_previsto_minuto 
+    else if(time === 'segundo') valor = process?.tiempo_previsto_segundo
+
+    return String(valor ?? 0).padStart(2, '0')
 }
 
 watch(trackingActual, (newTracking) => {
     if(newTracking) {
         cantidadProcesos.value = newTracking.cantidad_proceso || ''
         console.log('tracking: ', trackingActual.value)
+        console.log('selectedPieza: ', selectedPieza.value)
     } else {
         cantidadProcesos.value = ''
     }
@@ -401,29 +396,35 @@ console.log('prendaModel: ', props.modelValue)
                         </label>
                     </div>
                 </div>
-            </div>            
 
-            <div class="grid grid-cols-2 w-full gap-x-2 py-2">
-                <div class="flex">
-                        <label class="text-[#000000] font-bold text-lg mb-1 text-center">
-                            Hora de inicio: 
+                <div class="flex-col justify-center py-2">
+                    <div class="flex w-full items-center py-2 justify-between">
+                        <label class="text-[#000000] font-bold">
+                            Tiempo previsto: 
                         </label>
 
-                        <input type="time" v-model="horaInicio" :disabled="!selectedPrenda || trackingActual?.cantidad_final || !selectedPieza || trackingActual?.cantidad_final_pieza"
-                        class="flex-1 ml-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:bg-[#e0e0e0]"
-                        :class="validateInputHoraIni ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'" />
-                    </div>
-
-                    <div class="flex">
-                        <label class="text-[#000000] font-bold text-lg mb-1 text-center">
-                            Hora de final: 
+                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1">
+                            <span class="text-[#c41a1a] px-2">{{ findTimes(trackingActual?.proceso_actual, 'hora') }}</span> Hora(s)
                         </label>
 
-                        <input type="time" v-model="horaFinal" :disabled="!selectedPrenda || trackingActual?.cantidad_final || !selectedPieza || trackingActual?.cantidad_final_pieza"
-                        class="flex-1 ml-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:bg-[#e0e0e0]"
-                        :class="validateInputHoraFin ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'" />
+                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1">
+                            <span class="text-[#c41a1a] px-2">{{ findTimes(trackingActual?.proceso_actual, 'minuto') }}</span> Minuto(s)
+                        </label>
+
+                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1">
+                            <span class="text-[#c41a1a] px-2">{{ findTimes(trackingActual?.proceso_actual, 'segundo') }}</span> Segundo(s)
+                        </label>
                     </div>
-            </div>
+
+                    <div class="flex w-full items-center py-2">
+                        <label class="text-[#000000] font-bold">
+                            Tiempo realizado: 
+                        </label>
+
+                        
+                    </div>
+                </div>
+            </div>       
 
             <div class="grid grid-cols-2 w-full gap-x-2 py-2">
                 <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"

@@ -13,8 +13,9 @@ class TipoPrendaSeeder extends Seeder
      */
     public function run(): void
     {
-        TipoPrenda::firstOrCreate(['nombre' => 'Saco']); //id: 1
-        TipoPrenda::firstOrCreate(['nombre' => 'Camisa']); //id: 2
-        TipoPrenda::firstOrCreate(['nombre' => 'Pantalón']); //id: 3
+        TipoPrenda::firstOrCreate(['nombre' => 'Saco liso']); //id: 1
+        TipoPrenda::firstOrCreate(['nombre' => 'Saco royal']); //id: 2
+        TipoPrenda::firstOrCreate(['nombre' => 'Camisa']); //id: 3
+        TipoPrenda::firstOrCreate(['nombre' => 'Pantalón']); //id: 4
     }
 }

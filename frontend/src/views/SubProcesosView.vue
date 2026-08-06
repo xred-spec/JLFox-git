@@ -6,7 +6,7 @@ import SubPageToogle from '@/components/SubPageToogle.vue';
 import PageTitle from '@/components/PageTitle.vue';
 import { procesosInputs } from '@/data/procesosInputs';
 import { procesosColumns } from '@/data/procesosColumns';
-import GenericModal from '@/components/modals/GenericModal.vue';
+import ProcesosCRUDModal from '@/components/modals/ProcesosCRUDModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 import FilterModal from '@/components/modals/FilterModal.vue';
 
@@ -196,7 +196,7 @@ const openFilterModal = (selected?: any) => {
 </script>
 
 <template>
-    <GenericModal 
+    <ProcesosCRUDModal 
     v-if="isModalOpened"
     :header="selectedProceso ? 'Editar proceso' : 'Agregar proceso'" 
     :inputs="procesosInputs" 

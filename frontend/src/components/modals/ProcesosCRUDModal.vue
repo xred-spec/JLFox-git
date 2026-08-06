@@ -100,7 +100,7 @@ const validateInputs = () => {
     @click="cleanInputs(), emits('close')">
         <div 
         @click.stop
-        class="flex flex-col justify-center w-full max-w-[40vw] bg-[#ffffff] rounded-[15px] p-5">
+        class="flex flex-col justify-center w-full max-w-[50vw] bg-[#ffffff] rounded-[15px] p-5">
             <h1 class="text-xl w-full text-center font-bold text-[#000000] pb-2 border-[#63492a] border-b-2">
                 {{header}}
             </h1>
@@ -154,6 +154,32 @@ const validateInputs = () => {
                     class="bg-[#FFFFFF] py-3 px-5 rounded-[5px] font-bold text-[#000000] border border-[#63492a] placeholder:text-[#000000]/50"
                     >
                 </template>
+            </div>
+
+            <div class="grid grid-cols-3 py-2 items-center justify-between">
+                <div class="flex items-center w-full">
+                    <label class="text-[#000000] font-bold mr-1">
+                        Horas: 
+                    </label>
+
+                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                </div>
+
+                <div class="flex items-center">
+                    <label class="text-[#000000] font-bold mr-1">
+                        Minutos: 
+                    </label>
+
+                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                </div>
+
+                <div class="flex items-center">
+                    <label class="text-[#000000] font-bold mr-1">
+                        Segundos: 
+                    </label>
+
+                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                </div>
             </div>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">

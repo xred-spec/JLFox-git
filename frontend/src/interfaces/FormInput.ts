@@ -1,7 +1,7 @@
 export interface Input {
     label?: string,
     modelKey: string,
-    type: 'text' | 'number' | 'select' | 'email' | 'password' | 'date' | 'textarea' | 'tel' | 'checkboxes', 
+    type: 'text' | 'number' | 'select' | 'email' | 'password' | 'date' | 'textarea' | 'tel' | 'checkboxes' | 'time', 
     options?: {
         value: number | string,
         label: string | null,

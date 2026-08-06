@@ -18,9 +18,13 @@ class PrendaProcesoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'clave' => $this->clave,
             'orden' => $this->orden,
             'proceso' => ProcesoResource::make($this->proceso), 
-            'pieza_prenda' => PrendaPiezaResource::make($this->prenda)
+            'pieza_prenda' => PrendaPiezaResource::make($this->prenda),
+            'tiempo_previsto_hora' => $this->tiempo_previsto_hora,
+            'tiempo_previsto_minuto' => $this->tiempo_previsto_minuto,
+            'tiempo_previsto_segundo' => $this->tiempo_previsto_segundo,
         ];
     }
 }

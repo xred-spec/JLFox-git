@@ -18,9 +18,12 @@ return new class extends Migration
             $table->integer('proceso_actual')->nullable();
             $table->integer('cantidad_proceso')->nullable();
             $table->integer('cantidad_final_pieza')->nullable();
-            $table->time('hora_inicio')->nullable();
-            $table->time('hora_final')->nullable();
-            $table->time('tiempo_produccion_final')->nullable();
+            $table->integer('tiempo_realizado_hora')->nullable();
+            $table->integer('tiempo_realizado_minuto')->nullable();
+            $table->integer('tiempo_realizado_segundo')->nullable();
+            $table->integer('tiempo_final_hora')->nullable();
+            $table->integer('tiempo_final_minuto')->nullable();
+            $table->integer('tiempo_final_segundo')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('prenda_pieza_id')->constrained('prenda_piezas')->onDelete('cascade');
             $table->foreignId('proceso_id')->constrained('procesos')->onDelete('cascade');
             $table->integer('orden');
+            $table->integer('tiempo_previsto_hora')->default(0);
+            $table->integer('tiempo_previsto_minuto')->default(0);
+            $table->integer('tiempo_previsto_segundo')->default(0);
             $table->timestamps();
 
             $table->unique([
