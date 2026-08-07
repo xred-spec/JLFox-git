@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\PrendaLote;
 use App\Models\PrendaPieza;
+use App\Models\HistorialProcesoPieza;
 
 class PrendaLotePieza extends Model
 {
@@ -26,5 +28,9 @@ class PrendaLotePieza extends Model
 
     public function prenda_lote(): BelongsTo {
         return $this->belongsTo(PrendaLote::class);
+    }
+
+    public function historial_procesos(): HasMany {
+        return $this->hasMany(HistorialProcesoPieza::class, 'prenda_lote_pieza_id');
     }
 }
