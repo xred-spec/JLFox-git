@@ -8,6 +8,7 @@ use App\Models\Lote;
 use App\Models\Prenda;
 use App\Models\PrendaLote;
 use App\Models\PrendaLotePieza;
+use App\Models\HistorialProcesoPieza;
 use App\Models\InventarioPrenda;
 use App\Http\Requests\LoteRequest;
 use App\Http\Resources\LoteResource;
@@ -129,6 +130,12 @@ class LoteController extends Controller
      */
     public function update(LoteRequest $request, string $id)
     {
+        if ($storedLote->estado !== 'pendiente') {
+            return response()->json([
+                'message' => 'No se pueden modificar las prendas de un lote que ya está en producción o terminado.'
+            ], 403);
+        }
+
         $lote = DB::transaction(function () use ($request, $id) {
             $storedLote = Lote::findOrFail($id);
             $storedLote->update([
@@ -192,30 +199,6 @@ class LoteController extends Controller
             $resource,
             'Estado del lote actualizado correctamente',
             200
-        );$request->validate([
-            'estado' => 'required|string|min:1',
-        ]);
-        $state = $request->estado;
-
-        $lote = Lote::findOrFail($id);
-
-        $insertData = [
-            'estado' => $state
-        ];
-
-        if($state === 'produccion' && is_null($lote->fecha_inicio)) {
-            $insertData['fecha_inicio'] = now();
-        } else if($state === 'terminado' && is_null($lote->fecha_final)) {
-            $insertData['fecha_final'] = now();
-        }
-
-        $lote->update($insertData);
-        $resource = LoteResource::make($lote);
-
-        return $this->successResponse(
-            $resource,
-            'Estado del lote actualizado correctamente',
-            200
         );
     } 
 
@@ -230,16 +213,27 @@ class LoteController extends Controller
         
         $trackingPieza = PrendaLotePieza::findOrFail($id);
         
-        $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
-        $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+        $procesoAnterior = $trackingPieza->proceso_actual;
 
         $hReal = $newProcess['tiempo_realizado_hora'] ?? 0;
         $mReal = $newProcess['tiempo_realizado_minuto'] ?? 0;
         $sReal = $newProcess['tiempo_realizado_segundo'] ?? 0;
 
-        $trackingPieza->tiempo_realizado_hora = $newProcess['tiempo_realizado_hora'];
-        $trackingPieza->tiempo_realizado_minuto = $newProcess['tiempo_realizado_minuto'];
-        $trackingPieza->tiempo_realizado_segundo = $newProcess['tiempo_realizado_segundo'];
+        HistorialProcesoPieza::create([
+            'prenda_lote_pieza_id' => $trackingPieza->id,
+            'proceso_orden' => $procesoAnterior ?? $newProcess['proceso_actual'],
+            'cantidad_procesada' => $newProcess['cantidad_proceso'],
+            'tiempo_hora' => $hReal,
+            'tiempo_minuto' => $mReal,
+            'tiempo_segundo' => $sReal,
+        ]);
+
+        $trackingPieza->proceso_actual = $newProcess['proceso_actual'];
+        $trackingPieza->cantidad_proceso = $newProcess['cantidad_proceso'];
+
+        $trackingPieza->tiempo_realizado_hora = $hReal;
+        $trackingPieza->tiempo_realizado_minuto = $mReal;
+        $trackingPieza->tiempo_realizado_segundo = $sReal;
 
         $hFinalActual = $trackingPieza->tiempo_final_hora ?? 0;
         $mFinalActual = $trackingPieza->tiempo_final_minuto ?? 0;
@@ -254,9 +248,6 @@ class LoteController extends Controller
         $trackingPieza->tiempo_final_minuto = floor(($granTotalSegundos % 3600) / 60);
         $trackingPieza->tiempo_final_segundo = $granTotalSegundos % 60;
 
-        $trackingPieza->tiempo_final_hora = $trackingPieza->tiempo_final_hora ? ($trackingPieza->tiempo_final_hora + $newProcess['tiempo_realizado_hora']) : $newProcess['tiempo_realizado_hora'];
-        $trackingPieza->tiempo_final_minuto = $trackingPieza->tiempo_final_minuto ? ($trackingPieza->tiempo_final_minuto + $newProcess['tiempo_realizado_minuto']) : $newProcess['tiempo_realizado_minuto'];
-        $trackingPieza->tiempo_final_segundo = $trackingPieza->tiempo_final_segundo ? ($trackingPieza->tiempo_final_segundo + $newProcess['tiempo_realizado_segundo']) : $newProcess['tiempo_realizado_segundo'];
         $trackingPieza->save();
 
         return $this->successResponse(
@@ -274,6 +265,11 @@ class LoteController extends Controller
         $prendaLotePieza = DB::transaction(function () use ($request, $id) {
             $piezaLote = PrendaLotePieza::findOrFail($id);
             $piezaLote->cantidad_final_pieza = $request->cantidad_final_pieza;
+
+            $piezaLote->tiempo_final_hora = $piezaLote->tiempo_final_hora ?? 0;
+            $piezaLote->tiempo_final_minuto = $piezaLote->tiempo_final_minuto ?? 0;
+            $piezaLote->tiempo_final_segundo = $piezaLote->tiempo_final_segundo ?? 0;
+
             $piezaLote->save();
 
             return $piezaLote;
@@ -298,7 +294,7 @@ class LoteController extends Controller
             $lote->save();
 
             $inventarioPrenda = InventarioPrenda::firstOrNew(['prenda_id' => $lote->prenda_id]);
-            $inventarioPrenda->cantidad = ($inventarioPrenda->cantidad ?? 0) + $request->cantidad_final; 
+            $inventarioPrenda->cantidad = ($inventarioPrenda->cantidad ?? 0) + $request->cantidad_final_prenda;
             $inventarioPrenda->save();
 
             return $lote;

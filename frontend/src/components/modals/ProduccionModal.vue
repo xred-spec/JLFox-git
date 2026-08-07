@@ -149,7 +149,7 @@ const forwardProcess = async (order: number) => {
         cantidad_proceso: cantidadAEnviar,
         tiempo_realizado_hora: tiempoHoras.value,
         tiempo_realizado_minuto: tiempoMin.value,
-        tiempo_realizado_segundo: tiempoMin.value
+        tiempo_realizado_segundo: tiempoSeg.value
     }).json()
 
     if(data.value) {
@@ -170,20 +170,51 @@ const forwardProcess = async (order: number) => {
     if(error.value) console.log('error: ', error.value)
 }
 
-//aqui siguele
 const backwardProcess = async (order: number) => {
-    if (!trackingActual.value) return;
+    if(!trackingActual.value) return
+    validateInput.value = false
+
+    tiempoHorasVal.value = tiempoMinVal.value = tiempoSegVal.value = false
+
+    if(cantidadProcesos.value === '' || cantidadProcesos.value === null) {
+        validateInput.value = true
+        return
+    }
+
+    if(tiempoHoras.value === null || tiempoHoras.value === '' || isNaN(Number(tiempoHoras.value)) || Number(tiempoHoras.value) < 0) {
+        tiempoHorasVal.value = true
+        return
+    }
+
+    if(tiempoMin.value === null || tiempoMin.value === '' || isNaN(Number(tiempoMin.value)) || Number(tiempoMin.value) < 0) {
+        tiempoMinVal.value = true
+        return
+    }
+
+    if(tiempoSeg.value === null || tiempoSeg.value === '' || isNaN(Number(tiempoSeg.value)) || Number(tiempoSeg.value) < 0) {
+        tiempoSegVal.value = true
+        return
+    }
 
     const {data, error} = await useApi(`lotes/process/${trackingActual.value.id}`).put({
         proceso_actual: order,
-        cantidad_proceso: cantidadProcesos.value !== '' ? cantidadProcesos.value : null,
+        cantidad_proceso: cantidadProcesos.value !== '' ? Number(cantidadProcesos.value) : null,
         tiempo_realizado_hora: tiempoHoras.value,
         tiempo_realizado_minuto: tiempoMin.value,
-        tiempo_realizado_segundo: tiempoMin.value
+        tiempo_realizado_segundo: tiempoSeg.value
     }).json()
 
     if(data.value) {
         trackingActual.value.proceso_actual = order
+
+        const trackingBackend = data.value.data || data.value
+        trackingActual.value.tiempo_final_hora = trackingBackend.tiempo_final_hora
+        trackingActual.value.tiempo_final_minuto = trackingBackend.tiempo_final_minuto
+        trackingActual.value.tiempo_final_segundo = trackingBackend.tiempo_final_segundo
+
+        tiempoHoras.value = 0
+        tiempoMin.value = 0
+        tiempoSeg.value = 0
         return
     }
 
@@ -205,7 +236,7 @@ const closeProductionPieza = async() => {
         return
     }
 
-    const {data, error} = await useApi(`lotes/close-piece/${trackingActual.value.prenda_lote_id}`).put({
+    const {data, error} = await useApi(`lotes/close-piece/${trackingActual.value.id}`).put({
         cantidad_final_pieza: cantidad
     }).json()
 
@@ -292,10 +323,15 @@ const findTimes = (index: number, time: string) => {
 watch(trackingActual, (newTracking) => {
     if(newTracking) {
         cantidadProcesos.value = newTracking.cantidad_proceso || ''
-        console.log('tracking: ', trackingActual.value)
-        console.log('selectedPieza: ', selectedPieza.value)
+        tiempoHoras.value = 0
+        tiempoMin.value = 0
+        tiempoSeg.value = 0
+        tiempoHorasVal.value = tiempoMinVal.value = tiempoSegVal.value = false
     } else {
         cantidadProcesos.value = ''
+        tiempoHoras.value = 0
+        tiempoMin.value = 0
+        tiempoSeg.value = 0
     }
 })
 
@@ -311,7 +347,7 @@ watch(allPrendasFinish, (allFinished) => {
     }
 })
 
-console.log('prendaModel: ', props.modelValue)
+//console.log('prendaModel: ', props.modelValue)
 </script>
 
 <template>
@@ -461,7 +497,7 @@ console.log('prendaModel: ', props.modelValue)
                         <div class="flex flex-col items-center">
                             <input type="number" 
                             class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
-                            min="0" max="59"  v-model="tiempoHoras"
+                            min="0" max="99" v-model="tiempoHoras"
                             :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
                             :class="tiempoHorasVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
                             >
