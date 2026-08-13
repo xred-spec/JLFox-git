@@ -78,7 +78,7 @@ console.log('item: ', props.item)
         :class="expanded ? 'flex-col bg-[#ffffff]' : 'justify-between bg-[#e4e4e4] px-5'">
             <template v-if="!expanded">
                 <label class="font-bold text-sm px-5 text-[#ffffff] rounded-[10px]"
-                :class="getForeignValues(props.item, 'tipo') === 'niño' ? 'bg-[#3bb937]' : 'bg-[#2630bb]'">
+                :class="getForeignValues(props.item, 'tipo') === 'niño' ? 'bg-[#3bb937]' : getForeignValues(props.item, 'tipo') === 'hombre' ? 'bg-[#2630bb]' : 'bg-[#c41a1a]'">
                     {{ getForeignValues(props.item, 'tipo') }} 
                 </label>
 

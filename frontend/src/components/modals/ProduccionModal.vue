@@ -16,6 +16,16 @@ const selectedPrendaId = ref<number | string>('')
 const selectedPiezaId = ref<number | string>('')
 const cantidadProcesos = ref<number | string>('')
 
+const sumarCantidad = () => {
+    const current = Number(cantidadProcesos.value) || 0
+    cantidadProcesos.value = current + 1
+}
+
+const restarCantidad = () => {
+    const current = Number(cantidadProcesos.value) || 0
+    if(current >= 1) cantidadProcesos.value = current - 1
+}
+
 const tiempoHoras = ref<number | string>(0)
 const tiempoHorasVal = ref(false)
 const tiempoMin = ref<number | string>(0)
@@ -202,8 +212,6 @@ const closeModal = () => {
 }
 
 const forwardProcess = async (order: number) => {
-    reiniciarCronometro()
-
     if (!trackingActual.value) return;
     validateInput.value = false
 
@@ -260,6 +268,8 @@ const forwardProcess = async (order: number) => {
         trackingActual.value.tiempo_final_hora = trackingBackend.tiempo_final_hora;
         trackingActual.value.tiempo_final_minuto = trackingBackend.tiempo_final_minuto;
         trackingActual.value.tiempo_final_segundo = trackingBackend.tiempo_final_segundo;
+
+        reiniciarCronometro()
         return
     }
 
@@ -311,6 +321,8 @@ const backwardProcess = async (order: number) => {
         tiempoHoras.value = 0
         tiempoMin.value = 0
         tiempoSeg.value = 0
+        
+        reiniciarCronometro()
         return
     }
 
@@ -423,13 +435,35 @@ const findTimes = (index: number, time: string) => {
     return String(valor ?? 0).padStart(2, '0')
 }
 
+const timesPerQuantity = computed(() => {
+    if(!selectedPieza.value || !selectedPrenda.value || !trackingActual.value) return {h: '-', m: '-', s: '-'}
+
+    const h = Number(findTimes(trackingActual?.value.proceso_actual, 'hora')) || 0
+    const m = Number(findTimes(trackingActual?.value.proceso_actual, 'minuto')) || 0
+    const s = Number(findTimes(trackingActual?.value.proceso_actual, 'segundo')) || 0
+
+    let totalSeg = (h * 3600) + (m * 60) + s
+    let cantidad = Number(selectedPrenda?.value.cantidad_prevista) || 0
+
+    totalSeg *= cantidad
+
+    return {
+        h: String(Math.floor(totalSeg / 3600)).padStart(2, '0'), 
+        m: String(Math.floor((totalSeg % 3600) / 60)).padStart(2, '0'), 
+        s: String(totalSeg % 60).padStart(2, '0')
+    }
+})
+
 watch(trackingActual, (newTracking) => {
     if(newTracking) {
-        cantidadProcesos.value = newTracking.cantidad_proceso || ''
+        cantidadProcesos.value = newTracking.cantidad_proceso || selectedPrenda.value.cantidad_prevista
         tiempoHoras.value = 0
         tiempoMin.value = 0
         tiempoSeg.value = 0
         tiempoHorasVal.value = tiempoMinVal.value = tiempoSegVal.value = false
+
+
+        console.log('trackingPieza: ', trackingActual.value)
     } else {
         cantidadProcesos.value = ''
         tiempoHoras.value = 0
@@ -459,7 +493,7 @@ watch(allPrendasFinish, (allFinished) => {
     @click="closeModal">
         <div 
         @click.stop
-        class="flex flex-col justify-center w-full max-w-[75vw] bg-[#ffffff] rounded-[10px] p-5">
+        class="flex flex-col justify-center w-full max-w-[85vw] bg-[#ffffff] rounded-[10px] p-5">
             <div class="flex flex-col px-2 items-center pb-2">
                 <div class="flex items-center w-full mb-2 py-1">
                     <label class="text-[#000000] font-bold text-lg mb-1">
@@ -501,13 +535,26 @@ watch(allPrendasFinish, (allFinished) => {
                         </label>
 
                         <input type="number" v-model="cantidadProcesos" :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
-                        class="flex-1 ml-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
+                        class="flex-1 mx-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
                         :class="validateInput ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'" />
+
+                        <button class="py-1 px-4 mr-1 bg-[#3bb937] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#3bb937]/50 disabled:text-[#000000]/50 hover:cursor-pointer"
+                        :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || cantidadProcesos === selectedPrenda.cantidad_prevista"
+                        @click="sumarCantidad">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
+                            class="lucide lucide-plus-icon lucide-plus size-3"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        </button>
+                        <button class="py-1 px-4 ml-1 bg-[#c41a1a] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#c41a1a]/50 disabled:text-[#ffffff] hover:cursor-pointer"
+                        :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || Number(cantidadProcesos) < 1"
+                        @click="restarCantidad">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
+                            class="lucide lucide-minus-icon lucide-minus size-3"><path d="M5 12h14"/></svg>
+                        </button>
                     </div>
 
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad final: 
-                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm">
+                        <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm text-[#c41a1a]">
                             {{ trackingActual?.cantidad_final_pieza || '-'}}
                         </span>
                     </label>
@@ -548,6 +595,10 @@ watch(allPrendasFinish, (allFinished) => {
                                 No se ha iniciado producción
                             </template>
 
+                            <template v-else-if="trackingActual?.proceso_actual > selectedPieza.procesos?.length">
+                                Todos los procesos concluidos
+                            </template>
+
                             <template v-else>
                                 {{ findProcessKey(trackingActual.proceso_actual) }}
                             </template>
@@ -582,37 +633,63 @@ watch(allPrendasFinish, (allFinished) => {
                 </div>
 
                 <div class="flex-col justify-center py-2 w-full">
-                    <div class="flex w-full items-center justify-center">
-                        <label class="text-[#000000] font-bold mt-2">
-                            Tiempo previsto por pieza:
-                        </label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="border rounded-[10px] px-2">
+                            <div class="flex w-full items-center justify-center">
+                                <label class="text-[#000000] font-bold mt-2">
+                                    Tiempo previsto por pieza:
+                                </label>
+                            </div>
+
+                            <div class="grid grid-cols-3 w-full items-center py-2 justify-center">
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'hora') }}</span> Hora(s)
+                                </label>
+
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'minuto') }}</span> Minuto(s)
+                                </label>
+
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'segundo') }}</span> Segundo(s)
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="border rounded-[10px] px-2">
+                            <div class="flex w-full items-center justify-center">
+                                <label class="text-[#000000] font-bold mt-2">
+                                    Tiempo previsto para montón actual:
+                                </label>
+                            </div>
+
+                            <div class="grid grid-cols-3 w-full items-center py-2 justify-center">
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ timesPerQuantity.h }}</span> Hora(s)
+                                </label>
+
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ timesPerQuantity.m }}</span> Minuto(s)
+                                </label>
+
+                                <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    <span class="text-[#c41a1a]">{{ timesPerQuantity.s }}</span> Segundo(s)
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-3 w-full items-center py-2 justify-center">
-                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
-                            <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'hora') }}</span> Hora(s)
-                        </label>
-
-                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
-                            <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'minuto') }}</span> Minuto(s)
-                        </label>
-
-                        <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
-                            <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'segundo') }}</span> Segundo(s)
-                        </label>
-                    </div>
-
-                    <div class="flex flex-col items-center justify-center py-2 my-2 border  border-[#63492a]/30 rounded-[10px] bg-[#f9f9f9] w-full"
+                    <div class="flex flex-col items-center justify-center py-2 my-2 border  border-[#000000]/30 rounded-[10px] bg-[#f9f9f9] w-full"
                     :class="{ 'opacity-50 pointer-events-none': !selectedPiezaId }">
                         <span class="text-lg font-bold text-[#000000]">
-                            {{ cronometroDisplay }}
+                            {{ selectedPieza && selectedPrenda ? cronometroDisplay : '00:00:00'}}
                         </span>
 
                         <div class="flex gap-4 w-full justify-center px-4">
                             <button 
                                 v-if="!currentTimer?.isRunning" 
-                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#8649e7] hover:scale-102 transition-transform shadow-md"
-                                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) >= selectedPieza?.procesos?.length || trackingActual?.cantidad_final_pieza"
+                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#8649e7] hover:scale-102 transition-transform shadow-md disabled:bg-[#8649e7]/50"
+                                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) > selectedPieza?.procesos?.length || trackingActual?.cantidad_final_pieza || trackingActual?.proceso_actual < 1"
                                 @click="iniciarCronometro">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play size-4 mr-2"><polygon points="6 3 20 12 6 21 6 3"/></svg>
                                 Iniciar
@@ -628,7 +705,7 @@ watch(allPrendasFinish, (allFinished) => {
 
                             <button 
                                 v-if="currentTimer?.totalSegundos > 0 && !currentTimer?.isRunning" 
-                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#63492a] hover:scale-102 transition-transform shadow-md"
+                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#000000] cursor-pointer bg-[#faee46] hover:scale-102 transition-transform shadow-md"
                                 @click="reiniciarCronometro">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw size-4 mr-2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                                 Reiniciar
@@ -636,46 +713,62 @@ watch(allPrendasFinish, (allFinished) => {
                         </div>
                     </div>
 
-                    <div class="flex w-full items-center justify-center">
-                        <label class="text-[#000000] font-bold mt-2">
-                            Tiempo realizado:
-                        </label>
-                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="py-2 border  border-[#000000]/30 rounded-[10px] bg-[#f9f9f9] w-full">
+                            <div class="flex w-full items-center justify-center">
+                                <label class="text-[#000000] font-bold ">
+                                    Tiempo realizado:
+                                </label>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 w-full items-center pt-2 justify-center ">
+                                <div class="flex flex-col items-center">
+                                    <input type="number" 
+                                    class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
+                                    min="0" max="99" v-model="tiempoHoras"
+                                    :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || trackingActual?.proceso_actual < 1"
+                                    :class="tiempoHorasVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                                    >
+                                    <label class="text-[#000000] font-bold">
+                                        Hora(s)
+                                    </label>
+                                </div>
 
-                    <div class="grid grid-cols-3 w-full items-center pt-2 justify-center ">
-                        <div class="flex flex-col items-center">
-                            <input type="number" 
-                            class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
-                            min="0" max="99" v-model="tiempoHoras"
-                            :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
-                            :class="tiempoHorasVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
-                            >
-                            <label class="text-[#000000] font-bold">
-                                Hora(s)
-                            </label>
+                                <div class="flex flex-col items-center">
+                                    <input type="number" 
+                                    class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
+                                    min="0" max="59" v-model="tiempoMin"
+                                    :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || trackingActual?.proceso_actual < 1"
+                                    :class="tiempoMinVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                                    >
+                                    <label class="text-[#000000] font-bold">
+                                        Minuto(s)
+                                    </label>
+                                </div>
+
+                                <div class="flex flex-col items-center">
+                                    <input type="number" 
+                                    class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
+                                    min="0" max="59" v-model="tiempoSeg"
+                                    :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || trackingActual?.proceso_actual < 1"
+                                    :class="tiempoSegVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                                    >
+                                    <label class="text-[#000000] font-bold">
+                                        Segundo(s)
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex flex-col items-center">
-                            <input type="number" 
-                            class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
-                            min="0" max="59" v-model="tiempoMin"
-                            :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
-                            :class="tiempoMinVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
-                            >
-                            <label class="text-[#000000] font-bold">
-                                Minuto(s)
-                            </label>
-                        </div>
-
-                        <div class="flex flex-col items-center">
-                            <input type="number" 
-                            class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
-                            min="0" max="59" v-model="tiempoSeg"
-                            :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
-                            :class="tiempoSegVal ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
-                            >
-                            <label class="text-[#000000] font-bold">
-                                Segundo(s)
+                        <div class="flex items-center justify-center  border  border-[#000000]/30 rounded-[10px] bg-[#f9f9f9] w-full"
+                        :class="{ 'opacity-50 pointer-events-none': !selectedPiezaId }">
+                            <label class="text-[#000000] font-bold mt-2">
+                                Tiempo total transcurrido:
+                                <span class="bg-[#e4e4e4] text-[#c41a1a] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
+                                    {{ String(trackingActual?.tiempo_final_hora ?? 0).padStart(2, '0') }} : 
+                                    {{ String(trackingActual?.tiempo_final_minuto ?? 0).padStart(2, '0') || '00' }} : 
+                                    {{ String(trackingActual?.tiempo_final_segundo ?? 0).padStart(2, '0') || '00' }}
+                                </span>
                             </label>
                         </div>
                     </div>
@@ -683,16 +776,16 @@ watch(allPrendasFinish, (allFinished) => {
             </div>       
 
             <div class="grid grid-cols-2 w-full gap-x-2 py-2 border-t">
-                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"
-                :disabled="!selectedPieza?.procesos?.length || !trackingActual?.proceso_actual || trackingActual?.proceso_actual <= 1 || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza"
+                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-101 disabled:bg-[#2630bb]/50"
+                :disabled="!selectedPieza?.procesos?.length || !trackingActual?.proceso_actual || trackingActual?.proceso_actual <= 1 || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza || currentTimer.isRunning"
                 @click="backwardProcess(trackingActual?.proceso_actual - 1)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-move-left-icon lucide-move-left size-4 mr-1"><path d="M6 8L2 12L6 16"/><path d="M2 12H22"/></svg>
                     Retroceder al proceso anterior
                 </button>
 
-                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"
-                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) >= selectedPieza?.procesos?.length || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza"
+                <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-101 disabled:bg-[#2630bb]/50"
+                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) > selectedPieza?.procesos?.length || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza || currentTimer.isRunning"
                 @click="forwardProcess((trackingActual?.proceso_actual || 0) + 1)"
                 >
                     Avanzar al proceso siguiente
@@ -702,8 +795,8 @@ watch(allPrendasFinish, (allFinished) => {
             </div>
 
             <div class="flex items-center w-full mb-2">
-                <button class="w-full font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#3bb937] enabled:hover:scale-102 disabled:bg-[#3bb937]/50"
-                :disabled="!trackingActual?.proceso_actual || !selectedPieza?.procesos?.length || trackingActual.proceso_actual < selectedPieza.procesos.length || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza"
+                <button class="w-full font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#3bb937] enabled:hover:scale-101 disabled:bg-[#3bb937]/50"
+                :disabled="!trackingActual?.proceso_actual || !selectedPieza?.procesos?.length || trackingActual.proceso_actual <= selectedPieza.procesos.length || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza"
                 @click="closeProductionPieza()">
                     Terminar producción
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" 
