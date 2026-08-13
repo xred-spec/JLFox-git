@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useApi } from '@/composables/useApi';
 
 const props = defineProps<{
@@ -24,6 +24,100 @@ const tiempoSeg = ref<number | string>(0)
 const tiempoSegVal = ref(false)
 
 const validateInput = ref(false)
+
+interface TimerState {
+    isRunning: boolean;
+    totalSegundos: number;
+    startTime: number;
+}
+
+const timers = ref<Record<string | number, TimerState>>({})
+let masterClock: ReturnType<typeof setInterval> | null = null;
+
+watch(selectedPiezaId, (newId) => {
+    if(newId && !timers.value[newId]) {
+        timers.value[newId] = {
+            isRunning: false,
+            totalSegundos: 0,
+            startTime: 0
+        }
+    }
+})
+
+const currentTimer = computed<TimerState>(() => {
+    const id = selectedPiezaId.value;
+    
+    if (!id || !timers.value[id]) {
+        return { isRunning: false, totalSegundos: 0, startTime: 0 };
+    }
+    return timers.value[id]!;
+});
+
+const cronometroDisplay = computed(() => {
+    const seg = currentTimer.value.totalSegundos;
+    const h = String(Math.floor(seg / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seg % 3600) / 60)).padStart(2, '0');
+    const s = String(seg % 60).padStart(2, '0');
+    return `${h}:${m}:${s}`;
+});
+
+onMounted(() => {
+    masterClock = setInterval(() => {
+        const now = Date.now();
+        Object.values(timers.value).forEach((timer: TimerState) => {
+            if (timer.isRunning) {
+                timer.totalSegundos = Math.floor((now - timer.startTime) / 1000);
+            }
+        });
+    }, 1000);
+});
+
+onUnmounted(() => {
+    if (masterClock) clearInterval(masterClock);
+});
+
+const iniciarCronometro = () => {
+    const id = selectedPiezaId.value;
+    if (!id) return;
+
+    const timer = timers.value[id];
+
+    if (!timer || timer.isRunning) return;
+
+    timer.isRunning = true;
+    timer.startTime = Date.now() - (timer.totalSegundos * 1000);
+};
+
+const detenerCronometro = () => {
+    const id = selectedPiezaId.value;
+    if (!id) return;
+
+    const timer = timers.value[id];
+    
+    if (!timer || !timer.isRunning) return;
+
+    timer.isRunning = false;
+
+    tiempoHoras.value = Math.floor(timer.totalSegundos / 3600);
+    tiempoMin.value = Math.floor((timer.totalSegundos % 3600) / 60);
+    tiempoSeg.value = timer.totalSegundos % 60;
+};
+
+const reiniciarCronometro = () => {
+    const id = selectedPiezaId.value;
+    if (!id) return;
+    
+    const timer = timers.value[id];
+    
+    if (timer) {
+        timer.isRunning = false;
+        timer.totalSegundos = 0;
+    }
+    
+    tiempoHoras.value = 0;
+    tiempoMin.value = 0;
+    tiempoSeg.value = 0;
+};
 
 const selectedPrenda = computed(() => {
     const prendas = props.modelValue?.prendas
@@ -108,6 +202,8 @@ const closeModal = () => {
 }
 
 const forwardProcess = async (order: number) => {
+    reiniciarCronometro()
+
     if (!trackingActual.value) return;
     validateInput.value = false
 
@@ -228,7 +324,7 @@ const closeProductionPieza = async() => {
     if(cantidadProcesos.value === '' || cantidadProcesos.value === null) {
         validateInput.value = true
         return
-    }
+    }   
 
     const cantidad = Number(cantidadProcesos.value)
     if(cantidad <= 0 || cantidad > selectedPrenda.value.cantidad_prevista) {
@@ -298,11 +394,18 @@ const finishLote = async() => {
     }
 }
 
-const findProcess = (index: number) => {
+const findProcessKey = (index: number) => {
     if (!selectedPieza.value) return '-';
 
     const process = selectedPieza.value.procesos.find((item: any) => item.orden === index)
     return process?.clave || '-'
+}
+
+const findProcessDesc = (index: number) => {
+    if (!selectedPieza.value) return '-';
+
+    const process = selectedPieza.value.procesos.find((item: any) => item.orden === index)
+    return process?.proceso.descripcion || '-'
 }
 
 const findTimes = (index: number, time: string) => {
@@ -384,7 +487,7 @@ watch(allPrendasFinish, (allFinished) => {
                     </select>
                 </div>
 
-                <div class="grid grid-cols-3 w-full gap-x-2 mb-2">
+                <div class="grid grid-cols-3 w-full gap-x-2 mb-2 border-t py-2">
                     <label class="text-[#000000] font-bold text-lg mb-1 text-center">
                         Cantidad prevista: 
                         <span class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold text-sm">
@@ -422,7 +525,7 @@ watch(allPrendasFinish, (allFinished) => {
                             </template>
 
                             <template v-else>
-                                {{ findProcess(trackingActual.proceso_actual - 1) }}
+                                {{ findProcessKey(trackingActual.proceso_actual - 1) }}
                             </template>
                         </label>
                     </div>
@@ -446,7 +549,7 @@ watch(allPrendasFinish, (allFinished) => {
                             </template>
 
                             <template v-else>
-                                {{ findProcess(trackingActual.proceso_actual) }}
+                                {{ findProcessKey(trackingActual.proceso_actual) }}
                             </template>
                         </label>
                     </div>
@@ -462,18 +565,29 @@ watch(allPrendasFinish, (allFinished) => {
                             </template>
 
                             <template v-else>
-                                {{ findProcess(trackingActual.proceso_actual + 1) }}
+                                {{ findProcessKey(trackingActual.proceso_actual + 1) }}
                             </template>
                         </label>
                     </div>
                 </div>
 
-                <div class="flex-col justify-center py-2">
+                <div class="w-full flex py-2 items-center border-b">
+                    <label class="text-[#000000] font-bold">
+                        Descripción:
+                    </label>
+
+                    <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold ml-1 text-start w-full">
+                        {{ findProcessDesc(trackingActual?.proceso_actual) }}
+                    </label>
+                </div>
+
+                <div class="flex-col justify-center py-2 w-full">
                     <div class="flex w-full items-center justify-center">
                         <label class="text-[#000000] font-bold mt-2">
-                            Tiempo previsto:
+                            Tiempo previsto por pieza:
                         </label>
                     </div>
+
                     <div class="grid grid-cols-3 w-full items-center py-2 justify-center">
                         <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
                             <span class="text-[#c41a1a]">{{ findTimes(trackingActual?.proceso_actual, 'hora') }}</span> Hora(s)
@@ -488,12 +602,47 @@ watch(allPrendasFinish, (allFinished) => {
                         </label>
                     </div>
 
+                    <div class="flex flex-col items-center justify-center py-2 my-2 border  border-[#63492a]/30 rounded-[10px] bg-[#f9f9f9] w-full"
+                    :class="{ 'opacity-50 pointer-events-none': !selectedPiezaId }">
+                        <span class="text-lg font-bold text-[#000000]">
+                            {{ cronometroDisplay }}
+                        </span>
+
+                        <div class="flex gap-4 w-full justify-center px-4">
+                            <button 
+                                v-if="!currentTimer?.isRunning" 
+                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#8649e7] hover:scale-102 transition-transform shadow-md"
+                                :disabled="!selectedPieza?.procesos?.length || (trackingActual?.proceso_actual || 0) >= selectedPieza?.procesos?.length || trackingActual?.cantidad_final_pieza"
+                                @click="iniciarCronometro">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-play size-4 mr-2"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                                Iniciar
+                            </button>
+
+                            <button 
+                                v-if="currentTimer?.isRunning" 
+                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a] hover:scale-102"
+                                @click="detenerCronometro">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pause size-4 mr-2"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+                                Detener
+                            </button>
+
+                            <button 
+                                v-if="currentTimer?.totalSegundos > 0 && !currentTimer?.isRunning" 
+                                class="font-bold flex justify-center items-center py-2 px-6 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#63492a] hover:scale-102 transition-transform shadow-md"
+                                @click="reiniciarCronometro">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw size-4 mr-2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                Reiniciar
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="flex w-full items-center justify-center">
                         <label class="text-[#000000] font-bold mt-2">
                             Tiempo realizado:
                         </label>
                     </div>
-                    <div class="grid grid-cols-3 w-full items-center py-2 justify-center ">
+
+                    <div class="grid grid-cols-3 w-full items-center pt-2 justify-center ">
                         <div class="flex flex-col items-center">
                             <input type="number" 
                             class="text-center flex-1 py-1 pl-4 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
@@ -533,7 +682,7 @@ watch(allPrendasFinish, (allFinished) => {
                 </div>
             </div>       
 
-            <div class="grid grid-cols-2 w-full gap-x-2 pb-2">
+            <div class="grid grid-cols-2 w-full gap-x-2 py-2 border-t">
                 <button class="font-bold flex justify-center items-center py-2 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] enabled:hover:scale-102 disabled:bg-[#2630bb]/50"
                 :disabled="!selectedPieza?.procesos?.length || !trackingActual?.proceso_actual || trackingActual?.proceso_actual <= 1 || trackingActual?.cantidad_final || selectedPrenda?.cantidad_final || trackingActual?.cantidad_final_pieza"
                 @click="backwardProcess(trackingActual?.proceso_actual - 1)">

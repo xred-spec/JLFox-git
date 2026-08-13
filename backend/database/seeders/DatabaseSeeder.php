@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolSeeder::class,
-            UsuarioSeeder::class,
-            TipoTelaSeeder::class,
-            ColorTelaSeeder::class,
-            TipoPrendaSeeder::class,
             ProcesoSeeder::class,
+            TipoTelaSeeder::class,
+            TipoPrendaSeeder::class,
+            UsuarioSeeder::class,
+            ColorTelaSeeder::class,
             PrendaPiezaSeeder::class,
             PrendaProcesoSeeder::class,
         ]);

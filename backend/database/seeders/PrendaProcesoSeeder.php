@@ -13,7 +13,7 @@ class PrendaProcesoSeeder extends Seeder
      */
     public function run(): void
     {
-        //Saco {
+        //Saco liso {
             //Delantero - DT {
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 1, 'orden' => 1, 'clave' => 'SL-C-DT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 1
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 2, 'orden' => 2, 'clave' => 'SL-P-DT-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 2
@@ -112,11 +112,192 @@ class PrendaProcesoSeeder extends Seeder
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 71, 'orden' => 4, 'clave' => 'SL-M-SC-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 71
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 72, 'orden' => 5, 'clave' => 'SL-P-SC-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 72
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 73, 'orden' => 6, 'clave' => 'SL-M-SC-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 73
-            // 
-        //
+            //} 
+        //}
 
-        //Camisa {
+        //Pantalón {
+            //Trasero - TS {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 74, 'orden' => 1, 'clave' => 'PT-C-TS-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 74
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 75, 'orden' => 2, 'clave' => 'PT-C-TS-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 75
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 76, 'orden' => 3, 'clave' => 'PT-P-TS-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 76
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 77, 'orden' => 4, 'clave' => 'PT-M-TS-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 77
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 78, 'orden' => 5, 'clave' => 'PT-C-TS-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 78
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 79, 'orden' => 6, 'clave' => 'PT-M-TS-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 79
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 80, 'orden' => 7, 'clave' => 'PT-F-TS-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 80
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 81, 'orden' => 8, 'clave' => 'PT-M-TS-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 81
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 82, 'orden' => 9, 'clave' => 'PT-C-TS-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 82
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 83, 'orden' => 10, 'clave' => 'PT-M-TS-10', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 83
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 84, 'orden' => 11, 'clave' => 'PT-C-TS-11', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 84
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 85, 'orden' => 12, 'clave' => 'PT-M-TS-12', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 85
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 86, 'orden' => 13, 'clave' => 'PT-M-TS-13', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 86
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 10, 'proceso_id' => 87, 'orden' => 14, 'clave' => 'PT-C-TS-14', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 87
+            //}
+
+            //Delantero - DT {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 88, 'orden' => 1, 'clave' => 'PT-C-DT-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 88
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 89, 'orden' => 2, 'clave' => 'PT-C-DT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 89
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 90, 'orden' => 3, 'clave' => 'PT-M-DT-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 90
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 91, 'orden' => 4, 'clave' => 'PT-C-DT-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 91
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 92, 'orden' => 5, 'clave' => 'PT-C-DT-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 92
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 93, 'orden' => 6, 'clave' => 'PT-C-DT-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 93
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 94, 'orden' => 7, 'clave' => 'PT-M-DT-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 94
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 95, 'orden' => 8, 'clave' => 'PT-P-DT-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 95
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 96, 'orden' => 9, 'clave' => 'PT-C-DT-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 96
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 97, 'orden' => 10, 'clave' => 'PT-C-DT-10', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 97
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 98, 'orden' => 11, 'clave' => 'PT-F-DT-11', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 98
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 99, 'orden' => 12, 'clave' => 'PT-C-DT-12', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 99
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 100, 'orden' => 13, 'clave' => 'PT-C-DT-13', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 100
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 11, 'proceso_id' => 101, 'orden' => 14, 'clave' => 'PT-C-DT-14', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 101
+            //}
+
+            //Pretina - PR {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 102, 'orden' => 1, 'clave' => 'PT-F-PR-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 102
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 103, 'orden' => 2, 'clave' => 'PT-C-PR-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 103
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 104, 'orden' => 3, 'clave' => 'PT-C-PR-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 104
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 105, 'orden' => 4, 'clave' => 'PT-P-PR-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 105
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 106, 'orden' => 5, 'clave' => 'PT-M-PR-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 106
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 107, 'orden' => 6, 'clave' => 'PT-C-PR-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 107
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 108, 'orden' => 7, 'clave' => 'PT-C-PR-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 108
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 109, 'orden' => 8, 'clave' => 'PT-C-PR-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 109
+            //}
+        //}
+
+        //Camisola flores {
+            //Espalda EP {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 13, 'proceso_id' => 110, 'orden' => 1, 'clave' => 'CF-C-EP-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 110
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 13, 'proceso_id' => 111, 'orden' => 2, 'clave' => 'CF-C-EP-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 111
+            //}
+
+            //Delantero DT {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 14, 'proceso_id' => 112, 'orden' => 1, 'clave' => 'CF-C-DT-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 112
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 14, 'proceso_id' => 113, 'orden' => 2, 'clave' => 'CF-C-DT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 113
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 14, 'proceso_id' => 114, 'orden' => 3, 'clave' => 'CF-C-DT-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 114
+            //}
+
+            //Mangas MG {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 15, 'proceso_id' => 115, 'orden' => 1, 'clave' => 'CF-C-MG-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 115
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 15, 'proceso_id' => 116, 'orden' => 2, 'clave' => 'CF-C-MG-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 116
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 15, 'proceso_id' => 117, 'orden' => 3, 'clave' => 'CF-M-MG-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 117
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 15, 'proceso_id' => 118, 'orden' => 4, 'clave' => 'CF-C-MG-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 118
+            //}
+
+            //Hombros HB {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 16, 'proceso_id' => 119, 'orden' => 1, 'clave' => 'CF-C-HB-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 119
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 16, 'proceso_id' => 120, 'orden' => 2, 'clave' => 'CF-C-HB-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 120
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 16, 'proceso_id' => 121, 'orden' => 3, 'clave' => 'CF-M-HB-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 121
+            //}
+
+            //Cuello / Pie cuello PC {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 122, 'orden' => 1, 'clave' => 'CF-F-PC-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 122
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 123, 'orden' => 2, 'clave' => 'CF-C-PC-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 123
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 124, 'orden' => 3, 'clave' => 'CF-M-PC-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 124
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 125, 'orden' => 4, 'clave' => 'CF-C-PC-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 125
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 126, 'orden' => 5, 'clave' => 'CF-C-PC-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 126
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 17, 'proceso_id' => 127, 'orden' => 6, 'clave' => 'CF-C-PC-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 127
+            //}
+
+            //Puños PÑ {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 128, 'orden' => 1, 'clave' => 'CF-F-PÑ-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 128
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 129, 'orden' => 2, 'clave' => 'CF-M-PÑ-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 129
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 130, 'orden' => 3, 'clave' => 'CF-C-PÑ-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 130
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 131, 'orden' => 4, 'clave' => 'CF-M-PÑ-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 131
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 132, 'orden' => 5, 'clave' => 'CF-C-PÑ-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 132
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 18, 'proceso_id' => 133, 'orden' => 6, 'clave' => 'CF-P-PÑ-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 133
+            //}
+
+            //Cuerpo CU {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 134, 'orden' => 1, 'clave' => 'CF-C-CU-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 134
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 135, 'orden' => 2, 'clave' => 'CF-C-CU-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 135
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 136, 'orden' => 3, 'clave' => 'CF-C-CU-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 136
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 137, 'orden' => 4, 'clave' => 'CF-M-CU-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 137
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 138, 'orden' => 5, 'clave' => 'CF-M-CU-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 138
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 139, 'orden' => 6, 'clave' => 'CF-C-CU-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 139
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 140, 'orden' => 7, 'clave' => 'CF-M-CU-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 140
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 141, 'orden' => 8, 'clave' => 'CF-P-CU-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 141
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 142, 'orden' => 9, 'clave' => 'CF-M-CU-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 142
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 19, 'proceso_id' => 143, 'orden' => 10, 'clave' => 'CF-M-CU-10', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 143
+            //}
+        //}
+
+        //Camisa rodeo con vivo {
+            //Bata delantera BD {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 20, 'proceso_id' => 144, 'orden' => 1, 'clave' => 'CRV-C-BD-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 144
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 20, 'proceso_id' => 145, 'orden' => 2, 'clave' => 'CRV-C-BD-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 145
+            //}
+
+            //Bata trasera BT {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 21, 'proceso_id' => 146, 'orden' => 1, 'clave' => 'CRV-C-BT-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 146
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 21, 'proceso_id' => 147, 'orden' => 2, 'clave' => 'CRV-C-BT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 147
+            //}
+
+            //Delantero DT {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 148, 'orden' => 1, 'clave' => 'CRV-M-DT-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 148
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 149, 'orden' => 2, 'clave' => 'CRV-C-DT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 149
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 150, 'orden' => 3, 'clave' => 'CRV-M-DT-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 150
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 151, 'orden' => 4, 'clave' => 'CRV-C-DT-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 151
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 152, 'orden' => 5, 'clave' => 'CRV-C-DT-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 152
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 153, 'orden' => 6, 'clave' => 'CRV-C-DT-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 153
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 154, 'orden' => 7, 'clave' => 'CRV-C-DT-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 154
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 22, 'proceso_id' => 155, 'orden' => 8, 'clave' => 'CRV-C-DT-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 155
+            //}
+
+            //Espalda EP {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 23, 'proceso_id' => 156, 'orden' => 1, 'clave' => 'CRV-C-EP-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 156
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 23, 'proceso_id' => 157, 'orden' => 2, 'clave' => 'CRV-C-EP-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 157
+            //}
+
+            //Cartera CA {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 158, 'orden' => 1, 'clave' => 'CRV-F-CA-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 158
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 159, 'orden' => 2, 'clave' => 'CRV-M-CA-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 159
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 160, 'orden' => 3, 'clave' => 'CRV-C-CA-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 160
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 161, 'orden' => 4, 'clave' => 'CRV-M-CA-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 161
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 162, 'orden' => 5, 'clave' => 'CRV-P-CA-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 162
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 24, 'proceso_id' => 163, 'orden' => 6, 'clave' => 'CRV-M-CA-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 163
+            //}
+
+            //Mangas MG {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 25, 'proceso_id' => 164, 'orden' => 1, 'clave' => 'CRV-C-MG-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 164
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 25, 'proceso_id' => 165, 'orden' => 2, 'clave' => 'CRV-C-MG-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 165
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 25, 'proceso_id' => 166, 'orden' => 3, 'clave' => 'CRV-M-MG-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 166
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 25, 'proceso_id' => 167, 'orden' => 4, 'clave' => 'CRV-C-MG-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 167
+            //}
             
-        //
+            //Hombros HB {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 26, 'proceso_id' => 168, 'orden' => 1, 'clave' => 'CRV-C-HB-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 168
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 26, 'proceso_id' => 169, 'orden' => 2, 'clave' => 'CRV-C-HB-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 169
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 26, 'proceso_id' => 170, 'orden' => 3, 'clave' => 'CRV-M-HB-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 170
+            //}
+
+            //Cuello / Pie cuello PC {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 171, 'orden' => 1, 'clave' => 'CRV-F-PC-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 171
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 172, 'orden' => 2, 'clave' => 'CRV-C-PC-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 172
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 173, 'orden' => 3, 'clave' => 'CRV-M-PC-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 173
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 174, 'orden' => 4, 'clave' => 'CRV-C-PC-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 174
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 175, 'orden' => 5, 'clave' => 'CRV-C-PC-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 175
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 27, 'proceso_id' => 176, 'orden' => 6, 'clave' => 'CRV-C-PC-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 176
+            //}
+
+            //Puños PÑ {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 177, 'orden' => 1, 'clave' => 'CRV-F-PÑ-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 177
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 178, 'orden' => 2, 'clave' => 'CRV-M-PÑ-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 178
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 179, 'orden' => 3, 'clave' => 'CRV-C-PÑ-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 179
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 180, 'orden' => 4, 'clave' => 'CRV-M-PÑ-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 180
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 181, 'orden' => 5, 'clave' => 'CRV-C-PÑ-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 181
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 28, 'proceso_id' => 182, 'orden' => 6, 'clave' => 'CRV-P-PÑ-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 182
+            //}
+
+            //Cuerpo CU {
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 183, 'orden' => 1, 'clave' => 'CRV-C-CU-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 183
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 184, 'orden' => 2, 'clave' => 'CRV-C-CU-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 184
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 185, 'orden' => 3, 'clave' => 'CRV-C-CU-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 185
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 186, 'orden' => 4, 'clave' => 'CRV-M-CU-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 186
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 187, 'orden' => 5, 'clave' => 'CRV-M-CU-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 187
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 188, 'orden' => 6, 'clave' => 'CRV-C-CU-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 188
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 189, 'orden' => 7, 'clave' => 'CRV-M-CU-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 189
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 190, 'orden' => 8, 'clave' => 'CRV-P-CU-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 190
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 191, 'orden' => 9, 'clave' => 'CRV-M-CU-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 191
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 29, 'proceso_id' => 192, 'orden' => 10, 'clave' => 'CRV-M-CU-10', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 192
+            //}
+        //}
     }
 }
