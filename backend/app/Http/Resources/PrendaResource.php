@@ -8,6 +8,7 @@ use App\Http\Resources\TipoPrendaResource;
 use App\Http\Resources\ColorTelaResource;
 use App\Http\Resources\BordadoResource;
 use App\Http\Resources\ForroResource;
+use App\Http\Resources\PrendaLoteResource;
 use App\Http\Resources\InventarioPrendaResource;
 
 class PrendaResource extends JsonResource
@@ -23,12 +24,12 @@ class PrendaResource extends JsonResource
             'id' => $this->id,
             'tipo' => $this->tipo,
             'talla' => $this->talla,
-            'tipo_prenda' => TipoPrendaResource::make($this->whenLoaded('tipo_prenda')),
+            'tiene_cartera' => $this->tiene_cartera,
             'color_tela' => ColorTelaResource::make($this->whenLoaded('color_tela')),
             'bordado' => BordadoResource::make($this->whenLoaded('bordado')),
             'forro' => ForroResource::make($this->whenLoaded('forro')),
-            'tiene_cartera' => $this->tiene_cartera,
-            'lotes' => PrendaProcesoResource::collection($this->whenLoaded('prenda_procesos')),
+            'tipo_prenda' => TipoPrendaResource::make($this->whenLoaded('tipo_prenda')),
+            'lotes' => PrendaLoteResource::collection($this->whenLoaded('lotes')),
             'inventario' => InventarioPrendaResource::collection($this->whenLoaded('inventario_prenda'))
         ];
     }

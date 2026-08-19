@@ -17,10 +17,10 @@ class PrendaLoteResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id_prenda_lote' => $this->id,
+            'id' => $this->id,
             'cantidad_prevista' => $this->cantidad_prevista,
             'cantidad_final_prenda' => $this->cantidad_final_prenda,
-            'lote' => LoteResource::make($this->whenLoaded('lote')),
+            //'lote' => LoteResource::make($this->whenLoaded('lote')),
             'prenda' => PrendaResource::make($this->whenLoaded('prenda'))
         ];
     }

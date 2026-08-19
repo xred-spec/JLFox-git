@@ -22,7 +22,7 @@ class PrendaProcesoSeeder extends Seeder
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 5, 'orden' => 5, 'clave' => 'SL-C-DT-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 5
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 6, 'orden' => 6, 'clave' => 'SL-M-DT-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 6
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 7, 'orden' => 7, 'clave' => 'SL-C-DT-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 7
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 8, 'orden' => 8, 'clave' => 'SL-P-DT-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 8
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 8, 'orden' => 8, 'clave' => 'SL-P-DT-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 1, 'tiempo_previsto_segundo' => 37]); //id: 8 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 9, 'orden' => 9, 'clave' => 'SL-C-DT-10', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 9
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 10, 'orden' => 10, 'clave' => 'SL-M-DT-11', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 10
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 1, 'proceso_id' => 11, 'orden' => 11, 'clave' => 'SL-M-DT-12', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 11
@@ -33,7 +33,7 @@ class PrendaProcesoSeeder extends Seeder
             //Mangas - MG {
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 14, 'orden' => 1, 'clave' => 'SL-C-MG-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 14
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 15, 'orden' => 2, 'clave' => 'SL-P-MG-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 15
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 16, 'orden' => 3, 'clave' => 'SL-M-MG-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 16
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 16, 'orden' => 3, 'clave' => 'SL-M-MG-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 2, 'tiempo_previsto_segundo' => 4]); //id: 16 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 17, 'orden' => 4, 'clave' => 'SL-C-MG-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 17
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 2, 'proceso_id' => 18, 'orden' => 5, 'clave' => 'SL-P-MG-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 18
             // }
@@ -54,7 +54,7 @@ class PrendaProcesoSeeder extends Seeder
             
             //Espalda - EP {
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 27, 'orden' => 1, 'clave' => 'SL-C-EP-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 27
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 28, 'orden' => 2, 'clave' => 'SL-P-EP-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 28
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 28, 'orden' => 2, 'clave' => 'SL-P-EP-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 4, 'tiempo_previsto_segundo' => 0]); //id: 28 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 29, 'orden' => 3, 'clave' => 'SL-F-EP-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 29
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 30, 'orden' => 4, 'clave' => 'SL-M-EP-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 30
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 5, 'proceso_id' => 31, 'orden' => 5, 'clave' => 'SL-C-EP-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 31
@@ -68,9 +68,9 @@ class PrendaProcesoSeeder extends Seeder
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 36, 'orden' => 1, 'clave' => 'SL-F-CT-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 36
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 37, 'orden' => 2, 'clave' => 'SL-M-CT-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 37
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 38, 'orden' => 3, 'clave' => 'SL-C-CT-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 38
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 39, 'orden' => 4, 'clave' => 'SL-P-CT-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 39
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 39, 'orden' => 4, 'clave' => 'SL-P-CT-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 1, 'tiempo_previsto_segundo' => 45]); //id: 39 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 40, 'orden' => 5, 'clave' => 'SL-M-CT-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 40
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 41, 'orden' => 6, 'clave' => 'SL-P-CT-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 41
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 41, 'orden' => 6, 'clave' => 'SL-P-CT-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 1, 'tiempo_previsto_segundo' => 33]); //id: 41 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 42, 'orden' => 7, 'clave' => 'SL-M-CT-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 42
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 6, 'proceso_id' => 43, 'orden' => 8, 'clave' => 'SL-C-CT-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 43
             // }
@@ -91,10 +91,10 @@ class PrendaProcesoSeeder extends Seeder
             //Cuerpo - CU {
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 54, 'orden' => 1, 'clave' => 'SL-M-CU-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 54
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 55, 'orden' => 2, 'clave' => 'SL-C-CU-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 55
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 56, 'orden' => 3, 'clave' => 'SL-P-CU-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 56
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 57, 'orden' => 4, 'clave' => 'SL-P-CU-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 57
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 56, 'orden' => 3, 'clave' => 'SL-P-CU-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 12, 'tiempo_previsto_segundo' => 25]); //id: 56 --ht
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 57, 'orden' => 4, 'clave' => 'SL-P-CU-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 6, 'tiempo_previsto_segundo' => 21]); //id: 57 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 58, 'orden' => 5, 'clave' => 'SL-C-CU-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 58
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 59, 'orden' => 6, 'clave' => 'SL-P-CU-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 59
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 59, 'orden' => 6, 'clave' => 'SL-P-CU-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 4, 'tiempo_previsto_segundo' => 26]); //id: 59 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 60, 'orden' => 7, 'clave' => 'SL-M-CU-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 60
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 61, 'orden' => 8, 'clave' => 'SL-C-CU-08', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 61
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 8, 'proceso_id' => 62, 'orden' => 9, 'clave' => 'SL-C-CU-09', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 62
@@ -110,7 +110,7 @@ class PrendaProcesoSeeder extends Seeder
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 69, 'orden' => 2, 'clave' => 'SL-M-SC-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 69
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 70, 'orden' => 3, 'clave' => 'SL-M-SC-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 70
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 71, 'orden' => 4, 'clave' => 'SL-M-SC-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 71
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 72, 'orden' => 5, 'clave' => 'SL-P-SC-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 72
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 72, 'orden' => 5, 'clave' => 'SL-P-SC-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 18, 'tiempo_previsto_segundo' => 57]); //id: 72 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 9, 'proceso_id' => 73, 'orden' => 6, 'clave' => 'SL-M-SC-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 73
             //} 
         //}

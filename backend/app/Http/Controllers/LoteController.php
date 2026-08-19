@@ -34,7 +34,12 @@ class LoteController extends Controller
 
     public function indexProduccion()
     {
-        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'produccion')->paginate(15);
+        $lotes = Lote::with([
+            'prendas_lote.prenda.tipo_prenda.piezas.procesos',
+            'prendas_lote.prenda.color_tela',
+            'prendas_lote.prenda.bordado',
+            'prendas_lote.prenda.forro'
+        ])->where('estado', 'produccion')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
