@@ -20,9 +20,9 @@ class PrendaPiezaResource extends JsonResource
         return [
             'id' => $this->id,
             'nombre' => $this->nombre,
-            'tipo_prenda' => TipoPrendaResource::make($this->tipo_prenda),
+            'tipo_prenda' => TipoPrendaResource::make($this->whenLoaded('tipo_prenda')),
             'procesos' => PrendaProcesoResource::collection($this->whenLoaded('procesos')),
-            'prenda_lote' => $this->prenda_lote
+            'prenda_lote' => PrendaLotePiezaResource::collection($this->whenLoaded('prenda_lote'))
         ];
     }
 }

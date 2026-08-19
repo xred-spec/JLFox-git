@@ -130,7 +130,7 @@ const openModal = (selected?: any) => {
                     <ItemCard v-for="c in coloresHilo.data"
                     :grids="3"
                     :item="c"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex 
                     :columns="coloresHiloColumns"
                     :show="true"
                     @update="openModal(c)"

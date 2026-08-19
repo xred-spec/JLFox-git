@@ -23,6 +23,7 @@ const getBordados = async() => {
 
     if(data.value) {
         bordados.value = data.value
+        console.log('bordads: ', bordados.value)
         return
     }
 
@@ -146,7 +147,7 @@ const openModal = (selected?: any) => {
                     <ItemCard v-for="b in bordados.data"
                     :grids="4"
                     :item="b"
-                    :index=itemsIndex + 1
+                    :index=itemsIndex
                     :columns="bordadosColumns"
                     :show="true"
                     @update="openModal(b)"

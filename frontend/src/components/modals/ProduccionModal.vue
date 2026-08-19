@@ -394,7 +394,7 @@ const closeProduction = async() => {
 }
 
 const finishLote = async() => {
-    const {error} = useApi(`lotes/state/${props.modelValue?.id}`).put({
+    const {error} = await useApi(`lotes/state/${props.modelValue?.id}`).put({
         estado: 'terminado'
     }).json()
 
@@ -534,17 +534,17 @@ watch(allPrendasFinish, (allFinished) => {
                             Cantidad proceso: 
                         </label>
 
-                        <input type="number" v-model="cantidadProcesos" :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza"
+                        <input type="number" v-model="cantidadProcesos" :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || trackingActual?.proceso_actual < 1 || (trackingActual?.proceso_actual || 0) > selectedPieza?.procesos?.length"
                         class="flex-1 mx-2 py-1 px-2 rounded-[5px] font-bold text-[#000000] border placeholder:text-[#000000]/50 bg-[#FFFFFF] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]"
                         :class="validateInput ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'" />
 
-                        <button class="py-1 px-4 mr-1 bg-[#3bb937] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#3bb937]/50 disabled:text-[#000000]/50 hover:cursor-pointer"
-                        :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || cantidadProcesos === selectedPrenda.cantidad_prevista"
+                        <button class="py-1 px-4 mr-1 bg-[#3bb937] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#3bb937]/50 disabled:text-[#000000]/50 hover:cursor-pointer hover:scale-101"
+                        :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || cantidadProcesos === selectedPrenda.cantidad_prevista || cantidadProcesos === trackingActual?.cantidad_proceso"
                         @click="sumarCantidad">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
                             class="lucide lucide-plus-icon lucide-plus size-3"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                         </button>
-                        <button class="py-1 px-4 ml-1 bg-[#c41a1a] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#c41a1a]/50 disabled:text-[#ffffff] hover:cursor-pointer"
+                        <button class="py-1 px-4 ml-1 bg-[#c41a1a] font-bold text-[#ffffff] rounded-[10px] disabled:bg-[#c41a1a]/50 disabled:text-[#ffffff] hover:cursor-pointer hover:scale-101"
                         :disabled="!selectedPrenda || trackingActual?.cantidad_final_pieza || !selectedPieza || Number(cantidadProcesos) < 1"
                         @click="restarCantidad">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
@@ -624,10 +624,10 @@ watch(allPrendasFinish, (allFinished) => {
 
                 <div class="w-full flex py-2 items-center border-b">
                     <label class="text-[#000000] font-bold">
-                        Descripción:
+                        Descripción proceso actual:
                     </label>
 
-                    <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold ml-1 text-start w-full">
+                    <label class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold ml-1 text-start flex-1">
                         {{ findProcessDesc(trackingActual?.proceso_actual) }}
                     </label>
                 </div>
@@ -763,9 +763,9 @@ watch(allPrendasFinish, (allFinished) => {
                         <div class="flex items-center justify-center  border  border-[#000000]/30 rounded-[10px] bg-[#f9f9f9] w-full"
                         :class="{ 'opacity-50 pointer-events-none': !selectedPiezaId }">
                             <label class="text-[#000000] font-bold mt-2">
-                                Tiempo total transcurrido:
+                                Tiempo transcurrido (pieza actual):
                                 <span class="bg-[#e4e4e4] text-[#c41a1a] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
-                                    {{ String(trackingActual?.tiempo_final_hora ?? 0).padStart(2, '0') }} : 
+                                    {{ String(trackingActual?.tiempo_final_hora ?? 0).padStart(2, '0') || '00' }} : 
                                     {{ String(trackingActual?.tiempo_final_minuto ?? 0).padStart(2, '0') || '00' }} : 
                                     {{ String(trackingActual?.tiempo_final_segundo ?? 0).padStart(2, '0') || '00' }}
                                 </span>
