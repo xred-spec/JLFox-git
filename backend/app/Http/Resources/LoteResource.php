@@ -18,9 +18,9 @@ class LoteResource extends JsonResource
         return [
             'id' => $this->id,
             'estado' => $this->estado,
-            'prendas' => PrendaLoteResource::collection($this->whenLoaded('prendas_lote')),
             'fecha_inicio' => $this->fecha_inicio,
-            'fecha_final' => $this->fecha_final
+            'fecha_final' => $this->fecha_final,
+            'prendas_lote' => PrendaLoteResource::collection($this->whenLoaded('prendas_lote')),
         ];
     }
 }

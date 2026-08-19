@@ -22,7 +22,7 @@ class ProcesoSeeder extends Seeder
                 Proceso::firstOrCreate(['descripcion' => 'Unir vivos de delantero', 'area' => 'costura']); //id: 5
                 Proceso::firstOrCreate(['descripcion' => 'Delantero Abrir vivos', 'area' => 'manual']); //id: 6
                 Proceso::firstOrCreate(['descripcion' => 'Delantero cierre vivos y bolsa (cartera)', 'area' => 'costura']); //id: 7
-                Proceso::firstOrCreate(['descripcion' => 'Delantero planchar vivos y bolsa', 'area' => 'plancha']); //id: 8
+                Proceso::firstOrCreate(['descripcion' => 'Delantero planchar vivos y bolsa', 'area' => 'plancha']); //id: 8 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Bata delantero', 'area' => 'costura']); //id: 9
                 Proceso::firstOrCreate(['descripcion' => 'Delantero limpiar rayar bastilla', 'area' => 'manual']); //id: 10
                 Proceso::firstOrCreate(['descripcion' => 'Delantero y vista se empalman', 'area' => 'manual']); //id: 11
@@ -33,7 +33,7 @@ class ProcesoSeeder extends Seeder
             // Mangas - MG {
                 Proceso::firstOrCreate(['descripcion' => 'Unir manga', 'area' => 'costura']); //id: 14
                 Proceso::firstOrCreate(['descripcion' => 'Mangas Abrir costuras, fusion y bastilla', 'area' => 'plancha']); //id: 15
-                Proceso::firstOrCreate(['descripcion' => 'Manga Empalmar forro con manga', 'area' => 'manual']); //id: 16
+                Proceso::firstOrCreate(['descripcion' => 'Manga Empalmar forro con manga', 'area' => 'manual']); //id: 16 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Manga Union de forro con manga y fusion', 'area' => 'costura']); //id: 17
                 Proceso::firstOrCreate(['descripcion' => 'Manga volteado, fusion y puño', 'area' => 'plancha']); //id: 18
             //}
@@ -54,7 +54,7 @@ class ProcesoSeeder extends Seeder
 
             // Espalda - EP {
                 Proceso::firstOrCreate(['descripcion' => 'Unir espalda', 'area' => 'costura']); //id: 27
-                Proceso::firstOrCreate(['descripcion' => 'Espalda Abrir costuras', 'area' => 'plancha']); //id: 28
+                Proceso::firstOrCreate(['descripcion' => 'Espalda Abrir costuras', 'area' => 'plancha']); //id: 28 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Espalda Fusionar y bastilla', 'area' => 'fusion']); //id: 29
                 Proceso::firstOrCreate(['descripcion' => 'Espalda Rayar la espalda (vivos)', 'area' => 'manual']); //id: 30
                 Proceso::firstOrCreate(['descripcion' => 'Unir vivos de espalda', 'area' => 'costura']); //id: 31
@@ -68,9 +68,9 @@ class ProcesoSeeder extends Seeder
                 Proceso::firstOrCreate(['descripcion' => 'Cuello/tapa fusion', 'area' => 'fusion']); //id: 36
                 Proceso::firstOrCreate(['descripcion' => 'Cuello unir tapa/cuello y rayado', 'area' => 'manual']); //id: 37
                 Proceso::firstOrCreate(['descripcion' => 'Cuello filo unir con tapa', 'area' => 'costura']); //id: 38
-                Proceso::firstOrCreate(['descripcion' => 'Cuello abren costuras', 'area' => 'plancha']); //id: 39
+                Proceso::firstOrCreate(['descripcion' => 'Cuello abren costuras', 'area' => 'plancha']); //id: 39 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Cuello voltear', 'area' => 'manual']); //id: 40
-                Proceso::firstOrCreate(['descripcion' => 'Cuello planchar despues de voltear', 'area' => 'plancha']); //id: 41
+                Proceso::firstOrCreate(['descripcion' => 'Cuello planchar despues de voltear', 'area' => 'plancha']); //id: 41 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Cuello rayar con molde', 'area' => 'manual']); //id: 42
                 Proceso::firstOrCreate(['descripcion' => 'Cuello bastilla', 'area' => 'costura']); //id: 43
             //}
@@ -91,10 +91,10 @@ class ProcesoSeeder extends Seeder
             // Cuerpo - CU {
                 Proceso::firstOrCreate(['descripcion' => 'Empalmar espalda delantero y forro', 'area' => 'manual']); //id: 54
                 Proceso::firstOrCreate(['descripcion' => 'Espalda y delantero union', 'area' => 'costura']); //id: 55
-                Proceso::firstOrCreate(['descripcion' => 'Espalda y delantero abren costuras', 'area' => 'plancha']); //id: 56
-                Proceso::firstOrCreate(['descripcion' => 'Espalda y delantero hacer bastilla', 'area' => 'plancha']); //id: 57
+                Proceso::firstOrCreate(['descripcion' => 'Espalda y delantero abren costuras', 'area' => 'plancha']); //id: 56 --ht
+                Proceso::firstOrCreate(['descripcion' => 'Espalda y delantero hacer bastilla', 'area' => 'plancha']); //id: 57 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Costura de hombros', 'area' => 'costura']); //id: 58
-                Proceso::firstOrCreate(['descripcion' => 'Cuerpo abrir costiras de hombros', 'area' => 'plancha']); //id: 59
+                Proceso::firstOrCreate(['descripcion' => 'Cuerpo abrir costuras de hombros', 'area' => 'plancha']); //id: 59 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Cuerpo medir caja de cuello', 'area' => 'manual']); //id: 60
                 Proceso::firstOrCreate(['descripcion' => 'Cuerpo y cuello se unen', 'area' => 'costura']); //id: 61
                 Proceso::firstOrCreate(['descripcion' => 'Cuerpo pespunte', 'area' => 'costura']); //id: 62
@@ -110,7 +110,7 @@ class ProcesoSeeder extends Seeder
                 Proceso::firstOrCreate(['descripcion' => 'Saco ojal', 'area' => 'manual']); //id: 69
                 Proceso::firstOrCreate(['descripcion' => 'Saco boton', 'area' => 'manual']); //id: 70
                 Proceso::firstOrCreate(['descripcion' => 'Saco deshebrar', 'area' => 'manual']); //id: 71
-                Proceso::firstOrCreate(['descripcion' => 'Saco plancha final', 'area' => 'plancha']); //id: 72
+                Proceso::firstOrCreate(['descripcion' => 'Saco plancha final', 'area' => 'plancha']); //id: 72 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Saco etiqueta y cubrepolvo', 'area' => 'manual']); //id: 73
             //}
         //}

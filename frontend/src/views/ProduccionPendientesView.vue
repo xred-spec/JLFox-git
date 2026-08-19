@@ -24,7 +24,7 @@ const getLotes = async() => {
 
     if(data.value) {
         lotesPendientes.value = data.value
-        //console.log('data', data.value)
+        console.log('pendientes: ', lotesPendientes.value)
         return
     }
 

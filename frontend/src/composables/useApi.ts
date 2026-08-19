@@ -3,6 +3,7 @@ import { useAuthStore } from "@/stores/auth";
 
 export const useApi = createFetch({
     baseUrl:'https://jlfox.onrender.com/api/',
+    //baseUrl:'http://localhost:8000/api/',
     options: {
         async beforeFetch({options}) {
             const authStore = useAuthStore();
