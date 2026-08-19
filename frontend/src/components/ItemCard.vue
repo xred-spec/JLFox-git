@@ -34,6 +34,8 @@ const emits = defineEmits<{
     (e: 'update', id: number): void,
     (e: 'delete', id: number): void
 }>()
+
+//console.log('item: ', props.item)
 </script>
 
 <template>

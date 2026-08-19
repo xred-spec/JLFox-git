@@ -18,7 +18,11 @@ class PrendaLotePieza extends Model
         'prenda_pieza_id',
         'proceso_actual',
         'cantidad_proceso',
-        'hora_inicio',
+        'tiempo_realizado_hora',
+        'tiempo_realizado_minuto',
+        'tiempo_realizado_segundo',
+        'tiempo_final_hora',
+        'tiempo_final_minuto',
         'hora_final'
     ];
 

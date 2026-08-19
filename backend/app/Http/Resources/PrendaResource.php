@@ -23,13 +23,13 @@ class PrendaResource extends JsonResource
             'id' => $this->id,
             'tipo' => $this->tipo,
             'talla' => $this->talla,
-            'tipo_prenda' => TipoPrendaResource::make($this->tipo_prenda),
-            'color_tela' => ColorTelaResource::make($this->color_tela),
-            'bordado' => BordadoResource::make($this->bordado),
-            'forro' => ForroResource::make($this->forro),
+            'tipo_prenda' => TipoPrendaResource::make($this->whenLoaded('tipo_prenda')),
+            'color_tela' => ColorTelaResource::make($this->whenLoaded('color_tela')),
+            'bordado' => BordadoResource::make($this->whenLoaded('bordado')),
+            'forro' => ForroResource::make($this->whenLoaded('forro')),
             'tiene_cartera' => $this->tiene_cartera,
-            'procesos' => PrendaProcesoResource::collection($this->whenLoaded('prenda_procesos')),
-            'inventario' => $this->inventario_prenda
+            'lotes' => PrendaProcesoResource::collection($this->whenLoaded('prenda_procesos')),
+            'inventario' => InventarioPrendaResource::collection($this->whenLoaded('inventario_prenda'))
         ];
     }
 }

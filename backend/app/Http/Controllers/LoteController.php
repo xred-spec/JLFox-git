@@ -46,7 +46,7 @@ class LoteController extends Controller
 
     public function indexTerminados()
     {
-        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'terminado')->paginate(15);
+        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos', 'prendas_lote.prenda.tipo_prenda.piezas.prenda_lote.historial_procesos')->where('estado', 'terminado')->paginate(15);
         $resuorce = LoteResource::collection($lotes);
 
         return $this->successResponse(
@@ -292,6 +292,8 @@ class LoteController extends Controller
             $lote = PrendaLote::findOrFail($id);
             $lote->cantidad_final_prenda = $request->cantidad_final_prenda; 
             $lote->save();
+
+            
 
             $inventarioPrenda = InventarioPrenda::firstOrNew(['prenda_id' => $lote->prenda_id]);
             $inventarioPrenda->cantidad = ($inventarioPrenda->cantidad ?? 0) + $request->cantidad_final_prenda;

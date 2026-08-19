@@ -23,8 +23,8 @@ if(itemSelected.value = null) {
 
 <template>
     <div class="flex flex-col h-screen justify-start border-r-2 border-[#000000] w-80 bg-[#e4e4e4]">
-        <div class="flex items-center justify-center h-14 bg-[#000000] border-b-2 border-[#000000]">
-            <p class="font-bold text-[#ffffff]">JLFox Tracking System</p>
+        <div class="flex items-center justify-center h-14 bg-[#ffffff] border-b-2 border-[#000000]">
+            <p class="font-bold text-[#000000]">JLFox Tracking System</p>
         </div>
 
         <DeployItemSidebar 
