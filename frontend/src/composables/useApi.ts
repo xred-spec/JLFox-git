@@ -2,7 +2,7 @@ import { createFetch } from "@vueuse/core";
 import { useAuthStore } from "@/stores/auth";
 
 export const useApi = createFetch({
-    baseUrl:'http://localhost:8000/api/',
+    baseUrl:'https://jlfox.onrender.com/api/',
     options: {
         async beforeFetch({options}) {
             const authStore = useAuthStore();
@@ -13,9 +13,7 @@ export const useApi = createFetch({
             };  
 
             if(authStore.token) {
-                options.headers = {
-                    'Authorization': `Bearer ${authStore.token}`
-                }
+                options.headers['Authorization'] = `Bearer ${authStore.token}`;
             }
 
             return {options};

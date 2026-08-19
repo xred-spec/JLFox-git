@@ -42,7 +42,7 @@ class AuthController extends Controller
         $usuario = Usuario::where('username', $request->username)
             ->first();
 
-        if(!$usuario | !Hash::check($request->password, $usuario->password)) {
+        if(!$usuario || !Hash::check($request->password, $usuario->password)) {
             return response([
                 'message' => 'Credenciales incorrectas'
             ], 401);
