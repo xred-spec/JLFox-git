@@ -63,7 +63,7 @@ const initForm = () => {
     } else {
         prendas.value = [{prenda_id: '', cantidad: 0}]
     }
-    console.log('prendas: ', prendas.value)
+    //console.log('prendas: ', prendas.value)
 }
 
 const cleanInputs = () => {
@@ -123,7 +123,7 @@ const validateInputs = () => {
             valid = false
             return
         }
-        console.log('data: ', sendData)
+        //console.log('data: ', sendData)
         cleanInputs()
         emits('accept', sendData)
     }
@@ -133,7 +133,7 @@ watch(() => props.modelValue, () => {
     initForm();
 }, { immediate: true });
 
-console.log('model: ', props.modelValue)
+//console.log('model: ', props.modelValue)
 </script>
 
 <template>

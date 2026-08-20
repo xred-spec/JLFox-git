@@ -14,16 +14,17 @@ class PrendaLotePieza extends Model
     protected $table = 'prenda_lote_piezas';
 
     protected $fillable = [
+        'cantidad_proceso',
+        'cantidad_final_pieza',
+        'proceso_actual',
         'prenda_lote_id',
         'prenda_pieza_id',
-        'proceso_actual',
-        'cantidad_proceso',
         'tiempo_realizado_hora',
         'tiempo_realizado_minuto',
         'tiempo_realizado_segundo',
         'tiempo_final_hora',
         'tiempo_final_minuto',
-        'hora_final'
+        'tiempo_final_segundo',
     ];
 
     public function pieza(): BelongsTo {

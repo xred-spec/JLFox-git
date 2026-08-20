@@ -5,6 +5,7 @@ const props = defineProps<{
     show: boolean
     modelValue: Record<string, any> | null
 }>()
+//console.log('modelValue: ', props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -16,7 +17,7 @@ const selectedPiezaId = ref<number | string>('')
 const selectedProcesoId = ref<number | string>('')
 
 const selectedPrenda = computed(() => {
-    const prendas = props.modelValue?.prendas
+    const prendas = props.modelValue?.prendas_lote
 
     if(prendas && Array.isArray(prendas) && selectedPrendaId.value !== '') {
         console.log('selectedPrenda: ', prendas.find((p:any) => p.prenda.id === selectedPrendaId.value))
@@ -38,7 +39,7 @@ const selectedPieza = computed(() => {
 })
 
 const selectOptions = computed(() => {
-    const prendas = props.modelValue?.prendas
+    const prendas = props.modelValue?.prendas_lote
 
     if(prendas && Array.isArray(prendas)) {
         const options = prendas.map((p: any) => ({
@@ -77,11 +78,13 @@ const tiempoPrenda = computed(() => {
 
     piezas.forEach((item: any) => {
         item.prenda_lote.forEach((prenda_lote: any) => {
-            const horas = Number(prenda_lote.tiempo_final_hora) || 0
-            const minutos = Number(prenda_lote.tiempo_final_minuto) || 0
-            const segundos = Number(prenda_lote.tiempo_final_segundo) || 0
+            if(prenda_lote.prenda_lote_id === selectedPrenda.value.id) {
+                const horas = Number(prenda_lote.tiempo_final_hora) || 0
+                const minutos = Number(prenda_lote.tiempo_final_minuto) || 0
+                const segundos = Number(prenda_lote.tiempo_final_segundo) || 0
 
-            total = (horas * 3600) + (minutos * 60) + segundos
+                total += (horas * 3600) + (minutos * 60) + segundos
+            }
         })
     })
 
@@ -93,7 +96,7 @@ const tiempoPrenda = computed(() => {
 })
 
 const procesoStats = computed(() => {
-    if(!selectedPieza.value || !selectedProcesoId.value) return {cantidad: 0, h: '00', m: '00', s: '00'}
+    if(!selectedPrenda.value || !selectedPieza.value || !selectedProcesoId.value) return {cantidad: 0, h: '00', m: '00', s: '00'}
 
     const procesos  = selectedPieza.value.procesos || []
     const index = procesos.findIndex((p: any) => p.id === selectedProcesoId.value)
@@ -102,8 +105,11 @@ const procesoStats = computed(() => {
 
     const ordenProceso = index + 1
 
-    const loteActual = selectedPieza.value.prenda_lote?.[0]
-    if(!loteActual || !loteActual.historial_procesos) return {cantidad: 0, h: '00', m: '00', s: '00'}
+    const loteActual = selectedPieza.value.prenda_lote?.find(
+        (pl: any) => pl.prenda_lote_id === selectedPrenda.value.id
+    )
+
+    if(!loteActual || !loteActual.historial_procesos) return {cantidad: 0, h: '00', m: '00', s: '00'} 
 
     const historiales = loteActual.historial_procesos.filter(
         (h: any) => h.proceso_orden === ordenProceso
@@ -249,9 +255,9 @@ const closeModal = () => {
                         <label class="text-[#000000] font-bold py-2">
                             Tiempo ocupado para la pieza:
                             <span class="bg-[#e4e4e4] text-[#c41a1a] px-5 py-2 rounded-[10px] font-bold mx-1 text-center">
-                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.id === selectedPieza?.id).tiempo_final_hora ?? 0).padStart(2, '0') || '-' }} : 
-                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.id === selectedPieza?.id).tiempo_final_minuto ?? 0).padStart(2, '0') || '-' }} : 
-                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.id === selectedPieza?.id).tiempo_final_segundo ?? 0).padStart(2, '0') || '-' }}
+                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.prenda_lote_id === selectedPrenda?.id).tiempo_final_hora ?? 0).padStart(2, '0') || '-' }} : 
+                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.prenda_lote_id === selectedPrenda?.id).tiempo_final_minuto ?? 0).padStart(2, '0') || '-' }} : 
+                                {{ String(selectedPieza?.prenda_lote?.find((lote: any) => lote.prenda_lote_id === selectedPrenda?.id).tiempo_final_segundo ?? 0).padStart(2, '0') || '-' }}
                             </span>
                         </label>
                     </div>

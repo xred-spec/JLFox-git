@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\PrendaLotePiezaResource;
 
 class HistorialProcesoPiezaResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class HistorialProcesoPiezaResource extends JsonResource
             'tiempo_hora' => $this->tiempo_hora,
             'tiempo_minuto' => $this->tiempo_minuto,
             'tiempo_segundo' => $this->tiempo_segundo,
-            'pieza_lote' => $this->pieza_lote
+            'pieza_lote' => PrendaLotePiezaResource::make($this->whenLoaded('pieza_lote'))
         ];
     }
 }
