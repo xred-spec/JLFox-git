@@ -18,7 +18,7 @@ class ColorTelaResource extends JsonResource
         return [
             'id' => $this->id,
             'color' => $this->color,
-            'tela' => TelaResource::make($this->tela)
+            'tela' => TelaResource::make($this->whenLoaded('tela'))
         ];
     }
 }

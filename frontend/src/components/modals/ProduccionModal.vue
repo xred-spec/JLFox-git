@@ -6,6 +6,7 @@ const props = defineProps<{
     show: boolean
     modelValue: Record<string, any> | null
 }>()
+//console.log('modelValue: ', props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -130,9 +131,10 @@ const reiniciarCronometro = () => {
 };
 
 const selectedPrenda = computed(() => {
-    const prendas = props.modelValue?.prendas
+    const prendas = props.modelValue?.prendas_lote
 
     if(prendas && Array.isArray(prendas) && selectedPrendaId.value !== '') {
+        //console.log('selectedPrenda: ', prendas.find((p:any) => p.prenda.id === selectedPrendaId.value))
         return prendas.find((p:any) => p.prenda.id === selectedPrendaId.value)
     }
 
@@ -143,6 +145,7 @@ const selectedPieza = computed(() => {
     const piezas = selectedPrenda.value?.prenda?.tipo_prenda.piezas
 
     if(piezas && Array.isArray(piezas) && selectedPiezaId.value !== '') {
+        //console.log('selectedPieza: ', piezas.find((p:any) => p.id === selectedPiezaId.value))
         return piezas.find((p:any) => p.id === selectedPiezaId.value)
     }
 
@@ -150,7 +153,7 @@ const selectedPieza = computed(() => {
 })
 
 const selectOptions = computed(() => {
-    const prendas = props.modelValue?.prendas
+    const prendas = props.modelValue?.prendas_lote
 
     if(prendas && Array.isArray(prendas)) {
         return prendas.map((p: any) => ({
@@ -170,12 +173,12 @@ const trackingActual = computed(() => {
     if (!selectedPieza.value || !selectedPrenda.value) return null;
 
     return selectedPieza.value.prenda_lote.find(
-        (tracking: any) => tracking.prenda_lote_id === selectedPrenda.value.id_prenda_lote
+        (tracking: any) => tracking.prenda_lote_id === selectedPrenda.value.id
     );
 });
 
 const allPiezasFinished = computed(() => {
-    const prendas = props.modelValue?.prendas;
+    const prendas = props.modelValue?.prendas_lote;
 
     if(!prendas || !Array.isArray(prendas) || prendas.length === 0) return false;
 
@@ -197,7 +200,7 @@ const allPiezasFinished = computed(() => {
 });
 
 const allPrendasFinish = computed(() => {
-    const prendas = props.modelValue?.prendas
+    const prendas = props.modelValue?.prendas_lote
 
     if(!prendas || !Array.isArray(prendas) || prendas.length === 0) return false
 
@@ -364,7 +367,7 @@ const closeProduction = async() => {
 
     const cantidadesFinales = piezas.map((pieza: any) => {
         const tracking = pieza.prenda_lote?.find(
-            (pl: any) => pl.prenda_lote_id === selectedPrenda.value.id_prenda_lote
+            (pl: any) => pl.prenda_lote_id === selectedPrenda.value.id
         );
         return tracking?.cantidad_final_pieza;
     });
@@ -381,7 +384,7 @@ const closeProduction = async() => {
         return;
     }
 
-    const {data, error} = await useApi(`lotes/close-production/${selectedPrenda.value.id_prenda_lote}`).put({
+    const {data, error} = await useApi(`lotes/close-production/${selectedPrenda.value.id}`).put({
         cantidad_final_prenda: cantidadMinima
     }).json()
 
@@ -456,14 +459,13 @@ const timesPerQuantity = computed(() => {
 
 watch(trackingActual, (newTracking) => {
     if(newTracking) {
+        //console.log('trackingActual: ', trackingActual.value)
+
         cantidadProcesos.value = newTracking.cantidad_proceso || selectedPrenda.value.cantidad_prevista
         tiempoHoras.value = 0
         tiempoMin.value = 0
         tiempoSeg.value = 0
         tiempoHorasVal.value = tiempoMinVal.value = tiempoSegVal.value = false
-
-
-        console.log('trackingPieza: ', trackingActual.value)
     } else {
         cantidadProcesos.value = ''
         tiempoHoras.value = 0
@@ -515,7 +517,7 @@ watch(allPrendasFinish, (allFinished) => {
 
                     <select v-model="selectedPiezaId" class="bg-[#FFFFFF] w-full py-2 px-2 rounded-[5px] ml-2 font-bold text-[#000000] border border-[#63492a] disabled:cursor-not-allowed disabled:text-[#000000]/50 disabled:bg-[#e0e0e0]">
                         <option value="" disabled>Seleccione una opción</option>
-                        <option v-for="op in selectedPrenda?.prenda.tipo_prenda.piezas" :key="op.id" :value="op.id">
+                        <option v-for="op in selectedPrenda?.prenda?.tipo_prenda?.piezas" :key="op.id" :value="op.id">
                             {{ op.nombre }}
                         </option>
                     </select>
