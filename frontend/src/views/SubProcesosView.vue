@@ -35,7 +35,7 @@ const getProcesos = async() => {
 
     if(data.value) {
         procesos.value = data.value
-        console.log('procesos: ', procesos.value)
+        //console.log('procesos: ', procesos.value)
         return
     }
 
@@ -59,7 +59,7 @@ const fetchSelects = async() => {
         }))
     }
 
-    console.log('tiposPrenda: ', tiposPrenda.data.value)
+    //console.log('tiposPrenda: ', tiposPrenda.data.value)
     
     filters.value = {}
     filters.value.tipos_prenda = {label: 'Tipos de prendas', options: [], order: 1}
@@ -84,7 +84,7 @@ const fetchSelects = async() => {
 }
 
 const procesosFiltrados = computed(() => {
-    console.log('activeFilters: ', activeFilters.value)
+    //console.log('activeFilters: ', activeFilters.value)
     if (!procesos.value || !procesos.value.data) return [];
 
     if (activeFilters.value.length === 0) return procesos.value.data;

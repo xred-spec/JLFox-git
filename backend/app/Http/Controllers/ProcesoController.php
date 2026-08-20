@@ -40,14 +40,18 @@ class ProcesoController extends Controller
                 'area' => $data['area']
             ]);
 
-            $pieza = PrendaPieza::findOrFail($data['pieza_prenda_id']);
-            $order = $pieza->procesos()->count() + 1;
+            $pieza = PrendaPieza::findOrFail($data['prenda_pieza_id']);
+            $maxOrder = PrendaProceso::where('prenda_pieza_id', $pieza->id)->max('orden');
+            $order = $maxOrder ? $maxOrder + 1 : 1;
 
             $newPrendaProceso = PrendaProceso::create([
                 'clave' => $data['clave'],
                 'prenda_pieza_id' => $pieza->id,
                 'proceso_id' => $newProceso->id,
-                'orden' => $order
+                'orden' => $order,
+                'tiempo_previsto_hora' => $data['tiempo_previsto_hora'],
+                'tiempo_previsto_minuto' => $data['tiempo_previsto_minuto'],
+                'tiempo_previsto_segundo' => $data['tiempo_previsto_segundo'],
             ]);
 
             return $newProceso;

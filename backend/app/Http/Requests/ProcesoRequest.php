@@ -28,7 +28,10 @@ class ProcesoRequest extends FormRequest
             'clave' => 'required|string|min:1',
             'descripcion' => 'required|string|min:1',
             'area' => ['required', Rule::enum(AreaProduccion::class)],
-            'pieza_prenda_id' => 'required|integer|exists:prenda_piezas,id'
+            'pieza_prenda_id' => 'required|integer|exists:prenda_piezas,id',
+            'tiempo_previsto_hora' => 'required|integer|min:0',
+            'tiempo_previsto_minuto' => 'required|integer|min:0',
+            'tiempo_previsto_segundo' => 'required|integer|min:0',
         ];
     }
 }

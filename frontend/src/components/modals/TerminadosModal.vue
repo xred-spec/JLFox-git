@@ -20,7 +20,7 @@ const selectedPrenda = computed(() => {
     const prendas = props.modelValue?.prendas_lote
 
     if(prendas && Array.isArray(prendas) && selectedPrendaId.value !== '') {
-        console.log('selectedPrenda: ', prendas.find((p:any) => p.prenda.id === selectedPrendaId.value))
+        //console.log('selectedPrenda: ', prendas.find((p:any) => p.prenda.id === selectedPrendaId.value))
         return prendas.find((p:any) => p.prenda.id === selectedPrendaId.value)
     }
 
@@ -31,7 +31,7 @@ const selectedPieza = computed(() => {
     const piezas = selectedPrenda.value?.prenda?.tipo_prenda.piezas
 
     if(piezas && Array.isArray(piezas) && selectedPiezaId.value !== '') {
-        console.log('selectedPieza: ', piezas.find((p:any) => p.id === selectedPiezaId.value))
+        //console.log('selectedPieza: ', piezas.find((p:any) => p.id === selectedPiezaId.value))
         return piezas.find((p:any) => p.id === selectedPiezaId.value)
     }
 

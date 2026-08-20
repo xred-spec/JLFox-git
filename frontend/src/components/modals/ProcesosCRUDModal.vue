@@ -1,6 +1,6 @@
 1<script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
-import { reactive, watch } from 'vue';
+import { ref, reactive, watch } from 'vue';
 
 const props = defineProps<{
     header: string
@@ -16,6 +16,14 @@ const emits = defineEmits([
 
 const formData = reactive<Record<string, any>>({});
 const formErrors = reactive<Record<string, boolean>>({});
+
+const tiempoHoras = ref(0)
+const tiempoMinutos = ref(0)
+const tiempoSegundos = ref(0)
+
+const validatetiempoH = ref(false)
+const validatetiempoM = ref(false)
+const validatetiempoS = ref(false)
 
 watch(() => props.modelValue, (newValue) => {
     Object.keys(formData).forEach(key => delete formData[key])
@@ -68,7 +76,19 @@ const cleanInputs = () => {
     Object.keys(formErrors).forEach(key => delete formErrors[key])
 }
 
+const validTime = (time: any, max: number) => {
+    if(time === '' || time === null || time === undefined) return false
+
+    const number = Number(time)
+
+    return !isNaN(number) && Number.isInteger(number) && number >= 0 && number <= max
+}
+
 const validateInputs = () => {
+    validatetiempoH.value = false
+    validatetiempoM.value = false
+    validatetiempoS.value = false
+
     let valid = true
     Object.keys(formErrors).forEach(key => delete formErrors[key])
 
@@ -83,8 +103,18 @@ const validateInputs = () => {
         }
     }
 
+    validatetiempoH.value = !validTime(tiempoHoras.value, 99)
+    validatetiempoM.value = !validTime(tiempoMinutos.value, 59)
+    validatetiempoS.value = !validTime(tiempoSegundos.value, 59)
+
+    if(valid) valid = !(validatetiempoH.value || validatetiempoM.value || validatetiempoS.value) 
+
     if(valid) {
-        const sendData = {...formData}
+        const sendData = {...formData,
+            tiempo_previsto_hora: tiempoHoras.value,
+            tiempo_previsto_minuto: tiempoMinutos.value,
+            tiempo_previsto_segundo: tiempoSegundos.value,
+        }
         console.log('send: ', sendData)
         cleanInputs()
         emits('accept', sendData)
@@ -157,28 +187,40 @@ const validateInputs = () => {
             </div>
 
             <div class="grid grid-cols-3 py-2 items-center justify-between">
-                <div class="flex items-center w-full">
-                    <label class="text-[#000000] font-bold mr-1">
+                <div class="flex items-center w-full pr-2">
+                    <label class="text-[#000000] font-bold mr-2">
                         Horas: 
                     </label>
 
-                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                    <input v-model="tiempoHoras"
+                    type="number" max="99" min="0" required 
+                    class="bg-[#FFFFFF] flex-1 p-2 rounded-[5px] font-bold text-[#000000] border"
+                    :class="validatetiempoH ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                    > 
                 </div>
 
-                <div class="flex items-center">
-                    <label class="text-[#000000] font-bold mr-1">
+                <div class="flex items-center w-full px-2">
+                    <label class="text-[#000000] font-bold mr-2">
                         Minutos: 
                     </label>
 
-                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                    <input v-model="tiempoMinutos"
+                    type="number" max="59" min="0" required 
+                    class="bg-[#FFFFFF] flex-1 p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"
+                    :class="validatetiempoM ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                    > 
                 </div>
 
-                <div class="flex items-center">
-                    <label class="text-[#000000] font-bold mr-1">
+                <div class="flex items-center w-full pl-2">
+                    <label class="text-[#000000] font-bold mr-2">
                         Segundos: 
                     </label>
 
-                    <input type="number" class="bg-[#FFFFFF] p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"> 
+                    <input v-model="tiempoSegundos"
+                    type="number" max="59" min="0" required 
+                    class="bg-[#FFFFFF] flex-1 p-2 rounded-[5px] font-bold text-[#000000] border border-[#63492a]"
+                    :class="validatetiempoS ? 'border-[#c41a1a] border-2' : 'border-[#63492a]'"
+                    > 
                 </div>
             </div>
 
