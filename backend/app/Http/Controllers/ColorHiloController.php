@@ -12,6 +12,17 @@ class ColorHiloController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $coloresHilo = ColorHilo::all();
+        $resource = ColorHiloResource::collection($coloresHilo);
+
+        return $this->successResponse(
+            $resource,
+            'Colores de hilo obtenidos correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $coloresHilo = ColorHilo::paginate(15);

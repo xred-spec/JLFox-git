@@ -154,7 +154,7 @@ class PrendaProcesoSeeder extends Seeder
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 102, 'orden' => 1, 'clave' => 'PT-F-PR-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 102
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 103, 'orden' => 2, 'clave' => 'PT-C-PR-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 103
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 104, 'orden' => 3, 'clave' => 'PT-C-PR-03', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 104
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 105, 'orden' => 4, 'clave' => 'PT-P-PR-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 105
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 105, 'orden' => 4, 'clave' => 'PT-P-PR-04', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 16, 'tiempo_previsto_segundo' => 28]); //id: 105 --ht
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 106, 'orden' => 5, 'clave' => 'PT-M-PR-05', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 106
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 107, 'orden' => 6, 'clave' => 'PT-C-PR-06', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 107
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 12, 'proceso_id' => 108, 'orden' => 7, 'clave' => 'PT-C-PR-07', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 108
@@ -165,7 +165,7 @@ class PrendaProcesoSeeder extends Seeder
         //Camisola flores {
             //Espalda EP {
                 PrendaProceso::firstOrCreate(['prenda_pieza_id' => 13, 'proceso_id' => 110, 'orden' => 1, 'clave' => 'CF-C-EP-01', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 110
-                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 13, 'proceso_id' => 111, 'orden' => 2, 'clave' => 'CF-C-EP-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 0, 'tiempo_previsto_segundo' => 0]); //id: 111
+                PrendaProceso::firstOrCreate(['prenda_pieza_id' => 13, 'proceso_id' => 111, 'orden' => 2, 'clave' => 'CF-C-EP-02', 'tiempo_previsto_hora' => 0, 'tiempo_previsto_minuto' => 1, 'tiempo_previsto_segundo' => 31]); //id: 111 --ht
             //}
 
             //Delantero DT {

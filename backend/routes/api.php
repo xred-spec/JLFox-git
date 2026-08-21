@@ -34,7 +34,10 @@ Route::post('register', [AuthController::class, 'register']);
     Route::apiResource('usuarios', UsuarioController::class);
 
     //Rutas ColorHilo
-    Route::apiResource('colores-hilo', ColorHiloController::class);
+    Route::prefix('colores-hilo')->group(function() {
+        Route::get('/', [ColorHiloController::class, 'index']);
+        Route::get('/all', [ColorHiloController::class, 'indexAll']);
+    });
 
     //Rutas Bordado
     Route::apiResource('bordados', BordadoController::class);
