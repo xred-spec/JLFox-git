@@ -45,7 +45,7 @@ const cantidadInventario = computed(() => {
 
     return inventario.cantidad || 0;
 });
-console.log('item: ', props.item)
+//console.log('item: ', props.item)
 </script>
 
 <template>

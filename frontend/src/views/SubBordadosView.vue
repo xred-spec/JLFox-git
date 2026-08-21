@@ -23,7 +23,7 @@ const getBordados = async() => {
 
     if(data.value) {
         bordados.value = data.value
-        console.log('bordads: ', bordados.value)
+        //console.log('bordads: ', bordados.value)
         return
     }
 
@@ -35,7 +35,7 @@ const getBordados = async() => {
 }
 
 const fetchSelects = async() => {
-    const coloresHilo = await useApi('colores-hilo').json()
+    const coloresHilo = await useApi('colores-hilo/all').json()
     const inputColoresHilo = formInputs.value.find(i => i.modelKey === 'color_hilo_id')
 
     if(inputColoresHilo && coloresHilo.data.value) {

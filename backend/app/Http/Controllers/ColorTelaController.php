@@ -12,6 +12,17 @@ class ColorTelaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $coloresTela = ColorTela::with('tela')->get();
+        $resource = ColorTelaResource::collection($coloresTela);
+
+        return $this->successResponse(
+            $resource,
+            'Colores de tela obtenidos correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $coloresTela = ColorTela::with('tela')->paginate(15);

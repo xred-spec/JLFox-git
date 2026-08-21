@@ -36,7 +36,7 @@ const getLotes = async() => {
 }
 
 const fetchSelects = async() => {
-    const prendas = await useApi('prendas').json()
+    const prendas = await useApi('prendas/all').json()
 
     if(prendas.data.value) {
         prendasOptions.value = prendas.data.value.data.map((prenda: any) => ({
@@ -139,7 +139,7 @@ const openModal = (selected?: any) => {
         <template #content>
             <SubPageToogle>
                 <PageTitle 
-                name="Bordados"
+                name="Lotes en producción"
                 @store="openModal()"/>
             </SubPageToogle>
 

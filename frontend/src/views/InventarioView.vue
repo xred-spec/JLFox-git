@@ -16,7 +16,7 @@ const getPrendasInventario = async() => {
 
     if(data.value) {
         prendasInventario.value = data.value
-        console.log('data: ', prendasInventario.value.data)
+        //console.log('data: ', prendasInventario.value.data)
         return
     }
 

@@ -21,7 +21,7 @@ const getTiposPrenda = async() => {
 
     if(data.value) {
         tiposPrenda.value = data.value
-        console.log('tiposPrenda: ', tiposPrenda.value)
+        //console.log('tiposPrenda: ', tiposPrenda.value)
         return
     }
 

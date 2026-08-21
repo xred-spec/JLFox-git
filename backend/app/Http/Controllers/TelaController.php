@@ -12,6 +12,17 @@ class TelaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $telas = Tela::all();
+        $resource = TelaResource::collection($telas);
+
+        return $this->successResponse(
+            $resource,
+            'Telas obtenidas correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $telas = Tela::paginate(15);

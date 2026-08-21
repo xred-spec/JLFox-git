@@ -12,7 +12,24 @@ class PrendaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function indexAll()
+    {
+        $prendas = Prenda::with(
+            'tipo_prenda', 
+            'color_tela.tela', 
+            'bordado.color_hilo', 
+            'forro'
+        )->get();
+        $resource = PrendaResource::collection($prendas);
+
+        return $this->successResponse(
+            $resource,
+            'Prendas obtenidas correctamente',
+            200
+        );
+    }
+    
+     public function index()
     {
         $prendas = Prenda::with(
             'tipo_prenda', 

@@ -29,7 +29,7 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     //Rutas Usuario
     Route::apiResource('usuarios', UsuarioController::class);
 
@@ -37,31 +37,92 @@ Route::post('register', [AuthController::class, 'register']);
     Route::prefix('colores-hilo')->group(function() {
         Route::get('/', [ColorHiloController::class, 'index']);
         Route::get('/all', [ColorHiloController::class, 'indexAll']);
+        Route::get('/{id}', [ColorHiloController::class, 'show']);
+        Route::post('/', [ColorHiloController::class, 'store']);
+        Route::put('/{id}', [ColorHiloController::class, 'update']);
+        Route::delete('/{id}', [ColorHiloController::class, 'destroy']);
     });
 
     //Rutas Bordado
-    Route::apiResource('bordados', BordadoController::class);
+    Route::prefix('bordados')->group(function() {
+        Route::get('/', [BordadoController::class, 'index']);
+        Route::get('/all', [BordadoController::class, 'indexAll']);
+        Route::get('/{id}', [BordadoController::class, 'show']);
+        Route::post('/', [BordadoController::class, 'store']);
+        Route::put('/{id}', [BordadoController::class, 'update']);
+        Route::delete('/{id}', [BordadoController::class, 'destroy']);
+    });
 
     //Rutas Forro
-    Route::apiResource('forros', ForroController::class);
+    Route::prefix('forros')->group(function() {
+        Route::get('/', [ForroController::class, 'index']);
+        Route::get('/all', [ForroController::class, 'indexAll']);
+        Route::get('/{id}', [ForroController::class, 'show']);
+        Route::post('/', [ForroController::class, 'store']);
+        Route::put('/{id}', [ForroController::class, 'update']);
+        Route::delete('/{id}', [ForroController::class, 'destroy']);
+    });
 
     //Rutas Tela
-    Route::apiResource('tipos-tela', TelaController::class);
+    Route::prefix('tipos-tela')->group(function() {
+        Route::get('/', [TelaController::class, 'index']);
+        Route::get('/all', [TelaController::class, 'indexAll']);
+        Route::get('/{id}', [TelaController::class, 'show']);
+        Route::post('/', [TelaController::class, 'store']);
+        Route::put('/{id}', [TelaController::class, 'update']);
+        Route::delete('/{id}', [TelaController::class, 'destroy']);
+    });
 
     //Rutas ColorTela
-    Route::apiResource('colores-tela', ColorTelaController::class);
+    Route::prefix('colores-tela')->group(function() {
+        Route::get('/', [ColorTelaController::class, 'index']);
+        Route::get('/all', [ColorTelaController::class, 'indexAll']);
+        Route::get('/{id}', [ColorTelaController::class, 'show']);
+        Route::post('/', [ColorTelaController::class, 'store']);
+        Route::put('/{id}', [ColorTelaController::class, 'update']);
+        Route::delete('/{id}', [ColorTelaController::class, 'destroy']);
+    });
 
     //Rutas TipoPrenda
-    Route::apiResource('tipos-prenda', TipoPrendaController::class);
+    Route::prefix('tipos-prenda')->group(function() {
+        Route::get('/', [TipoPrendaController::class, 'index']);
+        Route::get('/all', [TipoPrendaController::class, 'indexAll']);
+        Route::get('/{id}', [TipoPrendaController::class, 'show']);
+        Route::post('/', [TipoPrendaController::class, 'store']);
+        Route::put('/{id}', [TipoPrendaController::class, 'update']);
+        Route::delete('/{id}', [TipoPrendaController::class, 'destroy']);
+    });
 
     //Rutas PrendaPieza
-    Route::apiResource('piezas-prenda', PrendaPiezaController::class);
+    Route::prefix('piezas-prenda')->group(function() {
+        Route::get('/', [PrendaPiezaController::class, 'index']);
+        Route::get('/all', [PrendaPiezaController::class, 'indexAll']);
+        Route::get('/{id}', [PrendaPiezaController::class, 'show']);
+        Route::post('/', [PrendaPiezaController::class, 'store']);
+        Route::put('/{id}', [PrendaPiezaController::class, 'update']);
+        Route::delete('/{id}', [PrendaPiezaController::class, 'destroy']);
+    });
 
     //Rutas Prenda
-    Route::apiResource('prendas', PrendaController::class);
+    Route::prefix('prendas')->group(function() {
+        Route::get('/', [PrendaController::class, 'index']);
+        Route::get('/all', [PrendaController::class, 'indexAll']);
+        Route::get('/{id}', [PrendaController::class, 'show']);
+        Route::post('/', [PrendaController::class, 'store']);
+        Route::put('/{id}', [PrendaController::class, 'update']);
+        Route::delete('/{id}', [PrendaController::class, 'destroy']);
+    });
 
     //Rutas Proceso
     Route::apiResource('procesos', ProcesoController::class);
+    Route::prefix('procesos')->group(function() {
+        Route::get('/', [ProcesoController::class, 'index']);
+        Route::get('/all', [ProcesoController::class, 'indexAll']);
+        Route::get('/{id}', [ProcesoController::class, 'show']);
+        Route::post('/', [ProcesoController::class, 'store']);
+        Route::put('/{id}', [ProcesoController::class, 'update']);
+        Route::delete('/{id}', [ProcesoController::class, 'destroy']);
+    });
 
     //Rutas PrendaProceso
     Route::prefix('prendas-procesos')->group(function() {
@@ -96,4 +157,4 @@ Route::post('register', [AuthController::class, 'register']);
 
     //Rutas InventarioPrenda
     Route::apiResource('inventario', InventarioPrendaController::class);
-//});
+});

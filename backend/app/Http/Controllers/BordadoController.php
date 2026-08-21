@@ -12,6 +12,17 @@ class BordadoController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $bordados = Bordado::with('color_hilo')->get();
+        $resource = BordadoResource::collection($bordados);
+
+        return $this->successResponse(
+            $resource,
+            'Bordados obtenidos correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $bordados = Bordado::with('color_hilo')->paginate(15);
