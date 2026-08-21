@@ -154,7 +154,7 @@ class ProcesoSeeder extends Seeder
                 Proceso::firstOrCreate(['descripcion' => 'Fusion pretina', 'area' => 'fusion']); //id: 102
                 Proceso::firstOrCreate(['descripcion' => 'Pegar delantero y trasero ya unidos', 'area' => 'costura']); //id: 103
                 Proceso::firstOrCreate(['descripcion' => 'Union dril', 'area' => 'costura']); //id: 104
-                Proceso::firstOrCreate(['descripcion' => 'Planchado de pretina', 'area' => 'plancha']); //id: 105
+                Proceso::firstOrCreate(['descripcion' => 'Planchado de pretina', 'area' => 'plancha']); //id: 105 --ht
                 Proceso::firstOrCreate(['descripcion' => 'Pegado de broche', 'area' => 'manual']); //id: 106
                 Proceso::firstOrCreate(['descripcion' => 'Terminación cuadro pantalón', 'area' => 'costura']); //id: 107
                 Proceso::firstOrCreate(['descripcion' => 'Pespunte de pretina', 'area' => 'costura']); //id: 108
@@ -165,7 +165,7 @@ class ProcesoSeeder extends Seeder
         //Camisola flores {
             //Espalda EP {
                 Proceso::firstOrCreate(['descripcion' => 'Unión etiqueta marca y talla', 'area' => 'costura']); //id: 110
-                Proceso::firstOrCreate(['descripcion' => 'Pegar bata trasera', 'area' => 'costura']); //id: 111
+                Proceso::firstOrCreate(['descripcion' => 'Pegar bata trasera', 'area' => 'costura']); //id: 111 --ht
             //}
 
             //Delantero DT {
