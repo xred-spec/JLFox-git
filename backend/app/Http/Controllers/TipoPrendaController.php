@@ -12,6 +12,17 @@ class TipoPrendaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $tiposPrendas = TipoPrenda::all();
+        $resource = TipoPrendaResource::collection($tiposPrendas);
+
+        return $this->successResponse(
+            $resource,
+            'Tipos de prendas obtenidas correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $tiposPrendas = TipoPrenda::with('piezas.procesos')->paginate(15);

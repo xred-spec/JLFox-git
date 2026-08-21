@@ -35,10 +35,10 @@ const getPrendas = async() => {
 }
 
 const fetchSelects = async() => {
-    const tiposPrenda = await useApi('tipos-prenda').json()
-    const coloresTela = await useApi('colores-tela').json()
-    const bordados = await useApi('bordados').json()
-    const forros = await useApi('forros').json()
+    const tiposPrenda = await useApi('tipos-prenda/all').json()
+    const coloresTela = await useApi('colores-tela/all').json()
+    const bordados = await useApi('bordados/all').json()
+    const forros = await useApi('forros/all').json()
 
     const inputTiposPrenda = formInputs.value.find(i => i.modelKey === 'tipo_prenda_id')
     const inputColoresTela = formInputs.value.find(i => i.modelKey === 'color_tela_id')

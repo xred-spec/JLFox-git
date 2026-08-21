@@ -12,6 +12,17 @@ class ForroController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $forros = Forro::all();
+        $resource = ForroResource::collection($forros);
+
+        return $this->successResponse(
+            $resource,
+            'Forros obtenidos correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $forros = Forro::paginate(15);

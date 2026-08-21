@@ -23,7 +23,7 @@ const getPiezas = async() => {
 
     if(data.value) {
         piezas.value = data.value
-        console.log('piezas: ', piezas.value)
+        //console.log('piezas: ', piezas.value)
         return
     }
 
@@ -35,7 +35,7 @@ const getPiezas = async() => {
 }
 
 const fetchSelects = async() => {
-    const tiposPrendas = await useApi('tipos-prenda').json()
+    const tiposPrendas = await useApi('tipos-prenda/all').json()
     const inputTiposPrendas = formInputs.value.find(i => i.modelKey === 'tipo_prenda_id')
 
     if(inputTiposPrendas && tiposPrendas.data.value) {

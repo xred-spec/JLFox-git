@@ -15,6 +15,17 @@ class ProcesoController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function indexAll() {
+        $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->get();
+        $resource = ProcesoResource::collection($procesos);
+
+        return $this->successResponse(
+            $resource,
+            'Procesos obtenidos correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->paginate(15);

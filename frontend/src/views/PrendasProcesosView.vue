@@ -37,7 +37,7 @@ const getPrendasProcesos = async() => {
 }
 
 const fetchSelects = async() => {
-    const prendas = await useApi('prendas').json()
+    const prendas = await useApi('prendas/all').json()
     const inputPrendas = formInputs.value.find(i => i.modelKey === 'prenda_id')
 
     if(prendas.data.value && inputPrendas) {

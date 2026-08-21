@@ -9,6 +9,17 @@ use App\Http\Resources\PrendaPiezaResource;
 
 class PrendaPiezaController extends Controller
 {
+    public function indexAll() {
+        $piezasPrendas = PrendaPieza::all();
+        $resource = PrendaPiezaResource::collection($piezasPrendas);
+
+        return $this->successResponse(
+            $resource,
+            'Piezas de prendas obtenidas correctamente',
+            200
+        );
+    }
+
     public function index()
     {
         $piezasPrendas = PrendaPieza::with('tipo_prenda', 'procesos')->paginate(15);

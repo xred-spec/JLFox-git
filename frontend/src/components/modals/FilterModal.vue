@@ -6,7 +6,7 @@ const props = defineProps<{
     text: string
     data: any
 }>()
-console.log('data: ', props.data)
+//console.log('data: ', props.data)
 
 const emits = defineEmits([
     'confirm',

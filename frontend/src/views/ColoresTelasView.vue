@@ -34,7 +34,7 @@ const getColoresTela = async() => {
 }
 
 const fetchSelects = async() => {
-    const coloresTela = await useApi('tipos-tela').json()
+    const coloresTela = await useApi('tipos-tela/all').json()
     const inputColoresTela = formInputs.value.find(i => i.modelKey === 'tela_id')
 
     if(inputColoresTela && coloresTela.data.value) {
