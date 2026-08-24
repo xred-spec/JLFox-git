@@ -26,6 +26,8 @@ class BordadoController extends Controller
     public function index()
     {
         $bordados = Bordado::with('color_hilo')->paginate(15);
+        
+        /*
         $resuorce = BordadoResource::collection($bordados);
 
         return $this->successResponse(
@@ -33,6 +35,12 @@ class BordadoController extends Controller
             'Bordados obtenidos correctamente',
             200
         );
+        */
+
+        return BordadoResource::collection($bordados)->additional([
+            'success' => true,
+            'message' => 'Bordados obtenidos correctamente',
+        ]);
     }
 
     /**
