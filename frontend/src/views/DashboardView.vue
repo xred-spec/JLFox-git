@@ -44,7 +44,7 @@ const logout = () => {
                 </button>
             </div>
 
-            <div class="flex-1 overflow-auto px-5 py-2">
+            <div class="flex flex-col min-h-0 flex-1 px-5 py-2 justify-between overflow-hidden">
                 <RouterView />
             </div>
         </div>
