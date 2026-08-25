@@ -23,13 +23,18 @@ class LoteController extends Controller
     public function indexPendientes()
     {
         $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'pendiente')->paginate(15);
-        $resuorce = LoteResource::collection($lotes);
+        return LoteResource::collection($lotes)->additional([
+            'success' => true,
+            'message' => 'Lotes pendientes obtenidos correctamente'
+        ]);
 
+        /*
         return $this->successResponse(
             $resuorce,
             'Lotes obtenidos correctamente',
             200
         );
+        */
     }
 
     public function indexProduccion()
@@ -41,13 +46,19 @@ class LoteController extends Controller
             'prendas_lote.prenda.bordado',
             'prendas_lote.prenda.forro'
         ])->where('estado', 'produccion')->paginate(15);
-        $resuorce = LoteResource::collection($lotes);
+        
+        return LoteResource::collection($lotes)->additional([
+            'success' => true,
+            'message' => 'Lotes en producción obtenidos correctamente'
+        ]);
 
+        /*
         return $this->successResponse(
             $resuorce,
             'Lotes obtenidos correctamente',
             200
         );
+        */
     }
 
     public function indexTerminados()
@@ -59,13 +70,19 @@ class LoteController extends Controller
                 'prendas_lote.prenda.bordado',
                 'prendas_lote.prenda.forro'
             )->where('estado', 'terminado')->paginate(15);
-        $resuorce = LoteResource::collection($lotes);
+        
+        return LoteResource::collection($lotes)->additional([
+            'success' => true,
+            'message' => 'Lotes en producción obtenidos correctamente'
+        ]);
 
+        /*
         return $this->successResponse(
             $resuorce,
             'Lotes obtenidos correctamente',
             200
         );
+        */
     }
 
     /**

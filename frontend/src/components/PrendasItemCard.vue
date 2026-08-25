@@ -93,21 +93,21 @@ const emits = defineEmits<{
                             {{ column.label }}: 
                         </label>
                         <span v-if="column.key != 'index'" class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold">
-                            {{ props.index || getForeignValues(props.item, column.key) }}
+                            {{ getForeignValues(props.item, column.key) }}
                         </span>
                     </div>
                 </div>
 
                 <div class="bg-[#e4e4e4] rounded-[10px] flex justify-between gap-2 items-center px-5 py-2 mt-1.5">
                     <div class="flex">
-                        <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-sm font-bold cursor-pointer hover:scale-105"
+                        <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-sm font-bold cursor-pointer hover:scale-110 transition-all duration-300 ease-out hover:shadow-2xl"
                         @click="emits('update', props.item.id)">
                             Editar
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-pencil-icon lucide-pencil size-3 ml-1"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
                         </button>
 
-                        <button class="flex py-1 px-4 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
+                        <button class="flex py-1 px-4 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-110 transition-all duration-300 ease-out hover:shadow-2xl"
                         @click="modalOpened = true">
                             Eliminar
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 

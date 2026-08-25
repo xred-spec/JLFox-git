@@ -26,6 +26,7 @@ class TelaController extends Controller
     public function index()
     {
         $telas = Tela::paginate(15);
+        /*
         $resuorce = TelaResource::collection($telas);
 
         return $this->successResponse(
@@ -33,6 +34,12 @@ class TelaController extends Controller
             'Telas obtenidas correctamente',
             200
         );
+        */
+
+        return TelaResource::collection($telas)->additional([
+            'success' => true,
+            'message' => 'Tipos de tela obtenidos correctamente'
+        ]);
     }
 
     /**

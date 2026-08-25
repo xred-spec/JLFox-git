@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Sidebar from '@/components/Sidebar.vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import ModalConfirm from '@/components/modals/ModalConfirm.vue';
@@ -36,7 +36,7 @@ const logout = () => {
         <div class="flex flex-col flex-1 min-w-0 bg-[#e4e4e4]">
             <div class="header shrink-0 flex items-center justify-end min-h-14 bg-[#000000] border-b-2 border-[#000000] py-2 px-5">
 
-                <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a]"
+                <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#c41a1a] hover:scale-110 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="showModal">
                     Cerrar sesión
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 

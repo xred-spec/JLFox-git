@@ -26,6 +26,7 @@ class ForroController extends Controller
     public function index()
     {
         $forros = Forro::paginate(15);
+        /*
         $resuorce = ForroResource::collection($forros);
 
         return $this->successResponse(
@@ -33,6 +34,12 @@ class ForroController extends Controller
             'Forros obtenidos correctamente',
             200
         );
+        */
+
+        return ForroResource::collection($forros)->additional([
+            'success' => true,
+            'message' => 'Forros obtenidos correctamente'
+        ]);
     }
     
 

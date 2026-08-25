@@ -34,6 +34,7 @@ class PrendaProcesoController extends Controller
             'forro', 
             'inventario_prenda'
         )->paginate(15);
+        /*
         $resource = PrendaResource::collection($prendasProcesos);
 
         return $this->successResponse(
@@ -41,6 +42,12 @@ class PrendaProcesoController extends Controller
             'Procesos de prendas obtenidos correctamente',
             200
         );
+        */
+
+        return PrendaResource::collection($prendasProcesos)->additional([
+            'success' => true,
+            'message' => 'Prendas con procesos obtenidas correctamente'
+        ]);
     }
 
     /**

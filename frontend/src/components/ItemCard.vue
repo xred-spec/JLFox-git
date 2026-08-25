@@ -55,7 +55,7 @@ const emits = defineEmits<{
                     {{ c.label }}: 
                 </p>
 
-                <div class="flex  px-2 py-2 rounded-[10px]">
+                <div class="flex px-2 py-2 rounded-[10px]">
                     <button 
                     @click="emits('update', props.item.id)"
                     class="flex py-2 px-4 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-xs font-bold cursor-pointer hover:scale-110 mr-0.5 transition-all duration-300 ease-out hover:shadow-2xl">
