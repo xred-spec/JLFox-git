@@ -37,6 +37,7 @@ class PrendaController extends Controller
             'bordado.color_hilo', 
             'forro'
         )->paginate(15);
+        /*
         $resource = PrendaResource::collection($prendas);
 
         return $this->successResponse(
@@ -44,6 +45,12 @@ class PrendaController extends Controller
             'Prendas obtenidas correctamente',
             200
         );
+        */
+
+        return PrendaResource::collection($prendas)->additional([
+            'success' => true,
+            'message' => 'Prendas obtenidas correctamente'
+        ]);
     }
 
     /**

@@ -3,7 +3,7 @@ import { useApi } from '@/composables/useApi';
 import { ref, onMounted } from 'vue';
 import GenericContainer from '@/components/GenericContainer.vue';
 import SubPageToogle from '@/components/SubPageToogle.vue';
-import PageTitle from '@/components/PageTitle.vue';
+//import PageTitle from '@/components/PageTitle.vue';
 import { prendasProcesosColumns } from '@/data/prendasProcesosColumns';
 import ProcesosModal from '@/components/modals/ProcesosModal.vue';
 import PrendasProcesosItemCard from '@/components/PrendasProcesosItemCard.vue';
@@ -21,7 +21,7 @@ const itemsIndex = ref(0)
 const isModalOpened = ref(false)
 
 const getPrendasProcesos = async() => { 
-    const {isFetching, error, data} = await useApi('prendas-procesos/procesos').json()
+    const {error, data} = await useApi('prendas-procesos/procesos').json()
 
     if(data.value) {
         prendasProcesos.value = data.value
@@ -151,9 +151,6 @@ const openModal = (selected?: any) => {
     <GenericContainer>
         <template #content>
             <SubPageToogle>
-                <PageTitle :hide-button="true"
-                name="Prendas-Procesos"
-                @store="openModal()"/>
             </SubPageToogle>
 
             <div v-if="!prendasProcesos || !prendasProcesos.data || prendasProcesos.data.length === 0" 

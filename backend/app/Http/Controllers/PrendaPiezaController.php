@@ -23,6 +23,7 @@ class PrendaPiezaController extends Controller
     public function index()
     {
         $piezasPrendas = PrendaPieza::with('tipo_prenda', 'procesos')->paginate(15);
+        /*
         $resource = PrendaPiezaResource::collection($piezasPrendas);
 
         return $this->successResponse(
@@ -30,6 +31,12 @@ class PrendaPiezaController extends Controller
             'Piezas de prendas obtenidas correctamente',
             200
         );
+        */
+
+        return PrendaPiezaResource::collection($piezasPrendas)->additional([
+            'success' => true,
+            'message' => 'Piezas de prendas obtenidos correctamente'
+        ]);
     }
 
     public function store(PrendaPiezaRequest $request)

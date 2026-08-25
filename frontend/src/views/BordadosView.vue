@@ -22,17 +22,19 @@ onMounted(() => {
 
 <template>
     <GenericContainer>
-        <SubPageToogle>
-            <SubPageButton name="Colores de hilo" class="mr-2"
-            :selected="selectedSubPage === 'colores-hilo'"
-            @select="toogleSubPage('colores-hilo')"
-            />
+        <template #pageToggle>
+            <SubPageToogle>
+                <SubPageButton name="Colores de hilo" class="mr-2"
+                :selected="selectedSubPage === 'colores-hilo'"
+                @select="toogleSubPage('colores-hilo')"
+                />
 
-            <SubPageButton name="Bordados" class="ml-2"
-            :selected="selectedSubPage === 'sub-bordados'"
-            @select="toogleSubPage('sub-bordados')"
-            />
-        </SubPageToogle>
+                <SubPageButton name="Bordados" class="ml-2"
+                :selected="selectedSubPage === 'sub-bordados'"
+                @select="toogleSubPage('sub-bordados')"
+                />
+            </SubPageToogle>
+        </template>
 
         <template #content>
             <RouterView />

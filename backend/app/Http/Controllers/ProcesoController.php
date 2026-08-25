@@ -29,6 +29,7 @@ class ProcesoController extends Controller
     public function index()
     {
         $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->paginate(15);
+        /*
         $resource = ProcesoResource::collection($procesos);
 
         return $this->successResponse(
@@ -36,6 +37,11 @@ class ProcesoController extends Controller
             'Procesos obtenidos correctamente',
             200
         );
+        */
+        return ProcesoResource::collection($procesos)->additional([
+            'success' => true,
+            'message' => 'Procesos obtenidos correctamente'
+        ]);
     }
 
     /**

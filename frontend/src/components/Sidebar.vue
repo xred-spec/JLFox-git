@@ -6,18 +6,13 @@ import DeployItemSidebar from './DeployItemSidebar.vue';
 import ItemSidebar from './ItemSidebar.vue';
 
 const router = useRouter()
-const storedSelected = useLocalStorage<string | null>('current_page', null)
+const storedSelected = useLocalStorage<string | null>('current_page', 'bordados')
 const itemSelected = ref(storedSelected.value)
 
 const routeTo = (routeName: string) => {
     itemSelected.value = routeName
     storedSelected.value = itemSelected.value
     router.push({name: routeName})
-}
-
-if(itemSelected.value = null) {
-    itemSelected.value = 'bordados'
-    routeTo(itemSelected.value)
 }
 </script>
 

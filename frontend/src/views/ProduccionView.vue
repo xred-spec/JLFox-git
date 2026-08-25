@@ -22,22 +22,24 @@ onMounted(() => {
 
 <template>
     <GenericContainer>
-        <SubPageToogle>
-            <SubPageButton name="Lotes Pendientes" class="mr-2"
-            :selected="selectedSubPage === 'pendientes'"
-            @select="toogleSubPage('pendientes')"
-            />
+        <template #pageToggle>
+            <SubPageToogle>
+                <SubPageButton name="Lotes Pendientes" class="mr-2"
+                :selected="selectedSubPage === 'pendientes'"
+                @select="toogleSubPage('pendientes')"
+                />
 
-            <SubPageButton name="Lotes en Proceso" class="mx-2"
-            :selected="selectedSubPage === 'proceso'"
-            @select="toogleSubPage('proceso')"
-            />
+                <SubPageButton name="Lotes en Proceso" class="mx-2"
+                :selected="selectedSubPage === 'proceso'"
+                @select="toogleSubPage('proceso')"
+                />
 
-            <SubPageButton name="Lotes Terminados" class="ml-2"
-            :selected="selectedSubPage === 'terminados'"
-            @select="toogleSubPage('terminados')"
-            />
-        </SubPageToogle>
+                <SubPageButton name="Lotes Terminados" class="ml-2"
+                :selected="selectedSubPage === 'terminados'"
+                @select="toogleSubPage('terminados')"
+                />
+            </SubPageToogle>
+        </template>
 
         <template #content>
             <RouterView />

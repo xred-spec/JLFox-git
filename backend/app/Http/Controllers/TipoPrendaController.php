@@ -26,6 +26,7 @@ class TipoPrendaController extends Controller
     public function index()
     {
         $tiposPrendas = TipoPrenda::with('piezas.procesos')->paginate(15);
+        /*
         $resource = TipoPrendaResource::collection($tiposPrendas);
 
         return $this->successResponse(
@@ -33,6 +34,12 @@ class TipoPrendaController extends Controller
             'Tipos de prendas obtenidas correctamente',
             200
         );
+        */
+
+        return TipoPrendaResource::collection($tiposPrendas)->additional([
+            'success' => true,
+            'message' => 'Tipos de prendas obtenidos correctamente'
+        ]);
     }
 
     /**

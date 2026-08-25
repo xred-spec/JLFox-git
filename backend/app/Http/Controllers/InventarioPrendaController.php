@@ -15,6 +15,7 @@ class InventarioPrendaController extends Controller
     public function index()
     {
         $inventarioPrenda = InventarioPrenda::with('prenda')->paginate(15);
+        /*
         $resuorce = InventarioPrendaResource::collection($inventarioPrenda);
 
         return $this->successResponse(
@@ -22,6 +23,11 @@ class InventarioPrendaController extends Controller
             'Inventario de prendas obtenido correctamente',
             200
         );
+        */
+        return InventarioPrendaResource::collection([
+            'success' => true,
+            'message' => 'Inventario obtenido correctamente'
+        ]);
     }
 
     /**

@@ -156,7 +156,7 @@ const changePage = (page: number) => {
         <template #header>
             <SubPageToogle>
                 <PageTitle 
-                :name="'Colores de tela'"
+                name="Colores de tela"
                 :hide-store="false"
                 :hide-filter="false"
                 :is-loading="loaderState ? true : false"
