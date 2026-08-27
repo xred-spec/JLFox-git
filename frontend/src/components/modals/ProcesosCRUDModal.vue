@@ -8,6 +8,7 @@ const props = defineProps<{
     show: boolean
     modelValue?: Record<string, any> | null
 }>()
+//console.log('modelValue: ', props.modelValue)
 
 const emits = defineEmits([
     'close',
@@ -34,11 +35,33 @@ watch(() => props.modelValue, (newValue) => {
             formData[p] = newValue[p]
         }
 
+        if (newValue.pieza_prenda_proceso && newValue.pieza_prenda_proceso.length > 0) {
+            const procesoRelacion = newValue.pieza_prenda_proceso[0];
+
+            formData['clave'] = procesoRelacion.clave;
+            
+            if (procesoRelacion.pieza_prenda?.tipo_prenda) {
+                formData['tipo_prenda_id'] = procesoRelacion.pieza_prenda.tipo_prenda.id;
+            }
+
+            setTimeout(() => {
+                if (procesoRelacion.pieza_prenda) {
+                    formData['pieza_prenda_id'] = procesoRelacion.pieza_prenda.id;
+                }
+            }, 50);
+
+            tiempoHoras.value = procesoRelacion.tiempo_previsto_hora || 0;
+            tiempoMinutos.value = procesoRelacion.tiempo_previsto_minuto || 0;
+            tiempoSegundos.value = procesoRelacion.tiempo_previsto_segundo || 0;
+        }
 
     } else {
         for (const i of props.inputs) {
             if (i.modelKey) formData[i.modelKey] = ''
         }
+        tiempoHoras.value = 0;
+        tiempoMinutos.value = 0;
+        tiempoSegundos.value = 0;
     }
 }, { immediate: true })
 
@@ -118,7 +141,7 @@ const validateInputs = () => {
             tiempo_previsto_minuto: tiempoMinutos.value,
             tiempo_previsto_segundo: tiempoSegundos.value,
         }
-        console.log('send: ', sendData)
+        //console.log('send: ', sendData)
         cleanInputs()
         emits('accept', sendData)
     }

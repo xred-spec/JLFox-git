@@ -71,6 +71,12 @@ const router = createRouter({
           ]
         },
         {
+          path: '/areas',
+          name: 'areas',
+          component: () => import('../views/AreasProduccionView.vue'), 
+          meta: { requiresAuth: true }
+        },
+        {
           path: '/prendas',
           name: 'prendas',
           component: () => import('../views/PrendasView.vue'),

@@ -2,7 +2,7 @@ import type { Column } from '@/interfaces/DataColumn'
 
 export const procesosColumns: Column[] = [
     {key: 'pieza_prenda_proceso[0].clave', label: 'Clave'},
-    {key: 'area', label: 'Área'},
+    {key: 'area.nombre', label: 'Área'},
     {key: 'pieza_prenda.tipo_prenda.nombre', label: 'Tipo de prenda'},
     {key: 'pieza_prenda.nombre', label: 'Pieza'},
     {key: 'orden', label: 'Orden'},

@@ -74,7 +74,9 @@ const getProcesos = async(page: number) => {
 const fetchSelects = async() => {
     const tiposPrenda = await useApi('tipos-prenda/all').json()
     const piezasPrenda = await useApi('piezas-prenda/all').json()
+    const areas = await useApi('areas/all').json()
     const inputTiposPrenda = formInputs.value.find(i => i.modelKey === 'tipo_prenda_id')
+    const inputAreas = formInputs.value.find(i => i.modelKey === 'area_id')
 
     filters.value = {
         tipo_prenda_id: { label: 'Tipo de prenda', options: [] },
@@ -92,6 +94,15 @@ const fetchSelects = async() => {
 
         inputTiposPrenda.options = opciones
         filters.value.tipo_prenda_id.options = opciones
+    }
+
+    if(areas.data.value && inputAreas) {
+        const opciones = areas.data.value.data.map((area: any) => ({
+            label: area.nombre,
+            value: area.id,
+        }))
+
+        inputAreas.options = opciones
     }
 
     if(piezasPrenda.data.value) {
@@ -114,7 +125,7 @@ const storeProceso = async(formData: any) => {
         const {data, error} = await useApi(`procesos/${formData.id}`).put(
             {
                 clave: formData.clave,
-                area: formData.area,
+                area_id: formData.area_id,
                 descripcion: formData.descripcion,
                 pieza_prenda_id: formData.pieza_prenda_id,
                 tiempo_previsto_hora: formData.tiempo_previsto_hora,
@@ -137,7 +148,7 @@ const storeProceso = async(formData: any) => {
         const {data, error} = await useApi('procesos').post(
             {
                 clave: formData.clave,
-                area: formData.area,
+                area_id: formData.area_id,
                 descripcion: formData.descripcion,
                 pieza_prenda_id: formData.pieza_prenda_id,
                 tiempo_previsto_hora: formData.tiempo_previsto_hora,

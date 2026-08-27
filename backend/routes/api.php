@@ -12,6 +12,7 @@ use App\Http\Controllers\ColorTelaController;
 use App\Http\Controllers\TipoPrendaController;
 use App\Http\Controllers\PrendaPiezaController;
 use App\Http\Controllers\PrendaController;
+use App\Http\Controllers\AreaProduccionController;
 use App\Http\Controllers\ProcesoController;
 use App\Http\Controllers\PrendaProcesoController;
 //use App\Http\Controllers\PrendaSubProcesoController;
@@ -111,6 +112,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [PrendaController::class, 'store']);
         Route::put('/{id}', [PrendaController::class, 'update']);
         Route::delete('/{id}', [PrendaController::class, 'destroy']);
+    });
+
+    //Rutas AreaProduccion
+    Route::prefix('areas')->group(function() {
+        Route::get('/', [AreaProduccionController::class, 'index']);
+        Route::get('/all', [AreaProduccionController::class, 'indexAll']);
+        Route::get('/{id}', [AreaProduccionController::class, 'show']);
+        Route::post('/', [AreaProduccionController::class, 'store']);
+        Route::put('/{id}', [AreaProduccionController::class, 'update']);
+        Route::delete('/{id}', [AreaProduccionController::class, 'destroy']);
     });
 
     //Rutas Proceso
