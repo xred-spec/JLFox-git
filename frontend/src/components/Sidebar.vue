@@ -43,6 +43,10 @@ const routeTo = (routeName: string) => {
         :selected="itemSelected === 'prendas'"
         :disabled="itemSelected === 'prendas'"
         @select="routeTo('prendas')"/>
+        <ItemSidebar name="Areas" 
+        :selected="itemSelected === 'areas'"
+        :disabled="itemSelected === 'areas'"
+        @select="routeTo('areas')"/>
         <ItemSidebar name="Procesos" 
         :selected="itemSelected === 'sub-procesos'"
         :disabled="itemSelected === 'sub-procesos'"

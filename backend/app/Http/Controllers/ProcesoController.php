@@ -16,7 +16,7 @@ class ProcesoController extends Controller
      * Display a listing of the resource.
      */
     public function indexAll() {
-        $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->get();
+        $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda', 'area')->get();
         $resource = ProcesoResource::collection($procesos);
 
         return $this->successResponse(
@@ -28,7 +28,7 @@ class ProcesoController extends Controller
 
     public function index(Request $request)
     {
-        $query = Proceso::with('prendas_procesos.prenda.tipo_prenda');
+        $query = Proceso::with('prendas_procesos.prenda.tipo_prenda', 'area');
 
         if($request->filled('tipo_prenda_id')) {
             $query->whereHas('prendas_procesos.prenda', function ($q) use ($request) {
@@ -60,7 +60,7 @@ class ProcesoController extends Controller
 
             $newProceso = Proceso::create([
                 'descripcion' => $data['descripcion'],
-                'area' => $data['area']
+                'area_id' => $data['area_id']
             ]);
 
             $pieza = PrendaPieza::findOrFail($data['pieza_prenda_id']);
@@ -115,7 +115,7 @@ class ProcesoController extends Controller
             $proceso = Proceso::findOrFail($id);
             $proceso->update([
                 'descripcion' => $data['descripcion'],
-                'area' => $data['area']
+                'area_id' => $data['area_id']
             ]);
 
             $prendaProceso = $proceso->prendas_procesos()->first();

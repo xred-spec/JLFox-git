@@ -27,7 +27,7 @@ class ProcesoRequest extends FormRequest
         return [
             'clave' => 'required|string|min:1',
             'descripcion' => 'required|string|min:1',
-            'area' => ['required', Rule::enum(AreaProduccion::class)],
+            'area_id' => 'required|integer|exists:areas_produccion,id',
             'pieza_prenda_id' => 'required|integer|exists:prenda_piezas,id',
             'tiempo_previsto_hora' => 'required|integer|min:0',
             'tiempo_previsto_minuto' => 'required|integer|min:0',

@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\PrendaProcesoResource;
+use App\Http\Resources\AreaProduccionResource;
 
 class ProcesoResource extends JsonResource
 {
@@ -18,7 +19,7 @@ class ProcesoResource extends JsonResource
         return [
             'id' => $this->id,
             'descripcion' => $this->descripcion,
-            'area' => $this->area,
+            'area' => AreaProduccionResource::make($this->whenLoaded('area')),
             'pieza_prenda_proceso' => PrendaProcesoResource::collection($this->whenLoaded('prendas_procesos'))
         ];
     }

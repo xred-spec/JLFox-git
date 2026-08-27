@@ -23,16 +23,11 @@ export const procesosInputs: Input[] = [
     },
     {
         label: 'Área',
-        modelKey: 'area',
+        modelKey: 'area_id',
         type: 'select',
         required: true,
         placeholder: 'Introduzca el área...',
-        options: [
-            {label: 'Manual', value: 'manual'},
-            {label: 'Costura', value: 'costura'},
-            {label: 'Plancha', value: 'plancha'},
-            {label: 'Fusión', value: 'fusion'},
-        ]
+        options: []
     },
     {
         label: 'Descripción',
