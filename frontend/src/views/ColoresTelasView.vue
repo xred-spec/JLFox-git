@@ -10,6 +10,7 @@ import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 import Pagination from '@/components/Pagination.vue';
 import Loader from '@/components/Loader.vue';
+import FilterModal from '@/components/modals/FilterModal.vue';
 
 const formInputs = ref([...coloresTelaInputs]) 
 
@@ -24,9 +25,24 @@ const lastPage = ref(1)
 const disabledPagination = ref(false)
 const loaderState = ref<string | null>('loading')
 
+const activeFilters = ref<Record<string, any>>({})
+const filterModalOpened = ref(false)
+const filters = ref<Record<string, any>>({})
+
 const getColoresTela = async(page: number) => {
     loaderState.value = 'loading'
-    const {error, data} = await useApi(`colores-tela?page=${page}`).json()
+
+    const params = new URLSearchParams({
+        page: page.toString()
+    })
+
+    Object.keys(activeFilters.value).forEach(key => {
+        if(activeFilters.value[key] !== null && activeFilters.value[key] !== '') {
+            params.append(key, activeFilters.value[key].toString())
+        }
+    })
+
+    const {error, data} = await useApi(`colores-tela?${params.toString()}`).json()
 
     if(data.value) {
         coloresTela.value = data.value
@@ -57,11 +73,18 @@ const fetchSelects = async() => {
     const coloresTela = await useApi('tipos-tela/all').json()
     const inputColoresTela = formInputs.value.find(i => i.modelKey === 'tela_id')
 
+    filters.value = {
+        tela_id: { label: 'Tipo de tela', options: []}
+    }
+
     if(inputColoresTela && coloresTela.data.value) {
-        inputColoresTela.options = coloresTela.data.value.data.map((tipoTela: any) => ({
+        const opciones = coloresTela.data.value.data.map((tipoTela: any) => ({
             label: tipoTela.nombre,
             value: tipoTela.id
         }))
+
+        inputColoresTela.options = opciones
+        filters.value.tela_id.options = opciones
     }
 }
 
@@ -139,6 +162,14 @@ const changePage = (page: number) => {
     disabledPagination.value = true
     getColoresTela(page)
 }
+
+const filterRegisters = (filtersFromModal: Record<string, any>) => {
+    activeFilters.value = filtersFromModal
+    filterModalOpened.value = false
+
+    currentPage.value = 1
+    getColoresTela(currentPage.value)
+}
 </script>
 
 <template>
@@ -152,6 +183,14 @@ const changePage = (page: number) => {
     @accept="(formData) => storeColorTela(formData)"
     />
 
+    <FilterModal 
+    :show="filterModalOpened"
+    :text="'Filtrar colores de tela'"
+    :data="filters"
+    @confirm="(filterData) =>filterRegisters(filterData)"
+    @close="filterModalOpened = false"
+    />
+
     <GenericContainer>
         <template #header>
             <SubPageToogle>
@@ -160,7 +199,9 @@ const changePage = (page: number) => {
                 :hide-store="false"
                 :hide-filter="false"
                 :is-loading="loaderState ? true : false"
-                @store="openModal()"/>
+                @store="openModal()"
+                @filter="filterModalOpened = true"
+                />
             </SubPageToogle>
         </template>
 

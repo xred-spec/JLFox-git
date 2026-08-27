@@ -24,7 +24,7 @@ const loaderState = ref<string | null>('loading')
 
 const getTiposPrenda = async(page: number) => { 
     loaderState.value = 'loading'
-    const {error, data} = await useApi('tipos-prenda').json()
+    const {error, data} = await useApi(`tipos-prenda?page=${page}`).json()
 
     if(data.value) {
         tiposPrenda.value = data.value
@@ -141,7 +141,7 @@ const changePage = (page: number) => {
             <SubPageToogle>
                 <PageTitle 
                 name="Tipos de prendas"
-                :hide-filter="false"
+                :hide-filter="true"
                 :hide-store="false"
                 :is-loading="loaderState ? true : false"
                 @store="openModal()"/>

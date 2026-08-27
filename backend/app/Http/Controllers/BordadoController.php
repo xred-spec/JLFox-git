@@ -23,9 +23,16 @@ class BordadoController extends Controller
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $bordados = Bordado::with('color_hilo')->paginate(15);
+        
+        $query = Bordado::with('color_hilo');
+
+        if($request->filled('color_hilo_id')) {
+            $query->where('color_hilo_id', $request->color_hilo_id);
+        }
+
+        $bordados = $query->paginate(15);
         
         /*
         $resuorce = BordadoResource::collection($bordados);

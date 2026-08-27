@@ -10,7 +10,7 @@ use App\Http\Resources\PrendaPiezaResource;
 class PrendaPiezaController extends Controller
 {
     public function indexAll() {
-        $piezasPrendas = PrendaPieza::all();
+        $piezasPrendas = PrendaPieza::with('tipo_prenda')->get();
         $resource = PrendaPiezaResource::collection($piezasPrendas);
 
         return $this->successResponse(
@@ -20,9 +20,9 @@ class PrendaPiezaController extends Controller
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $piezasPrendas = PrendaPieza::with('tipo_prenda', 'procesos')->paginate(15);
+        $query = PrendaPieza::with('tipo_prenda', 'procesos');
         /*
         $resource = PrendaPiezaResource::collection($piezasPrendas);
 
@@ -32,6 +32,11 @@ class PrendaPiezaController extends Controller
             200
         );
         */
+        if($request->filled('tipo_prenda_id')) {
+            $query->where('tipo_prenda_id', $request->tipo_prenda_id);
+        }
+
+        $piezasPrendas = $query->paginate(15);
 
         return PrendaPiezaResource::collection($piezasPrendas)->additional([
             'success' => true,

@@ -10,6 +10,7 @@ import PrendasModal from '@/components/modals/PrendasModal.vue';
 import PrendasItemCard from '@/components/PrendasItemCard.vue';
 import Pagination from '@/components/Pagination.vue';
 import Loader from '@/components/Loader.vue';
+import FilterModal from '@/components/modals/FilterModal.vue';
 
 const formInputs = ref([...prendasInputs]) 
 
@@ -24,9 +25,24 @@ const lastPage = ref(1)
 const disabledPagination = ref(false)
 const loaderState = ref<string | null>('loading')
 
+const activeFilters = ref<Record<string, any>>({})
+const filterModalOpened = ref(false)
+const filters = ref<Record<string, any>>({})
+
 const getPrendas = async(page: number) => {
     loaderState.value = 'loading'
-    const {error, data} = await useApi('prendas').json()
+
+    const params = new URLSearchParams({
+        page: page.toString()
+    })
+
+    Object.keys(activeFilters.value).forEach(key => {
+        if(activeFilters.value[key] !== null && activeFilters.value[key] !== '') {
+            params.append(key, activeFilters.value[key].toString())
+        }
+    })
+
+    const {error, data} = await useApi(`prendas?${params.toString()}`).json()
 
     if(data.value) {
         prendas.value = data.value
@@ -65,30 +81,61 @@ const fetchSelects = async() => {
     const inputBordados = formInputs.value.find(i => i.modelKey === 'bordado_id')
     const inputForros = formInputs.value.find(i => i.modelKey === 'forro_id')
 
-    if(inputTiposPrenda && tiposPrenda.data.value &&
-        inputColoresTela && coloresTela.data.value &&
-        inputBordados && bordados.data.value &&
-        inputForros && forros.data.value 
-    ){
-        inputColoresTela.options = coloresTela.data.value.data.map((colorTela: any) => ({
-            label: `${colorTela.tela.nombre} - ${colorTela.color}`,
-            value: colorTela.id
-        }))
+    filters.value = {
+        tipo: { label: 'Tipo', options: [
+            {label: 'Hombre', value: 'hombre'},
+            {label: 'Mujer', value: 'mujer'},
+            {label: 'Niño', value: 'niño'},
+        ]},
+        tipo_prenda_id: { label: 'Tipo de prenda', options: [] },
+        color_tela_id: { label: 'Color de tela', options: [] },
+        bordado_id: { label: 'Bordado', options: [] },
+        forro_id: { label: 'Forro', options: [] },
+    }
 
-        inputTiposPrenda.options = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
+    //Tipos prendas
+    if(inputTiposPrenda && tiposPrenda.data.value) {
+        const opciones = tiposPrenda.data.value.data.map((tipoPrenda: any) => ({
             label: tipoPrenda.nombre,
             value: tipoPrenda.id
         }))
 
-        inputBordados.options = bordados.data.value.data.map((bordado: any) => ({
+        inputTiposPrenda.options = opciones
+        filters.value.tipo_prenda_id.options = opciones
+    }
+
+    //Colores tela
+    if(inputColoresTela && coloresTela.data.value) {
+        const opciones = coloresTela.data.value.data.map((colorTela: any) => ({
+            label: `${colorTela.tela.nombre} - ${colorTela.color}`,
+            value: colorTela.id
+        }))
+
+        inputColoresTela.options = opciones
+        filters.value.color_tela_id.options = opciones
+    }
+
+    //Bordados
+    if(inputBordados && bordados.data.value) {
+        const opciones = bordados.data.value.data.map((bordado: any) => ({
             label: `${bordado.forma} - ${bordado.color_hilo.color}`,
             value: bordado.id
         }))
 
-        inputForros.options = forros.data.value.data.map((forro: any) => ({
+        inputBordados.options = opciones
+        filters.value.bordado_id.options = opciones
+    }
+
+    //Forros
+    if(inputForros && forros.data.value)
+    {
+        const opciones = forros.data.value.data.map((forro: any) => ({
             label: forro.color,
             value: forro.id
         }))
+
+        inputForros.options = opciones
+        filters.value.forro_id.options = opciones
     }
 }
 
@@ -178,6 +225,14 @@ const changePage = (page: number) => {
     disabledPagination.value = true
     getPrendas(page)
 }
+
+const filterRegisters = (filtersFromModal: Record<string, any>) => {
+    activeFilters.value = filtersFromModal
+    filterModalOpened.value = false
+
+    currentPage.value = 1
+    getPrendas(currentPage.value)
+}
 </script>
 
 <template>
@@ -191,6 +246,14 @@ const changePage = (page: number) => {
     @accept="(formData) => storePrenda(formData)"
     />
 
+    <FilterModal 
+    :show="filterModalOpened"
+    :text="'Filtrar prendas'"
+    :data="filters"
+    @confirm="(filterData) =>filterRegisters(filterData)"
+    @close="filterModalOpened = false"
+    />
+
     <GenericContainer>
         <template #header>
             <SubPageToogle>
@@ -199,7 +262,9 @@ const changePage = (page: number) => {
                 :hide-filter="false"
                 :hide-store="false"
                 :is-loading="loaderState ? true : false"
-                @store="openModal()"/>
+                @store="openModal()"
+                @filter="filterModalOpened = true"
+                />
             </SubPageToogle>
         </template>
 

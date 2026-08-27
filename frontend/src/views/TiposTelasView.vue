@@ -24,7 +24,7 @@ const loaderState = ref<string | null>('loading')
 
 const getTiposTela = async(page: number) => { 
     loaderState.value = 'loading'
-    const {error, data} = await useApi('tipos-tela').json()
+    const {error, data} = await useApi(`tipos-tela?page=${page}`).json()
 
     if(data.value) {
         tiposTela.value = data.value

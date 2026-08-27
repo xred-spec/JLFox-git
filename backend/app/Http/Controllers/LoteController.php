@@ -20,9 +20,20 @@ class LoteController extends Controller
      * Display a listing of the resource.
      */
 
-    public function indexPendientes()
+    public function indexPendientes(Request $request)
     {
-        $lotes = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'pendiente')->paginate(15);
+        $query = Lote::with('prendas_lote.prenda.tipo_prenda.piezas.procesos')->where('estado', 'pendiente');
+        
+        if($request->filled('fecha_inicio')) {
+            $query->where('fecha_inicio', $request->fecha_inicio);
+        }
+
+        if($request->filled('fecha_final')) {
+            $query->where('fecha_final', $request->fecha_final);
+        }
+
+        $lotes = $query->paginate(15);
+
         return LoteResource::collection($lotes)->additional([
             'success' => true,
             'message' => 'Lotes pendientes obtenidos correctamente'
@@ -37,19 +48,29 @@ class LoteController extends Controller
         */
     }
 
-    public function indexProduccion()
+    public function indexProduccion(Request $request)
     {
-        $lotes = Lote::with([
+        $query = Lote::with([
             'prendas_lote.prenda.tipo_prenda.piezas.procesos.proceso',
             'prendas_lote.prenda.tipo_prenda.piezas.prenda_lote',
             'prendas_lote.prenda.color_tela',
             'prendas_lote.prenda.bordado',
             'prendas_lote.prenda.forro'
-        ])->where('estado', 'produccion')->paginate(15);
+        ])->where('estado', 'produccion');
         
+        if($request->filled('fecha_inicio')) {
+            $query->where('fecha_inicio', $request->fecha_inicio);
+        }
+
+        if($request->filled('fecha_final')) {
+            $query->where('fecha_final', $request->fecha_final);
+        }
+
+        $lotes = $query->paginate(15);
+
         return LoteResource::collection($lotes)->additional([
             'success' => true,
-            'message' => 'Lotes en producción obtenidos correctamente'
+            'message' => 'Lotes pendientes obtenidos correctamente'
         ]);
 
         /*
@@ -61,16 +82,26 @@ class LoteController extends Controller
         */
     }
 
-    public function indexTerminados()
+    public function indexTerminados(Request $request)
     {
-        $lotes = Lote::with(
+        $query = Lote::with(
                 'prendas_lote.prenda.tipo_prenda.piezas.procesos.proceso',
                 'prendas_lote.prenda.tipo_prenda.piezas.prenda_lote.historial_procesos',
                 'prendas_lote.prenda.color_tela',
                 'prendas_lote.prenda.bordado',
                 'prendas_lote.prenda.forro'
-            )->where('estado', 'terminado')->paginate(15);
+            )->where('estado', 'terminado');
         
+        if($request->filled('fecha_inicio')) {
+            $query->where('fecha_inicio', $request->fecha_inicio);
+        }
+
+        if($request->filled('fecha_final')) {
+            $query->where('fecha_final', $request->fecha_final);
+        }
+
+        $lotes = $query->paginate(15);
+
         return LoteResource::collection($lotes)->additional([
             'success' => true,
             'message' => 'Lotes en producción obtenidos correctamente'

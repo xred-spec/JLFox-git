@@ -1,4 +1,4 @@
-1<script setup lang="ts">
+<script setup lang="ts">
 import type { Input } from '@/interfaces/FormInput';
 import { ref, reactive, watch } from 'vue';
 
@@ -33,6 +33,8 @@ watch(() => props.modelValue, (newValue) => {
         for (const p in newValue) {
             formData[p] = newValue[p]
         }
+
+
     } else {
         for (const i of props.inputs) {
             if (i.modelKey) formData[i.modelKey] = ''
@@ -58,6 +60,7 @@ const getOptions = (inputItem: Input) => {
         if (!inputTipos || !inputTipos.options) return [];
 
         const tipoSeleccionado = inputTipos.options.find((opt: any) => opt.value == tipoSeleccionadoId);
+        //console.log('tipoSeleccionado: ', tipoSeleccionado?.value)
         
         if (tipoSeleccionado && (tipoSeleccionado as any).piezas) {
             return (tipoSeleccionado as any).piezas.map((pieza: any) => ({
@@ -225,12 +228,12 @@ const validateInputs = () => {
             </div>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
-                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
+                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="cleanInputs(), emits('close')">
                     Cerrar
                 </button>
 
-                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102"
+                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="validateInputs()">
                     Guardar
                 </button>

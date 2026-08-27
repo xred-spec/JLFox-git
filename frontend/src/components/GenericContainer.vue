@@ -12,7 +12,7 @@
                 <slot name="content" />
             </div>    
             
-            <div v-if="$slots.pagination" class="flex shrink-0 justify-center py-2 z-99 w-full">
+            <div v-if="$slots.pagination" class="flex shrink-0 justify-center py-2 w-full">
                 <slot name="pagination" />
             </div>
 

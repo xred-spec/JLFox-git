@@ -26,18 +26,24 @@ class ProcesoController extends Controller
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $procesos = Proceso::with('prendas_procesos.prenda.tipo_prenda')->paginate(15);
-        /*
-        $resource = ProcesoResource::collection($procesos);
+        $query = Proceso::with('prendas_procesos.prenda.tipo_prenda');
 
-        return $this->successResponse(
-            $resource,
-            'Procesos obtenidos correctamente',
-            200
-        );
-        */
+        if($request->filled('tipo_prenda_id')) {
+            $query->whereHas('prendas_procesos.prenda', function ($q) use ($request) {
+                $q->where('tipo_prenda_id', $request->tipo_prenda_id);
+            });
+        }
+
+        if($request->filled('pieza_prenda_id')) {
+            $query->whereHas('prendas_procesos', function ($q) use ($request) {
+                $q->where('prenda_pieza_id', $request->pieza_prenda_id);
+            });
+        }
+
+        $procesos = $query->paginate(15);
+
         return ProcesoResource::collection($procesos)->additional([
             'success' => true,
             'message' => 'Procesos obtenidos correctamente'
@@ -57,7 +63,7 @@ class ProcesoController extends Controller
                 'area' => $data['area']
             ]);
 
-            $pieza = PrendaPieza::findOrFail($data['prenda_pieza_id']);
+            $pieza = PrendaPieza::findOrFail($data['pieza_prenda_id']);
             $maxOrder = PrendaProceso::where('prenda_pieza_id', $pieza->id)->max('orden');
             $order = $maxOrder ? $maxOrder + 1 : 1;
 
@@ -101,16 +107,46 @@ class ProcesoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProcesoRequest $request, string $id)
+    public function update(ProcesoRequest $request, $id)
     {
-        $proceso = Proceso::findOrFail($id);
-        $proceso->update($request->validated());
+        $proceso = DB::transaction(function () use ($request, $id) {
+            $data = $request->validated();
 
-        $resource = new ProcesoResource($proceso);
+            $proceso = Proceso::findOrFail($id);
+            $proceso->update([
+                'descripcion' => $data['descripcion'],
+                'area' => $data['area']
+            ]);
+
+            $prendaProceso = $proceso->prendas_procesos()->first();
+
+            if ($prendaProceso) {
+                if ($prendaProceso->prenda_pieza_id != $data['pieza_prenda_id']) {
+                    $pieza = PrendaPieza::findOrFail($data['pieza_prenda_id']);
+                    $maxOrder = PrendaProceso::where('prenda_pieza_id', $pieza->id)->max('orden');
+                    $prendaProceso->orden = $maxOrder ? $maxOrder + 1 : 1;
+                }
+
+                $prendaProceso->update([
+                    'clave' => $data['clave'],
+                    'prenda_pieza_id' => $data['pieza_prenda_id'], 
+                    'tiempo_previsto_hora' => $data['tiempo_previsto_hora'],
+                    'tiempo_previsto_minuto' => $data['tiempo_previsto_minuto'],
+                    'tiempo_previsto_segundo' => $data['tiempo_previsto_segundo'],
+                ]);
+            }
+
+            $proceso->load('prendas_procesos.prenda.tipo_prenda');
+
+            return $proceso;
+        });
+
+        $resource = ProcesoResource::make($proceso);
+
         return $this->successResponse(
             $resource,
-            'Proceso actualizado',
-            200
+            'Proceso actualizado correctamente',
+            200 
         );
     }
 

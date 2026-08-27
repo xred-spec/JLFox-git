@@ -49,7 +49,8 @@ const cantidadInventario = computed(() => {
 </script>
 
 <template>
-    <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs"> 
+    <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs"
+    @click="expanded = !expanded"> 
         <div v-if="!expanded" class="flex w-full justify-start items-center px-5 py-1">
             <div class="bg-[#c41a1a] flex items-center justify-center rounded-[10px] py-0.5 px-2 mr-2">
                 <label class="text-[#ffffff] font-bold">
@@ -83,7 +84,7 @@ const cantidadInventario = computed(() => {
                 </label>
 
                 <button class="font-bold text-sm cursor-pointer hover:underline" 
-                @click="expanded = true"> 
+                @click.stop="expanded = true"> 
                     Mostrar detalles
                 </button>
             </template>
@@ -99,8 +100,8 @@ const cantidadInventario = computed(() => {
                         <label v-if="column.key != 'index'" class="font-bold text-lg mr-1 text-[#000000]">
                             {{ column.label }}: 
                         </label>
-                        <span v-if="column.key != 'index'" class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold">
-                            {{ props.index || getForeignValues(props.item, column.key) }}
+                        <span v-if="column.key !== 'index'" class="bg-[#e4e4e4] px-5 py-2 rounded-[10px] font-bold">
+                            {{ getForeignValues(props.item, column.key) }}
                         </span>
                     </div>
                 </div>
@@ -114,7 +115,7 @@ const cantidadInventario = computed(() => {
                     </div>
 
                     <button class="font-bold text-sm cursor-pointer hover:underline" 
-                    @click="expanded = false"> 
+                    @click.stop="expanded = false"> 
                         Ocultar detalles
                     </button>
                 </div>

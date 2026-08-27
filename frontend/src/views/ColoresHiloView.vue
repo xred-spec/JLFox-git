@@ -24,7 +24,7 @@ const loaderState = ref<string | null>('loading')
 
 const getColoresHilo = async(page: number) => { 
     loaderState.value = 'loading'
-    const {error, data} = await useApi('colores-hilo').json()
+    const {error, data} = await useApi(`colores-hilo?page=${page}`).json()
 
     if(data.value) {
         coloresHilo.value = data.value
