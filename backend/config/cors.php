@@ -6,8 +6,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:5173',
-        //'https://jlfox-trackingsystem.onrender.com'
+        //'http://localhost:5173',
+        'https://jlfox-trackingsystem.onrender.com'
     ],
 
     'allowed_origins_patterns' => [],
