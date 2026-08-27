@@ -12,7 +12,7 @@ const props = defineProps <{
     columns: Column[]
     show: boolean
 }>()
-console.log('item: ', props.item)
+//console.log('item: ', props.item)
 
 const getForeignValues = (object: any, rute: string) => {
     if (!object || !rute) return '-';
