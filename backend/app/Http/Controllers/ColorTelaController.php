@@ -23,9 +23,15 @@ class ColorTelaController extends Controller
         );
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $coloresTela = ColorTela::with('tela')->paginate(15);
+        $query = ColorTela::with('tela');
+
+        if($request->filled('tela_id')) {
+            $query->where('tela_id', $request->tela_id);
+        }
+
+        $coloresTela = $query->paginate(15);
         //$resuorce = ColorTelaResource::collection($coloresTela);
 
         return ColorTelaResource::collection($coloresTela)->additional([

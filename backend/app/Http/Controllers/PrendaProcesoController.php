@@ -26,14 +26,14 @@ class PrendaProcesoController extends Controller
         );
     }
 
-    public function indexWithProcess() {
-        $prendasProcesos = Prenda::with(
+    public function indexWithProcess(Request $request) {
+        $query = Prenda::with(
             'tipo_prenda.piezas.procesos', 
             'color_tela.tela', 
             'bordado.color_hilo', 
             'forro', 
             'inventario_prenda'
-        )->paginate(15);
+        );
         /*
         $resource = PrendaResource::collection($prendasProcesos);
 
@@ -43,6 +43,28 @@ class PrendaProcesoController extends Controller
             200
         );
         */
+
+        if($request->filled('tipo')) {
+            $query->where('tipo', $request->tipo);
+        }
+
+        if($request->filled('tipo_prenda_id')) {
+            $query->where('tipo_prenda_id', $request->tipo_prenda_id);
+        }
+
+        if($request->filled('color_tela_id')) {
+            $query->where('color_tela_id', $request->color_tela_id);
+        }
+
+        if($request->filled('bordado_id')) {
+            $query->where('bordado_id', $request->bordado_id);
+        }
+
+        if($request->filled('forro_id')) {
+            $query->where('forro_id', $request->forro_id);
+        }
+
+        $prendasProcesos = $query->paginate(15);
 
         return PrendaResource::collection($prendasProcesos)->additional([
             'success' => true,

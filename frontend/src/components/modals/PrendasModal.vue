@@ -188,12 +188,12 @@ watch(() => props.modelValue, () => {
             </div>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
-                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
+                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="cleanInputs(), emits('close')">
                     Cerrar
                 </button>
 
-                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102"
+                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="validateInputs()">
                     Guardar
                 </button>

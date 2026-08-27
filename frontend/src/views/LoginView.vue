@@ -93,6 +93,7 @@ async function handleLogin() {
                         Iniciar sesión
                     </button>
 
+                    <!--
                     <p class="mb-5 text-lg w-full text-center font-medium text-[#311f07]">
                         Por seguridad solo se pueden crear más usuarios dentro de la aplicación
                     </p>
@@ -100,11 +101,12 @@ async function handleLogin() {
                     <button class="rounded-[15px] font-bold text-base text-[#311f07] px-5 py-3 cursor-pointer hover:scale-105 hover:underline">
                         Olvidé mis datos
                     </button>
+                    -->
                 </form>
             </div>
 
             <div class="flex flex-col justify-center items-center bg-[#000000] rounded-[10px] rounded-l-none p-10 ">
-                <h2 class="text-white text-5xl font-extrabold">Logo</h2>
+                <img src="/bLogo.png" alt="JLFox" width="500" height="500">
             </div>
         </div>
     </div>

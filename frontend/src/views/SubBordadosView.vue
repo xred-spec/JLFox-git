@@ -10,6 +10,7 @@ import GenericModal from '@/components/modals/GenericModal.vue';
 import ItemCard from '@/components/ItemCard.vue';
 import Pagination from '@/components/Pagination.vue';
 import Loader from '@/components/Loader.vue';
+import FilterModal from '@/components/modals/FilterModal.vue';
 
 const formInputs = ref([...bordadosInputs]) 
 
@@ -24,14 +25,29 @@ const lastPage = ref(1)
 const disabledPagination = ref(false)
 const loaderState = ref<string | null>('loading')
 
+const activeFilters = ref<Record<string, any>>({})
+const filterModalOpened = ref(false)
+const filters = ref<Record<string, any>>({})
+
 const getBordados = async(page: number) => {
     loaderState.value = 'loading'
-    const {error, data} = await useApi('bordados').json()
+
+    const params = new URLSearchParams({
+        page: page.toString()
+    })
+
+    Object.keys(activeFilters.value).forEach(key => {
+        if(activeFilters.value[key] !== null && activeFilters.value[key] !== '') {
+            params.append(key, activeFilters.value[key].toString())
+        }
+    })
+
+    const {error, data} = await useApi(`bordados?${params.toString()}`).json()
 
     if(data.value) {
         bordados.value = data.value
         currentPage.value = page
-        lastPage.value = bordados.value.meta.last_page
+        lastPage.value = bordados.value?.meta?.last_page || 1
         disabledPagination.value = false
         loaderState.value = 'success'
 
@@ -58,11 +74,18 @@ const fetchSelects = async() => {
     const coloresHilo = await useApi('colores-hilo/all').json()
     const inputColoresHilo = formInputs.value.find(i => i.modelKey === 'color_hilo_id')
 
+    filters.value = {
+        color_hilo_id: { label: 'Color de hilo', options: [] }
+    }
+
     if(inputColoresHilo && coloresHilo.data.value) {
-        inputColoresHilo.options = coloresHilo.data.value.data.map((colorHilo: any) => ({
+        const opciones = coloresHilo.data.value.data.map((colorHilo: any) => ({
             label: colorHilo.color,
             value: colorHilo.id
         }))
+
+        inputColoresHilo.options = opciones
+        filters.value.color_hilo_id.options = opciones
     }
 }
 
@@ -140,6 +163,14 @@ const changePage = (page: number) => {
     disabledPagination.value = true
     getBordados(page)
 }
+
+const filterRegisters = (filtersFromModal: Record<string, any>) => {
+    activeFilters.value = filtersFromModal
+    filterModalOpened.value = false
+
+    currentPage.value = 1
+    getBordados(currentPage.value)
+}
 </script>
 
 <template>
@@ -153,6 +184,14 @@ const changePage = (page: number) => {
     @accept="(formData) => storeBordado(formData)"
     />
 
+    <FilterModal 
+    :show="filterModalOpened"
+    :text="'Filtrar bordados'"
+    :data="filters"
+    @confirm="(filterData) =>filterRegisters(filterData)"
+    @close="filterModalOpened = false"
+    />
+
     <GenericContainer>
         <template #header>
             <SubPageToogle>
@@ -161,7 +200,9 @@ const changePage = (page: number) => {
                 :hide-filter="false"
                 :hide-store="false"
                 :is-loading="loaderState ? true : false"
-                @store="openModal()"/>
+                @store="openModal()"
+                @filter="filterModalOpened = true"
+                />
             </SubPageToogle>
         </template>
 

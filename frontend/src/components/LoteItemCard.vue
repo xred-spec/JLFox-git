@@ -82,7 +82,8 @@ const emits = defineEmits<{
     @confirm="actionModal === 'start' ? emits('state', props.item.id, 'proceso') : emits('delete', props.item.id), modalConfirmClose()"
     />
 
-    <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs">
+    <div class="flex flex-col rounded-[10px] w-full items-center justify-between mb-1 py-1 px-2 border bg-[#ffffff] border-[#63492a] shadow-2xs"
+    @click="expanded = !expanded">
         <div v-if="!expanded" class="flex w-full justify-start items-center px-5 py-1">
             <div class="bg-[#c41a1a] flex items-center justify-center rounded-[10px] py-0.5 px-2 mr-2">
                 <label class="text-[#ffffff] font-bold">
@@ -128,7 +129,7 @@ const emits = defineEmits<{
                 </template>
 
                 <button class="font-bold text-sm cursor-pointer hover:underline" 
-                @click="expanded = true"> 
+                @click.stop="expanded = true"> 
                     Mostrar detalles
                 </button>
             </template>
@@ -162,7 +163,7 @@ const emits = defineEmits<{
                             </button>
 
                             <button class="flex py-1 px-4 mx-1 justify-center items-center rounded-[5px] bg-[#faee46] text-[#000000] text-sm font-bold cursor-pointer hover:scale-105"
-                            @click="emits('update', props.item.id)">
+                            @click.stop="emits('update', props.item.id)">
                                 Editar
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                                 class="lucide lucide-pencil-icon lucide-pencil size-3 ml-1"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
@@ -171,7 +172,7 @@ const emits = defineEmits<{
 
                         <template v-if="props.item.estado === 'produccion'">
                             <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#3bb937] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                            @click="modalProduccionOpened = true">
+                            @click.stop="modalProduccionOpened = true">
                                 Gestionar producción
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                                 class="lucide lucide-factory-icon lucide-factory size-3 ml-1"><path d="M12 16h.01"/><path d="M16 16h.01"/><path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/><path d="M8 16h.01"/></svg>
@@ -180,7 +181,7 @@ const emits = defineEmits<{
 
                         <template v-if="props.item.estado === 'terminado'">
                             <button class="flex py-1 px-4 mr-1 justify-center items-center rounded-[5px] bg-[#2630bb] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                            @click="emits('data')">
+                            @click.stop="emits('data')">
                                 Mostrar detalles
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                                 class="lucide lucide-info-icon lucide-info size-3 ml-1"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -188,7 +189,7 @@ const emits = defineEmits<{
                         </template>
 
                         <button class="flex py-1 px-4 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105"
-                        @click="modalConfirm('¿Está seguro de eliminar?', 'delete')">
+                        @click.stop="modalConfirm('¿Está seguro de eliminar?', 'delete')">
                             Eliminar
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                     class="lucide lucide-trash2-icon lucide-trash-2 size-3 ml-1"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -196,7 +197,7 @@ const emits = defineEmits<{
                     </div>
 
                     <button class="font-bold text-sm cursor-pointer hover:underline" 
-                    @click="expanded = false"> 
+                    @click.stop="expanded = false"> 
                         Ocultar detalles
                     </button>
                 </div>

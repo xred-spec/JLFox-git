@@ -13,7 +13,7 @@ class TipoPrendaController extends Controller
      * Display a listing of the resource.
      */
     public function indexAll() {
-        $tiposPrendas = TipoPrenda::all();
+        $tiposPrendas = TipoPrenda::with('piezas')->get();
         $resource = TipoPrendaResource::collection($tiposPrendas);
 
         return $this->successResponse(

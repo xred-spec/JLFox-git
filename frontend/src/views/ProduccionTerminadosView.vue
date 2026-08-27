@@ -11,6 +11,7 @@ import LoteItemCard from '@/components/LoteItemCard.vue';
 import TerminadosModal from '@/components/modals/TerminadosModal.vue';
 import Pagination from '@/components/Pagination.vue';
 import Loader from '@/components/Loader.vue';
+import FilterModal from '@/components/modals/FilterModal.vue';
 
 const formInputs = ref([...lotesInputs]) 
 
@@ -27,9 +28,27 @@ const lastPage = ref(1)
 const disabledPagination = ref(false)
 const loaderState = ref<string | null>('loading')
 
+const activeFilters = ref<Record<string, any>>({})
+const filterModalOpened = ref(false)
+const filters = ref<Record<string, any>>({
+    fecha_inicio: { label: 'Fecha de inicio de producción', type: 'date', },
+    fecha_final: { label: 'Fecha de final de producción', type: 'date', },
+})
+
 const getLotes = async(page: number) => {
     loaderState.value = 'loading'
-    const {isFetching, error, data} = await useApi('lotes/terminados').json()
+
+    const params = new URLSearchParams({
+        page: page.toString()
+    })
+
+    Object.keys(activeFilters.value).forEach(key => {
+        if(activeFilters.value[key] !== null && activeFilters.value[key] !== '') {
+            params.append(key, activeFilters.value[key].toString())
+        }
+    })
+
+    const {error, data} = await useApi(`lotes/terminados?${params.toString()}`).json()
 
     if(data.value) {
         lotesTerminados.value = data.value
@@ -155,6 +174,14 @@ const changePage = (page: number) => {
     disabledPagination.value = true
     getLotes(page)
 }
+
+const filterRegisters = (filtersFromModal: Record<string, any>) => {
+    activeFilters.value = filtersFromModal
+    filterModalOpened.value = false
+
+    currentPage.value = 1
+    getLotes(currentPage.value)
+}
 </script>
 
 <template>
@@ -175,6 +202,14 @@ const changePage = (page: number) => {
     @close="dataModalOpened = false"
     />
 
+    <FilterModal 
+    :show="filterModalOpened"
+    :text="'Filtrar lotes terminados'"
+    :data="filters"
+    @confirm="(filterData) =>filterRegisters(filterData)"
+    @close="filterModalOpened = false"
+    />
+
     <GenericContainer>
         <template #header>
             <SubPageToogle>
@@ -183,7 +218,9 @@ const changePage = (page: number) => {
                 :hide-filter="false"
                 :hide-store="false"
                 :is-loading="loaderState ? true : false"
-                @store="openModal()"/>
+                @store="openModal()"
+                @filter="filterModalOpened = true"
+                />
             </SubPageToogle>
         </template>
 

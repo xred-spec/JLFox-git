@@ -278,7 +278,7 @@ const closeModal = () => {
             </div>
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
-                <button class="w-full rounded-[5px] font-bold text-lg text-[#ffffff] py-2 bg-[#c41a1a] cursor-pointer hover:scale-101"
+                <button class="w-full rounded-[5px] font-bold text-lg text-[#ffffff] py-2 bg-[#c41a1a] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="closeModal">
                     Cerrar
                 </button>

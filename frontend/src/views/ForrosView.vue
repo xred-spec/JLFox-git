@@ -24,7 +24,7 @@ const loaderState = ref<string | null>('loading')
 
 const getForros = async(page: number) => { 
     loaderState.value = 'loading'
-    const {error, data} = await useApi('forros').json()
+    const {error, data} = await useApi(`forros?page=${page}`).json()
 
     if(data.value) {
         forros.value = data.value

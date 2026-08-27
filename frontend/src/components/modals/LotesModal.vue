@@ -215,7 +215,7 @@ watch(() => props.modelValue, () => {
                             Falta llenar campo(s)
                         </label>
 
-                        <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-102"
+                        <button class="font-bold flex items-center py-1 px-5 rounded-[5px] text-[#ffffff] cursor-pointer bg-[#2630bb] hover:scale-105 transition-all duration-300 ease-out hover:shadow-2xl"
                         @click="agregarPrenda()">
                             Agregar
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" 
@@ -248,7 +248,7 @@ watch(() => props.modelValue, () => {
                                 </div>
                                 
                                 
-                                <button class="flex py-1 px-5 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer"
+                                <button class="flex py-1 px-5 ml-1 justify-center items-center rounded-[5px] bg-[#c41a1a] text-[#ffffff] text-sm font-bold cursor-pointer hover:scale-105 transition-all duration-300 ease-out hover:shadow-2xl"
                                 @click="eliminarPrenda(index)">
                                     Eliminar
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
@@ -261,12 +261,12 @@ watch(() => props.modelValue, () => {
             </div>    
 
             <div class="mt flex items-center justify-between pt-2 border-[#63492a] border-t-2">
-                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102"
+                <button class="w-full mr-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#c41a1a] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="cleanInputs(), emits('close')">
                     Cerrar
                 </button>
 
-                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102"
+                <button class="w-full ml-1 rounded-[5px] font-bold text-lg text-[#ffffff] py-3 bg-[#3bb937] cursor-pointer hover:scale-102 transition-all duration-300 ease-out hover:shadow-2xl"
                 @click="validateInputs()">
                     Guardar
                 </button>
