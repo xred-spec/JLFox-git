@@ -15,9 +15,9 @@ class UsuarioSeeder extends Seeder
     public function run(): void
     {
         Usuario::firstOrCreate([
-            'username' => 'administrador',
-            'email' => 'admin@jlfox.com',
-            'password' => Hash::make('password123'),
+            'username' => 'admin',
+            'email' => '',
+            'password' => Hash::make('JLFoxAccess2026'),
             'rol_id' => 1 
         ]);
     }
